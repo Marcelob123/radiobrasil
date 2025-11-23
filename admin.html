@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administração da Rádio</title>
+    <link rel="stylesheet" href="index.css"> 
+</head>
+<body class="admin-body">
+    <div class="login-container">
+        <h1>Acesso Administrativo</h1>
+        <form id="loginForm">
+            <input type="password" id="password" placeholder="Digite a Senha" required>
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+
+    <script>
+        // A senha está aqui, no lado do cliente. Lembre-se que para segurança real, isso deve estar no Back-end.
+        const senhaCorreta = "Marcelinho123"; 
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            const senhaDigitada = document.getElementById('password').value;
+
+            if (senhaDigitada === senhaCorreta) {
+                // Se a senha estiver correta, redireciona para o painel
+                window.location.href = 'painel.html'; 
+            } else {
+                alert('Senha Incorreta. Tente novamente.');
+            }
+        });
+    </script>
+</body>
+</html>

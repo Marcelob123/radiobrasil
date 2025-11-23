@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Rádio Online</title>
+    <link rel="stylesheet" href="index.css"> 
+</head>
+<body>
+    <header>
+        <h1>Rádio Onda Sonora 🎶</h1>
+        <p>A trilha sonora do seu dia.</p>
+    </header>
+
+    <section class="estacoes-adicionais">
+        <h2>Nossas Estações de Rádio</h2>
+        <div id="estacoes-container">
+            </div>
+    </section>
+
+    <section class="destaques-adicionais">
+        <h2>Próximos Louvores em Destaque</h2>
+        <div id="destaques-container" class="destaques-grid">
+            </div>
+    </section>
+    
+    <footer>
+        <div class="redes-sociais">
+            <a href="URL_DO_SEU_FACEBOOK" target="_blank" class="social-icon">Facebook</a>
+            <a href="URL_DO_SEU_INSTAGRAM" target="_blank" class="social-icon">Instagram</a>
+            <a href="URL_DO_SEU_WHATSAPP" target="_blank" class="social-icon">WhatsApp</a>
+        </div>
+        
+        <a href="admin.html" class="admin-link">Área do Administrador</a>
+        
+        <p>&copy; 2025 Rádio Onda Sonora. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // CHAVES DE ARMAZENAMENTO
+        const STREAM_KEY = 'radioStreamLink'; 
+        const LOUVOR_KEY = 'nowPlayingLouvor'; 
+        const ARTISTA_KEY = 'nowPlayingArtista'; 
+        const OTHER_LINKS_KEY = 'otherRadioLinks'; 
+        const HIGHLIGHTS_KEY = 'radioHighlights'; 
+
+        // FUNÇÃO PRINCIPAL PARA CARREGAR DADOS INICIAIS
+        function loadPrincipalData() {
+            // 1. CARREGAR DESTAQUES (Louvores Adicionais)
+            renderHighlights();
+
+            // 2. CARREGAR ESTAÇÕES ADICIONAIS (Múltiplos Players)
+            renderAdditionalStations();
+        }
+        
+        // FUNÇÃO PARA RENDERIZAR OS CARDS DE DESTAQUE
+        function renderHighlights() {
+            const container = document.getElementById('destaques-container');
+            const highlights = JSON.parse(localStorage.getItem(HIGHLIGHTS_KEY) || '[]');
+            
+            container.innerHTML = ''; 
+
+            if (highlights.length === 0) {
+                container.innerHTML = '<p style="color: #777;">Nenhum louvor em destaque adicionado.</p>';
+                return;
+            }
+
+            highlights.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'highlight-card';
+                card.innerHTML = `
+                    <h3>${item.louvor}</h3>
+                    <p>Por: ${item.artista}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // FUNÇÃO PARA RENDERIZAR OS PLAYERS INDIVIDUAIS (Buscando o Louvor/Artista do link individual)
+        function renderAdditionalStations() {
+            const container = document.getElementById('estacoes-container');
+            const links = JSON.parse(localStorage.getItem(OTHER_LINKS_KEY) || '[]');
+            
+            container.innerHTML = ''; 
+            
+            if (links.length === 0) {
+                container.innerHTML = '<p id="no-stations-message" style="color: #777;">Nenhuma estação de rádio adicionada no momento.</p>';
+                return;
+            }
+
+            links.forEach((item, index) => { // 'item' agora é o objeto { link, louvor, artista }
+                let stationName = `Estação ${index + 1}`;
+                try {
+                    const url = new URL(item.link);
+                    const domain = url.hostname.replace('www.', '').split('.')[0];
+                    stationName = domain.charAt(0).toUpperCase() + domain.slice(1); 
+                } catch (e) {
+                }
+                
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'additional-player-card'; 
+                
+                playerDiv.innerHTML = `
+                    <h3>${stationName}</h3>
+                    <audio controls class="secondary-player">
+                        <source src="${item.link}" type="audio/mpeg"> 
+                        Seu navegador não suporta este player.
+                    </audio>
+                    
+                    <div class="musica-tocando-secundaria">
+                        <p class="tocando-label">Tocando Agora:</p>
+                        <p class="louvor-em-destaque">${item.louvor || 'Louvor Não Informado'}</p>
+                        <p class="artista-em-destaque">Por: ${item.artista || 'Artista Não Informado'}</p>
+                    </div>
+                `;
+                
+                container.appendChild(playerDiv);
+            });
+        }
+
+        // Inicia o carregamento dos dados quando a página terminar de carregar
+        document.addEventListener('DOMContentLoaded', loadPrincipalData);
+    </script>
+    </body>
+</html>
