@@ -12,19 +12,20 @@
         <p>Gerencie o link de streaming e as informações de reprodução.</p>
 
         <form id="nowPlayingForm">
-            <h2>Tocando Agora: (Principal - Não usado pelas estações secundárias)</h2>
+            <h2>Tocando Agora: (Principal - Local)</h2>
+            <p style="font-size: 0.8em; color: #aaa;">Esta informação não é salva online, é apenas um backup local.</p>
             <div class="admin-form-row">
                 <input type="text" id="louvor" placeholder="Nome do Louvor" required>
                 <input type="text" id="artista" placeholder="Nome do Artista" required>
             </div>
-            <button type="submit">Atualizar Principal</button>
-            <button type="button" id="clearMusicButton" class="delete-button">Limpar Principal</button>
+            <button type="submit">Atualizar Local</button>
+            <button type="button" id="clearMusicButton" class="delete-button">Limpar Local</button>
         </form>
         
         <hr>
 
         <form id="addHighlightForm">
-            <h2>Adicionar Destaque/Próximo Louvor:</h2>
+            <h2>Adicionar Destaque/Próximo Louvor (ONLINE):</h2>
             <div class="admin-form-row">
                 <input type="text" id="highlightLouvor" placeholder="Nome do Louvor" required>
                 <input type="text" id="highlightArtista" placeholder="Nome do Artista" required>
@@ -33,7 +34,7 @@
         </form>
 
         <div style="margin-top: 20px;">
-            <h2>Lista de Destaques Adicionados:</h2>
+            <h2>Lista de Destaques Adicionados (ONLINE):</h2>
             <ul id="highlightList">
                 </ul>
         </div>
@@ -41,7 +42,7 @@
         <hr>
 
         <form id="linkForm">
-            <h2>Link Principal da Rádio:</h2>
+            <h2>Link Principal da Rádio: (Local)</h2>
             <input type="text" id="streamLink" placeholder="URL do Streaming Principal" required>
             <button type="submit">Salvar Link Principal</button>
             <button type="button" id="deleteLinkButton" class="delete-button">Excluir Link Principal</button>
@@ -50,7 +51,7 @@
         <hr>
 
         <form id="addOtherLinkForm">
-            <h2>Adicionar Outro Link à Lista de Estações:</h2>
+            <h2>Adicionar Outro Link à Lista de Estações (ONLINE):</h2>
             <div class="admin-form-row">
                 <input type="text" id="otherLink" placeholder="Link de Backup/Outra Rádio" required>
             </div>
@@ -62,7 +63,7 @@
         </form>
 
         <div style="margin-top: 20px;">
-            <h2>Lista de Links Adicionados:</h2>
+            <h2>Lista de Links Adicionados (ONLINE):</h2>
             <ul id="linksList">
                 </ul>
         </div>
@@ -71,104 +72,158 @@
     </div>
 
     <script>
-        // CHAVES DE ARMAZENAMENTO
+        // !! SUA URL DO GOOGLE APPS SCRIPT AQUI !!
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxjX7K30EgFOfqktK4JAnl0bpXE7UC1iWH-camU5RHxTk6RoxxIpHxhGZzgMxNV0T/exec"; 
+        
+        // CHAVE DE SEGURANÇA: DEVE SER A MESMA DEFINIDA NO Apps Script!
+        const SECURITY_KEY = "suasenhadopainel123"; 
+
+        // CHAVES DE ARMAZENAMENTO LOCAL (Mantidas para Principal)
         const STREAM_KEY = 'radioStreamLink';
         const LOUVOR_KEY = 'nowPlayingLouvor';
         const ARTISTA_KEY = 'nowPlayingArtista';
-        const OTHER_LINKS_KEY = 'otherRadioLinks';
-        const HIGHLIGHTS_KEY = 'radioHighlights'; 
 
-        // FUNÇÕES DE RENDERIZAÇÃO
-        function renderHighlights() {
+        // FUNÇÃO DE REQUISIÇÃO (POST)
+        async function sendRequest(params) {
+            const url = new URL(WEB_APP_URL);
+            url.search = new URLSearchParams(params).toString();
+            
+            try {
+                const response = await fetch(url, { method: 'POST' });
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.error("Erro na requisição ao App Script:", error);
+                return { status: "error", message: "Erro de conexão com o servidor." };
+            }
+        }
+
+        // FUNÇÃO DE RENDERIZAÇÃO DE DESTAQUES (ONLINE)
+        async function renderHighlights() {
             const listElement = document.getElementById('highlightList');
-            listElement.innerHTML = ''; 
-            const highlights = JSON.parse(localStorage.getItem(HIGHLIGHTS_KEY) || '[]'); 
+            listElement.innerHTML = '<li>Carregando...</li>'; 
 
-            highlights.forEach((item, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <span>Louvor: ${item.louvor} | Artista: ${item.artista}</span>
-                    <button data-index="${index}" class="delete-highlight-item delete-button" style="width: auto; margin: 0;">Excluir</button>
-                `;
-                listElement.appendChild(li);
-            });
-            document.querySelectorAll('.delete-highlight-item').forEach(button => {
-                button.addEventListener('click', deleteHighlight);
-            });
+            try {
+                const response = await fetch(`${WEB_APP_URL}?sheet=DESTAQUES`);
+                const highlights = await response.json();
+                
+                listElement.innerHTML = '';
+                highlights.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span>Louvor: ${item.louvor} | Artista: ${item.artista}</span>
+                        <button data-index="${index}" class="delete-highlight-item delete-button" style="width: auto; margin: 0;">Excluir</button>
+                    `;
+                    listElement.appendChild(li);
+                });
+                document.querySelectorAll('.delete-highlight-item').forEach(button => {
+                    button.addEventListener('click', deleteHighlight);
+                });
+            } catch (error) {
+                listElement.innerHTML = '<li>Erro ao carregar destaques.</li>';
+            }
         }
         
-        function renderOtherLinks() {
+        // FUNÇÃO DE RENDERIZAÇÃO DE LINKS (ONLINE)
+        async function renderOtherLinks() {
             const listElement = document.getElementById('linksList');
-            listElement.innerHTML = ''; 
-            const links = JSON.parse(localStorage.getItem(OTHER_LINKS_KEY) || '[]');
+            listElement.innerHTML = '<li>Carregando...</li>'; 
 
-            links.forEach((item, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <span>
-                        Link: ${item.link} 
-                        <br>
-                        Louvor: ${item.louvor} | Artista: ${item.artista}
-                    </span>
-                    <button data-index="${index}" class="delete-link-item delete-button" style="width: auto; margin: 0;">Excluir</button>
-                `;
-                listElement.appendChild(li);
-            });
-            document.querySelectorAll('.delete-link-item').forEach(button => {
-                button.addEventListener('click', deleteOtherLink);
-            });
+            try {
+                const response = await fetch(`${WEB_APP_URL}?sheet=ESTACOES`);
+                const links = await response.json();
+                
+                listElement.innerHTML = '';
+                links.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span>
+                            Link: ${item.link} 
+                            <br>
+                            Louvor: ${item.louvor} | Artista: ${item.artista}
+                        </span>
+                        <button data-index="${index}" class="delete-link-item delete-button" style="width: auto; margin: 0;">Excluir</button>
+                    `;
+                    listElement.appendChild(li);
+                });
+                document.querySelectorAll('.delete-link-item').forEach(button => {
+                    button.addEventListener('click', deleteOtherLink);
+                });
+            } catch (error) {
+                listElement.innerHTML = '<li>Erro ao carregar links.</li>';
+            }
         }
         
-        // FUNÇÃO PRINCIPAL DE CARREGAMENTO
+        // FUNÇÃO PRINCIPAL DE CARREGAMENTO (LOCAL E ONLINE)
         function loadData() {
+            // Carrega dados LOCAIS (Principal)
             document.getElementById('louvor').value = localStorage.getItem(LOUVOR_KEY) || '';
             document.getElementById('artista').value = localStorage.getItem(ARTISTA_KEY) || '';
             document.getElementById('streamLink').value = localStorage.getItem(STREAM_KEY) || '';
 
+            // Carrega dados ONLINE
             renderHighlights();
             renderOtherLinks();
         }
 
-        // LÓGICAS DE EXCLUSÃO
-        function deleteHighlight(e) {
+        // LÓGICAS DE EXCLUSÃO (ONLINE)
+        async function deleteHighlight(e) {
             const indexToDelete = parseInt(e.target.dataset.index);
-            const highlights = JSON.parse(localStorage.getItem(HIGHLIGHTS_KEY) || '[]');
-            highlights.splice(indexToDelete, 1); 
-            localStorage.setItem(HIGHLIGHTS_KEY, JSON.stringify(highlights));
-            alert('Destaque excluído!');
-            renderHighlights();
+            const result = await sendRequest({ 
+                key: SECURITY_KEY, 
+                sheet: 'DESTAQUES', 
+                action: 'delete', 
+                index: indexToDelete 
+            });
+
+            if (result.status === 'success') {
+                alert('Destaque excluído ONLINE!');
+                renderHighlights();
+            } else {
+                alert('Erro ao excluir destaque: ' + result.message);
+            }
         }
 
-        function deleteOtherLink(e) {
+        async function deleteOtherLink(e) {
             const indexToDelete = parseInt(e.target.dataset.index);
-            const links = JSON.parse(localStorage.getItem(OTHER_LINKS_KEY) || '[]');
-            links.splice(indexToDelete, 1); 
-            localStorage.setItem(OTHER_LINKS_KEY, JSON.stringify(links));
-            alert('Link excluído da lista de estações!');
-            renderOtherLinks();
+            const result = await sendRequest({ 
+                key: SECURITY_KEY, 
+                sheet: 'ESTACOES', 
+                action: 'delete', 
+                index: indexToDelete 
+            });
+
+            if (result.status === 'success') {
+                alert('Estação excluída ONLINE!');
+                renderOtherLinks();
+            } else {
+                alert('Erro ao excluir estação: ' + result.message);
+            }
         }
 
-        // EVENTOS DE FORMULÁRIO (Salvar/Limpar)
+        // EVENTOS DE FORMULÁRIO (LOCAL E ONLINE)
+
+        // Salvar Link Principal (LOCAL)
         document.getElementById('linkForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const novoLink = document.getElementById('streamLink').value;
             localStorage.setItem(STREAM_KEY, novoLink);
-            alert('Novo link principal salvo!');
+            alert('Novo link principal salvo LOCALMENTE!');
         });
-
         document.getElementById('deleteLinkButton').addEventListener('click', function() {
             localStorage.removeItem(STREAM_KEY);
             document.getElementById('streamLink').value = '';
-            alert('Link principal excluído!');
+            alert('Link principal excluído LOCALMENTE!');
         });
         
+        // Atualizar Tocando Agora Principal (LOCAL)
         document.getElementById('nowPlayingForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const louvor = document.getElementById('louvor').value;
             const artista = document.getElementById('artista').value;
             localStorage.setItem(LOUVOR_KEY, louvor);
             localStorage.setItem(ARTISTA_KEY, artista);
-            alert(`Música principal atualizada para: ${louvor} - ${artista}`);
+            alert(`Música principal atualizada LOCALMENTE para: ${louvor} - ${artista}`);
         });
         
         document.getElementById('clearMusicButton').addEventListener('click', function() {
@@ -176,41 +231,58 @@
             localStorage.removeItem(ARTISTA_KEY);
             document.getElementById('louvor').value = '';
             document.getElementById('artista').value = '';
-            alert('Informações de "Tocando Agora" limpas!');
+            alert('Informações de "Tocando Agora" limpas LOCALMENTE!');
         });
 
-        document.getElementById('addHighlightForm').addEventListener('submit', function(e) {
+        // Adicionar Destaque (ONLINE)
+        document.getElementById('addHighlightForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const louvor = document.getElementById('highlightLouvor').value;
             const artista = document.getElementById('highlightArtista').value;
             
-            let highlights = JSON.parse(localStorage.getItem(HIGHLIGHTS_KEY) || '[]');
-            highlights.push({ louvor: louvor, artista: artista }); 
-            localStorage.setItem(HIGHLIGHTS_KEY, JSON.stringify(highlights));
-            
-            document.getElementById('highlightLouvor').value = '';
-            document.getElementById('highlightArtista').value = '';
-            alert('Novo destaque adicionado!');
-            renderHighlights();
+            const result = await sendRequest({ 
+                key: SECURITY_KEY, 
+                sheet: 'DESTAQUES', 
+                action: 'add', 
+                louvor: louvor, 
+                artista: artista 
+            });
+
+            if (result.status === 'success') {
+                document.getElementById('highlightLouvor').value = '';
+                document.getElementById('highlightArtista').value = '';
+                alert('Novo destaque adicionado ONLINE!');
+                renderHighlights();
+            } else {
+                alert('Erro ao adicionar destaque: ' + result.message);
+            }
         });
 
-        document.getElementById('addOtherLinkForm').addEventListener('submit', function(e) {
+        // Adicionar Outro Link (ONLINE)
+        document.getElementById('addOtherLinkForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const newLink = document.getElementById('otherLink').value;
             const linkLouvor = document.getElementById('linkLouvor').value;
             const linkArtista = document.getElementById('linkArtista').value;
             
-            let links = JSON.parse(localStorage.getItem(OTHER_LINKS_KEY) || '[]');
-            
-            // Salva o link junto com as informações de Louvor/Artista
-            links.push({ link: newLink, louvor: linkLouvor, artista: linkArtista });
-            localStorage.setItem(OTHER_LINKS_KEY, JSON.stringify(links));
-            
-            document.getElementById('otherLink').value = '';
-            document.getElementById('linkLouvor').value = '';
-            document.getElementById('linkArtista').value = '';
-            alert('Link e informações de Louvor/Artista adicionados à lista de estações!');
-            renderOtherLinks();
+            const result = await sendRequest({
+                key: SECURITY_KEY,
+                sheet: 'ESTACOES',
+                action: 'add',
+                link: newLink,
+                louvor: linkLouvor,
+                artista: linkArtista
+            });
+
+            if (result.status === 'success') {
+                document.getElementById('otherLink').value = '';
+                document.getElementById('linkLouvor').value = '';
+                document.getElementById('linkArtista').value = '';
+                alert('Link e informações de Louvor/Artista adicionados ONLINE!');
+                renderOtherLinks();
+            } else {
+                 alert('Erro ao adicionar link: ' + result.message);
+            }
         });
 
         // CARREGAR TUDO AO INICIAR
