@@ -52,9 +52,42 @@
                 margin-bottom: 15px; /* Ajusta espaçamento */
             }
         }
+
+        /* Estilos para a barra de navegação */
+        .nav-bar {
+            display: flex;
+            justify-content: center; /* Centraliza os itens da navegação */
+            background-color: #282828; /* Cor de fundo da barra de navegação */
+            padding: 10px 0;
+            width: 100%;
+            max-width: 800px; /* Alinha com a largura máxima do conteúdo principal */
+            margin-bottom: 20px;
+            border-radius: 8px; /* Bordas arredondadas para a barra */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-bar a {
+            color: #fff; /* Cor do texto dos links */
+            text-decoration: none;
+            padding: 8px 15px;
+            margin: 0 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .nav-bar a:hover {
+            background-color: #ff6b00; /* Cor de fundo ao passar o mouse */
+            color: #fff;
+        }
     </style>
 </head>
 <body>
+    <nav class="nav-bar">
+        <a href="index.html">Início</a>
+        <a href="https://api.whatsapp.com/send/?phone=5537998648790&text&type=phone_number&app_absent=0" target="_blank">WhatsApp</a>
+        <a href="URL_DO_SEU_INSTAGRAM" target="_blank">Instagram</a>
+    </nav>
+
     <header>
         <h1>Rádio Onda Sonora 🎶</h1>
         <p>A trilha sonora do seu dia.</p>
@@ -178,7 +211,7 @@
                     try {
                         // Tenta obter o nome da estação pelo domínio do link
                         const url = new URL(item.link);
-                        const domain = url.hostname.replace('www.', '').split('.')[0];
+                        const domain = url.hostname.replace('www.', '').split('.');
                         stationName = domain.charAt(0).toUpperCase() + domain.slice(1);
                     } catch (e) {
                         // Se falhar, usa o nome padrão
