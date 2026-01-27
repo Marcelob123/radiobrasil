@@ -1,4 +1,5 @@
 
+<codeblock>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Rádio Online</title>
     <link rel="stylesheet" href="index.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centraliza horizontalmente o conteúdo principal */
+            min-height: 100vh; /* Garante que o body ocupe a altura total da viewport */
+            margin: 0; /* Remove margens padrão do body */
+            padding: 20px; /* Adiciona um pouco de padding para não colar nas bordas */
+            box-sizing: border-box; /* Inclui padding e border no tamanho total */
+            text-align: center; /* Centraliza textos dentro do body */
+        }
+
+        header, section, footer {
+            width: 100%; /* Ocupa a largura total disponível */
+            max-width: 800px; /* Limita a largura máxima para legibilidade em telas grandes */
+            margin-bottom: 20px; /* Espaçamento entre as seções */
+        }
+
+        /* Ajustes para centralizar os cards dentro dos containers de estações e destaques */
+        .estacoes-adicionais #estacoes-container,
+        .destaques-adicionais #destaques-container {
+            display: flex;
+            flex-wrap: wrap; /* Permite que os itens quebrem linha */
+            justify-content: center; /* Centraliza os itens dentro do container */
+            gap: 20px; /* Espaçamento entre os cards */
+        }
+
+        /* Estilo para os cards de player ao vivo, destaque e adicionais */
+        .additional-player-card, .highlight-card {
+            width: 100%; /* Ocupa a largura total em telas pequenas */
+            max-width: 300px; /* Largura máxima para os cards */
+            margin: 0 auto; /* Centraliza cards individualmente se o container não for flex */
+            box-sizing: border-box;
+        }
+
+        /* Media query para dispositivos menores, se houver necessidade de ajustes específicos,
+           mas as regras acima já devem funcionar bem para a maioria dos casos. */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px; /* Reduz o padding em telas muito pequenas */
+            }
+            header, section, footer {
+                margin-bottom: 15px; /* Ajusta espaçamento */
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -26,6 +73,19 @@
                 <p class="tocando-label">Tocando Agora:</p>
                 <p class="louvor-em-destaque">Sua Música ao Vivo</p>
                 <p class="artista-em-destaque">Por: Vários Artistas</p>
+            </div>
+        </div>
+        <!-- Nova estação "Louvores Variados" adicionada aqui -->
+        <div class="additional-player-card">
+            <h3>Louvores Variados</h3>
+            <audio controls class="secondary-player">
+                <source src="http://stm1.hoststreaming.com.br:7088/;stream.nsv" type="audio/mpeg">
+                Seu navegador não suporta este player.
+            </audio>
+            <div class="musica-tocando-secundaria">
+                <p class="tocando-label">Tocando Agora:</p>
+                <p class="louvor-em-destaque">Músicas de Louvor</p>
+                <p class="artista-em-destaque">Por: Diversos Artistas</p>
             </div>
         </div>
         <div id="estacoes-container">
