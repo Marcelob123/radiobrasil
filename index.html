@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Rádio Online</title>
-    <link rel="stylesheet" href="index.css"> 
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <header>
@@ -14,6 +15,19 @@
 
     <section class="estacoes-adicionais">
         <h2>Nossas Estações de Rádio</h2>
+        <!-- Player da rádio ao vivo adicionado aqui -->
+        <div class="additional-player-card">
+            <h3>Rádio Live</h3>
+            <audio controls class="secondary-player">
+                <source src="https://stm43.srvstm.com:8954/stream" type="audio/mpeg">
+                Seu navegador não suporta este player.
+            </audio>
+            <div class="musica-tocando-secundaria">
+                <p class="tocando-label">Tocando Agora:</p>
+                <p class="louvor-em-destaque">Sua Música ao Vivo</p>
+                <p class="artista-em-destaque">Por: Vários Artistas</p>
+            </div>
+        </div>
         <div id="estacoes-container">
             <p id="loading-stations" style="color: #ccc;">Carregando estações...</p>
         </div>
@@ -25,26 +39,26 @@
             <p id="loading-highlights" style="color: #ccc;">Carregando destaques...</p>
         </div>
     </section>
-    
+
     <footer>
         <div class="redes-sociais">
             <a href="URL_DO_SEU_FACEBOOK" target="_blank" class="social-icon">Facebook</a>
             <a href="URL_DO_SEU_INSTAGRAM" target="_blank" class="social-icon">Instagram</a>
             <a href="URL_DO_SEU_WHATSAPP" target="_blank" class="social-icon">WhatsApp</a>
         </div>
-        
+
         <a href="admin.html" class="admin-link">Área do Administrador</a>
-        
+
         <p>&copy; 2025 Rádio Onda Sonora. Todos os direitos reservados.</p>
     </footer>
 
     <script>
         // !! SUA URL DO GOOGLE APPS SCRIPT AQUI !!
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxjX7K30EgFOfqktK4JAnl0bpXE7UC1iWH-camU5RHxTk6RoxxIpHxhGZzgMxNV0T/exec"; 
-        
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxjX7K30EgFOfqktK4JAnl0bpXE7UC1iWH-camU5RHxTk6RoxxIpHxhGZzgMxNV0T/exec";
+
         // As chaves de Louvor Principal e Link Principal permanecem no localStorage
-        const LOUVOR_KEY = 'nowPlayingLouvor'; 
-        const ARTISTA_KEY = 'nowPlayingArtista'; 
+        const LOUVOR_KEY = 'nowPlayingLouvor';
+        const ARTISTA_KEY = 'nowPlayingArtista';
 
         // FUNÇÃO PRINCIPAL PARA CARREGAR DADOS INICIAIS
         function loadPrincipalData() {
@@ -52,7 +66,7 @@
             fetchHighlights();
             fetchAdditionalStations();
         }
-        
+
         // FUNÇÃO PARA BUSCAR E RENDERIZAR DESTAQUES
         async function fetchHighlights() {
             const container = document.getElementById('destaques-container');
@@ -61,7 +75,7 @@
             try {
                 const response = await fetch(`${WEB_APP_URL}?sheet=DESTAQUES`);
                 const highlights = await response.json();
-                
+
                 container.innerHTML = '';
                 if (highlights.length === 0) {
                     container.innerHTML = '<p style="color: #777;">Nenhum louvor em destaque adicionado.</p>';
@@ -87,13 +101,13 @@
         async function fetchAdditionalStations() {
             const container = document.getElementById('estacoes-container');
             container.innerHTML = '<p id="loading-stations" style="color: #ccc;">Carregando estações...</p>';
-            
+
             try {
                 const response = await fetch(`${WEB_APP_URL}?sheet=ESTACOES`);
                 const links = await response.json(); // Lista de objetos { link, louvor, artista }
-                
-                container.innerHTML = ''; 
-                
+
+                container.innerHTML = '';
+
                 if (links.length === 0) {
                     container.innerHTML = '<p id="no-stations-message" style="color: #777;">Nenhuma estação de rádio adicionada no momento.</p>';
                     return;
@@ -105,28 +119,28 @@
                         // Tenta obter o nome da estação pelo domínio do link
                         const url = new URL(item.link);
                         const domain = url.hostname.replace('www.', '').split('.')[0];
-                        stationName = domain.charAt(0).toUpperCase() + domain.slice(1); 
+                        stationName = domain.charAt(0).toUpperCase() + domain.slice(1);
                     } catch (e) {
                         // Se falhar, usa o nome padrão
                     }
-                    
+
                     const playerDiv = document.createElement('div');
-                    playerDiv.className = 'additional-player-card'; 
-                    
+                    playerDiv.className = 'additional-player-card';
+
                     playerDiv.innerHTML = `
                         <h3>${stationName}</h3>
                         <audio controls class="secondary-player">
-                            <source src="${item.link}" type="audio/mpeg"> 
+                            <source src="${item.link}" type="audio/mpeg">
                             Seu navegador não suporta este player.
                         </audio>
-                        
+
                         <div class="musica-tocando-secundaria">
                             <p class="tocando-label">Tocando Agora:</p>
                             <p class="louvor-em-destaque">${item.louvor || 'Louvor Não Informado'}</p>
                             <p class="artista-em-destaque">Por: ${item.artista || 'Artista Não Informado'}</p>
                         </div>
                     `;
-                    
+
                     container.appendChild(playerDiv);
                 });
 
@@ -141,3 +155,4 @@
     </script>
     </body>
 </html>
+</codeblock>
