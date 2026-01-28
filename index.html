@@ -1,5 +1,4 @@
 
-<codeblock>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,12 +26,12 @@
 
         /* Ajustes para centralizar os cards dentro dos containers de estações e destaques */
         .estacoes-adicionais #estacoes-container,
-        .destaques-adicionais #destaques-container {
-            display: flex;
-            flex-wrap: wrap; /* Permite que os itens quebrem linha */
-            justify-content: center; /* Centraliza os itens dentro do container */
-            gap: 20px; /* Espaçamento entre os cards */
-        }
+        /* .destaques-adicionais #destaques-container { */ /* Comentado, pois a seção de destaques será removida */
+            /* display: flex; */
+            /* flex-wrap: wrap; */
+            /* justify-content: center; */
+            /* gap: 20px; */
+        /* } */
 
         /* Estilo para os cards de player ao vivo, destaque e adicionais */
         .additional-player-card, .highlight-card {
@@ -86,6 +85,7 @@
         <a href="index.html">Início</a>
         <a href="https://api.whatsapp.com/send/?phone=5537998648790&text&type=phone_number&app_absent=0" target="_blank">WhatsApp</a>
         <a href="URL_DO_SEU_INSTAGRAM" target="_blank">Instagram</a>
+        <a href="contato.html">Contato</a> <!-- Novo link adicionado aqui -->
     </nav>
 
     <header>
@@ -126,22 +126,14 @@
         </div>
     </section>
 
-    <section class="destaques-adicionais">
-        <h2>Próximos Louvores em Destaque</h2>
-        <div id="destaques-container" class="destaques-grid">
-            <p id="loading-highlights" style="color: #ccc;">Carregando destaques...</p>
-        </div>
-    </section>
+    <!-- <section class="destaques-adicionais"> -->
+        <!-- <h2>Próximos Louvores em Destaque</h2> -->
+        <!-- <div id="destaques-container" class="destaques-grid"> -->
+            <!-- <p id="loading-highlights" style="color: #ccc;">Carregando destaques...</p> -->
+        <!-- </div> -->
+    <!-- </section> -->
 
     <footer>
-        <div class="redes-sociais">
-            <a href="URL_DO_SEU_FACEBOOK" target="_blank" class="social-icon">Facebook</a>
-            <a href="URL_DO_SEU_INSTAGRAM" target="_blank" class="social-icon">Instagram</a>
-            <a href="URL_DO_SEU_WHATSAPP" target="_blank" class="social-icon">WhatsApp</a>
-        </div>
-
-        <a href="admin.html" class="admin-link">Área do Administrador</a>
-
         <p>&copy; 2025 Rádio Onda Sonora. Todos os direitos reservados.</p>
     </footer>
 
@@ -156,13 +148,19 @@
         // FUNÇÃO PRINCIPAL PARA CARREGAR DADOS INICIAIS
         function loadPrincipalData() {
             // A busca de dados agora é assíncrona (online)
-            fetchHighlights();
+            // fetchHighlights(); // Comentado, pois a seção de destaques foi removida
             fetchAdditionalStations();
         }
 
-        // FUNÇÃO PARA BUSCAR E RENDERIZAR DESTAQUES
+        // FUNÇÃO PARA BUSCAR E RENDERIZAR DESTAQUES (mantida, mas não é mais chamada por padrão)
+        // Se você decidir adicionar os destaques novamente, pode reativar a chamada em loadPrincipalData()
         async function fetchHighlights() {
             const container = document.getElementById('destaques-container');
+            if (!container) {
+                console.log("Container 'destaques-container' não encontrado. Ignorando fetchHighlights.");
+                return; // Garante que o container exista antes de tentar manipular
+            }
+
             container.innerHTML = '<p id="loading-highlights" style="color: #ccc;">Carregando destaques...</p>';
 
             try {
@@ -248,4 +246,3 @@
     </script>
     </body>
 </html>
-</codeblock>
