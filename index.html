@@ -1,235 +1,370 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Rádio Online</title>
-    <link rel="stylesheet" href="index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rádio Brasil CCB</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        /* BASE TIPO SPOTIFY APP MOBILE */
         body {
+            background-color: #121212; 
+            color: #ffffff; 
+            font-family: 'Montserrat', sans-serif; 
             display: flex;
             flex-direction: column;
-            align-items: center; /* Centraliza horizontalmente o conteúdo principal */
-            min-height: 100vh; /* Garante que o body ocupe a altura total da viewport */
-            margin: 0; /* Remove margens padrão do body */
-            padding: 20px; /* Adiciona um pouco de padding para não colar nas bordas */
-            box-sizing: border-box; /* Inclui padding e border no tamanho total */
-            text-align: center; /* Centraliza textos dentro do body */
-        }
-
-        header, section, footer {
-            width: 100%; /* Ocupa a largura total disponível */
-            max-width: 800px; /* Limita a largura máxima para legibilidade em telas grandes */
-            margin-bottom: 20px; /* Espaçamento entre as seções */
-        }
-
-        /* Ajustes para centralizar os cards dentro dos containers de estações e destaques */
-        .estacoes-adicionais #estacoes-container,
-        /* .destaques-adicionais #destaques-container { */ /* Comentado, pois a seção de destaques será removida */
-            /* display: flex; */
-            /* flex-wrap: wrap; */
-            /* justify-content: center; */
-            /* gap: 20px; */
-        /* } */
-
-        /* Estilo para os cards de player ao vivo, destaque e adicionais */
-        .additional-player-card, .highlight-card {
-            width: 100%; /* Ocupa a largura total em telas pequenas */
-            max-width: 300px; /* Largura máxima para os cards */
-            margin: 0 auto; /* Centraliza cards individualmente se o container não for flex */
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            /* Padding maior embaixo para o conteúdo não ficar escondido atrás do menu */
+            padding: 0 15px 90px 15px; 
             box-sizing: border-box;
+            overflow-x: hidden;
         }
 
-        /* Media query para dispositivos menores, se houver necessidade de ajustes específicos,
-           mas as regras acima já devem funcionar bem para a maioria dos casos. */
-        @media (max-width: 600px) {
-            body {
-                padding: 10px; /* Reduz o padding em telas muito pequenas */
-            }
-            header, section, footer {
-                margin-bottom: 15px; /* Ajusta espaçamento */
-            }
-        }
-
-        /* Estilos para a barra de navegação */
-        .nav-bar {
-            display: flex;
-            justify-content: center; /* Centraliza os itens da navegação */
-            background-color: #282828; /* Cor de fundo da barra de navegação */
-            padding: 10px 0;
+        /* HEADER FIXO NO TOPO - ESTILO APP BAR */
+        header {
             width: 100%;
-            max-width: 800px; /* Alinha com a largura máxima do conteúdo principal */
+            max-width: 600px;
+            position: sticky;
+            top: 0;
+            background-color: rgba(18, 18, 18, 0.95); /* Fundo escuro levemente transparente */
+            backdrop-filter: blur(10px); /* Efeito de vidro */
+            z-index: 100;
+            padding: 20px 0 15px 0;
+            text-align: center;
+            border-bottom: 1px solid #282828;
             margin-bottom: 20px;
-            border-radius: 8px; /* Bordas arredondadas para a barra */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
-        .nav-bar a {
-            color: #fff; /* Cor do texto dos links */
+        header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        section {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        section h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: left;
+            color: #b3b3b3;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* CARDS DOS PLAYERS - ESTILO LISTA DE MÚSICA */
+        #estacoes-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .additional-player-card {
+            width: 100%;
+            box-sizing: border-box;
+            background: #181818; 
+            padding: 12px;
+            border-radius: 8px;
+            display: flex; /* Alinha tudo na horizontal */
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .additional-player-card:active {
+            background: #2a2a2a; /* Feedback ao tocar no celular */
+        }
+
+        /* IMAGEM DA RÁDIO/CAPA */
+        .station-img {
+            width: 55px;
+            height: 55px;
+            border-radius: 6px;
+            object-fit: cover;
+            margin-right: 15px;
+            background-color: #282828;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        /* INFORMAÇÕES DA MÚSICA */
+        .station-info {
+            flex-grow: 1; /* Ocupa o espaço do meio */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden; /* Corta textos muito grandes */
+        }
+
+        .station-info h3 {
+            margin: 0 0 4px 0;
+            font-size: 15px;
+            color: #ffffff; 
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .louvor-em-destaque {
+            font-size: 13px;
+            color: #b3b3b3;
+            margin: 0 0 2px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .artista-em-destaque {
+            font-size: 11px;
+            color: #888888;
+            margin: 0;
+        }
+
+        /* BOTÃO DE PLAY CUSTOMIZADO TIPO SPOTIFY */
+        .play-pause-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #1db954; /* Verde Spotify */
+            color: #000;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            flex-shrink: 0; /* Impede o botão de espremer */
+            margin-left: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: transform 0.1s ease;
+        }
+
+        .play-pause-btn:active {
+            transform: scale(0.95);
+        }
+
+        .play-pause-btn i {
+            margin-left: 3px; /* Centraliza visualmente o ícone de play */
+        }
+        .play-pause-btn i.fa-pause, .play-pause-btn i.fa-spinner {
+            margin-left: 0;
+        }
+
+        /* Esconde o player de áudio nativo do navegador */
+        .hidden-audio {
+            display: none;
+        }
+
+        /* MENU DE NAVEGAÇÃO NA BASE (BOTTOM NAV) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #181818; /* Fundo sólido para não misturar com os cards */
+            border-top: 1px solid #282828;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0 15px 0; /* Padding extra embaixo para a barrinha do iPhone */
+            z-index: 1000;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #b3b3b3; /* Cor inativa */
             text-decoration: none;
-            padding: 8px 15px;
-            margin: 0 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            font-size: 10px;
+            font-weight: 500;
+            gap: 5px;
+            transition: color 0.3s;
+            width: 60px;
         }
 
-        .nav-bar a:hover {
-            background-color: #ff6b00; /* Cor de fundo ao passar o mouse */
-            color: #fff;
+        .bottom-nav a i {
+            font-size: 22px; /* Tamanho do ícone */
         }
+
+        /* Estilo do item ativo ou hover */
+        .bottom-nav a.active, .bottom-nav a:hover {
+            color: #ffffff;
+        }
+        
+        .bottom-nav a.active i {
+            color: #1db954; /* Ícone da página atual fica verde */
+        }
+
     </style>
 </head>
 <body>
-    <nav class="nav-bar">
-        <a href="index.html">Início</a>
-        <a href="https://api.whatsapp.com/send/?phone=5537998648790&text&type=phone_number&app_absent=0" target="_blank">WhatsApp</a>
-        <a href="URL_DO_SEU_INSTAGRAM" target="_blank">Instagram</a>
-        <a href="contato.html">Contato</a> <!-- Novo link adicionado aqui -->
-    </nav>
-
+    
     <header>
-        <h1>Rádio Onda Sonora 🎶</h1>
-        <p>A trilha sonora do seu dia.</p>
+        <h1>Rádio Brasil CCB</h1>
     </header>
 
     <section class="estacoes-adicionais">
-        <h2>Nossas Estações de Rádio</h2>
-        <!-- Player da rádio ao vivo adicionado aqui -->
+        <h2>Tocando Agora</h2>
+        
         <div class="additional-player-card">
-            <h3>Rádio Live</h3>
-            <audio controls class="secondary-player">
-                <source src="https://stm43.srvstm.com:8954/stream" type="audio/mpeg">
-                Seu navegador não suporta este player.
-            </audio>
-            <div class="musica-tocando-secundaria">
-                <p class="tocando-label">Tocando Agora:</p>
+            <img src="https://images.unsplash.com/photo-1614680376593-902f74ccc0a6?auto=format&fit=crop&q=80&w=150&h=150" alt="Capa" class="station-img">
+            
+            <div class="station-info">
+                <h3>Rádio Live</h3>
                 <p class="louvor-em-destaque">Sua Música ao Vivo</p>
                 <p class="artista-em-destaque">Por: Vários Artistas</p>
             </div>
-        </div>
-        <!-- Nova estação "Louvores Variados" adicionada aqui -->
-        <div class="additional-player-card">
-            <h3>Louvores Variados</h3>
-            <audio controls class="secondary-player">
-                <source src="http://stm1.hoststreaming.com.br:7088/;stream.nsv" type="audio/mpeg">
-                Seu navegador não suporta este player.
+
+            <button class="play-pause-btn" onclick="togglePlay(this)">
+                <i class="fas fa-play"></i>
+            </button>
+            
+            <audio class="hidden-audio" crossorigin="anonymous">
+                <source src="https://stm43.srvstm.com:8954/stream" type="audio/mpeg">
             </audio>
-            <div class="musica-tocando-secundaria">
-                <p class="tocando-label">Tocando Agora:</p>
+        </div>
+        
+        <div class="additional-player-card">
+            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=150&h=150" alt="Capa" class="station-img">
+            
+            <div class="station-info">
+                <h3>Louvores Variados</h3>
                 <p class="louvor-em-destaque">Músicas de Louvor</p>
                 <p class="artista-em-destaque">Por: Diversos Artistas</p>
             </div>
+
+            <button class="play-pause-btn" onclick="togglePlay(this)">
+                <i class="fas fa-play"></i>
+            </button>
+            
+            <audio class="hidden-audio" crossorigin="anonymous">
+                <source src="http://stm1.hoststreaming.com.br:7088/;stream.nsv" type="audio/mpeg">
+            </audio>
         </div>
+
         <div id="estacoes-container">
-            <p id="loading-stations" style="color: #ccc;">Carregando estações...</p>
+            <p id="loading-stations" style="color: #1db954; font-size: 14px; font-weight: 600; text-align: center; margin-top: 20px;">Carregando estações...</p>
         </div>
     </section>
 
-    <!-- <section class="destaques-adicionais"> -->
-        <!-- <h2>Próximos Louvores em Destaque</h2> -->
-        <!-- <div id="destaques-container" class="destaques-grid"> -->
-            <!-- <p id="loading-highlights" style="color: #ccc;">Carregando destaques...</p> -->
-        <!-- </div> -->
-    <!-- </section> -->
-
-    <footer>
-        <p>&copy; 2025 Rádio Onda Sonora. Todos os direitos reservados.</p>
-    </footer>
+    <nav class="bottom-nav">
+        <a href="index.html" class="active">
+            <i class="fas fa-home"></i>
+            <span>Início</span>
+        </a>
+        <a href="https://api.whatsapp.com/send/?phone=5537998648790&text&type=phone_number&app_absent=0" target="_blank">
+            <i class="fab fa-whatsapp"></i>
+            <span>WhatsApp</span>
+        </a>
+        <a href="URL_DO_SEU_INSTAGRAM" target="_blank">
+            <i class="fab fa-instagram"></i>
+            <span>Instagram</span>
+        </a>
+        <a href="contato.html">
+            <i class="fas fa-envelope"></i>
+            <span>Contato</span>
+        </a>
+    </nav>
 
     <script>
-        // !! SUA URL DO GOOGLE APPS SCRIPT AQUI !!
+        // !! SUA URL DO GOOGLE APPS SCRIPT AQUI !! MANTIDO INTACTO
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxjX7K30EgFOfqktK4JAnl0bpXE7UC1iWH-camU5RHxTk6RoxxIpHxhGZzgMxNV0T/exec";
 
-        // As chaves de Louvor Principal e Link Principal permanecem no localStorage
-        const LOUVOR_KEY = 'nowPlayingLouvor';
-        const ARTISTA_KEY = 'nowPlayingArtista';
+        // FUNÇÃO DE PLAY/PAUSE INTELIGENTE (NOVA)
+        // Esta função garante que quando você dá play em uma, as outras pausam
+        function togglePlay(btn) {
+            const card = btn.closest('.additional-player-card');
+            const audio = card.querySelector('audio');
+            const icon = btn.querySelector('i');
+            
+            // Pausar todos os outros áudios da página
+            document.querySelectorAll('.hidden-audio').forEach(a => {
+                if(a !== audio) {
+                    a.pause();
+                    // Voltar o ícone dos outros para Play
+                    const otherBtn = a.parentElement.querySelector('.play-pause-btn i');
+                    if(otherBtn) {
+                        otherBtn.className = 'fas fa-play';
+                    }
+                }
+            });
+
+            // Tocar ou Pausar a rádio clicada
+            if (audio.paused) {
+                icon.className = 'fas fa-spinner fa-spin'; // Mostra ícone carregando
+                audio.play().then(() => {
+                    icon.className = 'fas fa-pause'; // Muda para Pause quando começar a tocar
+                }).catch(e => {
+                    console.error("Erro ao reproduzir:", e);
+                    icon.className = 'fas fa-play';
+                });
+            } else {
+                audio.pause();
+                icon.className = 'fas fa-play'; // Muda para Play
+            }
+        }
 
         // FUNÇÃO PRINCIPAL PARA CARREGAR DADOS INICIAIS
         function loadPrincipalData() {
-            // A busca de dados agora é assíncrona (online)
-            // fetchHighlights(); // Comentado, pois a seção de destaques foi removida
             fetchAdditionalStations();
         }
 
-        // FUNÇÃO PARA BUSCAR E RENDERIZAR DESTAQUES (mantida, mas não é mais chamada por padrão)
-        // Se você decidir adicionar os destaques novamente, pode reativar a chamada em loadPrincipalData()
-        async function fetchHighlights() {
-            const container = document.getElementById('destaques-container');
-            if (!container) {
-                console.log("Container 'destaques-container' não encontrado. Ignorando fetchHighlights.");
-                return; // Garante que o container exista antes de tentar manipular
-            }
-
-            container.innerHTML = '<p id="loading-highlights" style="color: #ccc;">Carregando destaques...</p>';
-
-            try {
-                const response = await fetch(`${WEB_APP_URL}?sheet=DESTAQUES`);
-                const highlights = await response.json();
-
-                container.innerHTML = '';
-                if (highlights.length === 0) {
-                    container.innerHTML = '<p style="color: #777;">Nenhum louvor em destaque adicionado.</p>';
-                    return;
-                }
-
-                highlights.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = 'highlight-card';
-                    card.innerHTML = `
-                        <h3>${item.louvor}</h3>
-                        <p>Por: ${item.artista}</p>
-                    `;
-                    container.appendChild(card);
-                });
-            } catch (error) {
-                console.error("Erro ao buscar destaques:", error);
-                container.innerHTML = '<p style="color: red;">Erro ao carregar os destaques.</p>';
-            }
-        }
-
-        // FUNÇÃO PARA BUSCAR E RENDERIZAR OS PLAYERS INDIVIDUAIS
+        // FUNÇÃO PARA BUSCAR E RENDERIZAR OS PLAYERS INDIVIDUAIS (MANTIDA A LÓGICA)
         async function fetchAdditionalStations() {
             const container = document.getElementById('estacoes-container');
-            container.innerHTML = '<p id="loading-stations" style="color: #ccc;">Carregando estações...</p>';
 
             try {
                 const response = await fetch(`${WEB_APP_URL}?sheet=ESTACOES`);
-                const links = await response.json(); // Lista de objetos { link, louvor, artista }
+                const links = await response.json(); 
 
                 container.innerHTML = '';
 
                 if (links.length === 0) {
-                    container.innerHTML = '<p id="no-stations-message" style="color: #777;">Nenhuma estação de rádio adicionada no momento.</p>';
+                    container.innerHTML = '<p id="no-stations-message" style="color: #b3b3b3; text-align: center;">Nenhuma rádio adicionada.</p>';
                     return;
                 }
 
-                links.forEach((item, index) => { // 'item' agora é o objeto { link, louvor, artista }
+                links.forEach((item, index) => { 
                     let stationName = `Estação ${index + 1}`;
                     try {
-                        // Tenta obter o nome da estação pelo domínio do link
                         const url = new URL(item.link);
                         const domain = url.hostname.replace('www.', '').split('.');
                         stationName = domain.charAt(0).toUpperCase() + domain.slice(1);
                     } catch (e) {
-                        // Se falhar, usa o nome padrão
+                        // Mantém nome padrão
                     }
 
                     const playerDiv = document.createElement('div');
                     playerDiv.className = 'additional-player-card';
 
+                    // HTML GERADO COM O NOVO VISUAL E BOTÃO CUSTOMIZADO
                     playerDiv.innerHTML = `
-                        <h3>${stationName}</h3>
-                        <audio controls class="secondary-player">
-                            <source src="${item.link}" type="audio/mpeg">
-                            Seu navegador não suporta este player.
-                        </audio>
-
-                        <div class="musica-tocando-secundaria">
-                            <p class="tocando-label">Tocando Agora:</p>
+                        <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=150&h=150" alt="Capa" class="station-img">
+                        <div class="station-info">
+                            <h3>${stationName}</h3>
                             <p class="louvor-em-destaque">${item.louvor || 'Louvor Não Informado'}</p>
                             <p class="artista-em-destaque">Por: ${item.artista || 'Artista Não Informado'}</p>
                         </div>
+                        <button class="play-pause-btn" onclick="togglePlay(this)">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <audio class="hidden-audio" crossorigin="anonymous">
+                            <source src="${item.link}" type="audio/mpeg">
+                        </audio>
                     `;
 
                     container.appendChild(playerDiv);
@@ -237,12 +372,23 @@
 
             } catch (error) {
                 console.error("Erro ao buscar estações:", error);
-                container.innerHTML = '<p style="color: red;">Erro ao carregar as estações.</p>';
+                container.innerHTML = '<p style="color: #e22134; text-align: center;">Erro ao carregar as estações.</p>';
             }
         }
 
-        // Inicia o carregamento dos dados quando a página terminar de carregar
-        document.addEventListener('DOMContentLoaded', loadPrincipalData);
+        // Detecta App vs Web (Lógica mantida perfeitamente)
+        document.addEventListener('DOMContentLoaded', () => {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isAndroidWebView = /android/i.test(userAgent) && /(wv|Version\/\d+\.\d+)/.test(userAgent);
+
+            if (isAndroidWebView) {
+                document.body.classList.add('app-android');
+            } else {
+                document.body.classList.add('navegador-web');
+            }
+
+            loadPrincipalData();
+        });
     </script>
-    </body>
+</body>
 </html>
