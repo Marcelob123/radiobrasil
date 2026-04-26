@@ -38,9 +38,8 @@
             z-index: 100; padding: 15px 0; margin-bottom: 10px;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .menu-btn-top { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 0 15px; display: flex; align-items: center; }
+        .menu-btn-top { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 0 15px; display: flex; align-items: center; text-decoration: none; }
         header h1 { font-size: 18px; font-weight: 700; margin: 0; letter-spacing: 0.5px; text-align: center; flex-grow: 1; }
-        .header-spacer { width: 52px; }
 
         /* --- PLAYER ÚNICO CENTRAL --- */
         section { width: 100%; max-width: 600px; display: flex; flex-direction: column; flex-grow: 1; justify-content: center; }
@@ -94,7 +93,7 @@
         .bottom-nav .active, .bottom-nav a:hover, .bottom-nav button:hover { color: #ffffff; }
         .bottom-nav .active i { color: #a855f7; }
 
-        /* --- MODAIS COMUNS (Perfil e Lista de Estações) --- */
+        /* --- MODAIS COMUNS --- */
         .bottom-sheet {
             position: fixed; top: 100%; left: 0; width: 100vw; height: 100vh;
             background-color: #121212; z-index: 2000; transition: top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -121,13 +120,13 @@
             display: flex; align-items: center; background: #181818; padding: 12px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: background 0.3s; border: 1px solid transparent;
         }
         .station-list-item:active { background: #282828; }
-        .station-list-item.active-item { border-color: #a855f7; background: #1f142e; } /* Destaca a que está tocando */
+        .station-list-item.active-item { border-color: #a855f7; background: #1f142e; }
         .station-list-item img { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; margin-right: 15px; }
         .station-list-info { flex-grow: 1; overflow: hidden; }
         .station-list-info h4 { margin: 0 0 4px 0; color: #fff; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .station-list-info p { margin: 0; color: #b3b3b3; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* --- MENU LATERAL & MAPA (MANTIDOS INTACTOS) --- */
+        /* --- MENU LATERAL & MAPA --- */
         #menu-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 2999; display: none; opacity: 0; transition: opacity 0.3s ease; }
         #menu-overlay.open { display: block; opacity: 1; }
         #side-menu { position: fixed; top: 0; left: -320px; width: 280px; max-width: 85vw; height: 100vh; background-color: #181818; z-index: 3000; transition: left 0.3s ease; box-shadow: 2px 0 15px rgba(0,0,0,0.8); display: flex; flex-direction: column; }
@@ -178,7 +177,9 @@
     <header>
         <button class="menu-btn-top" onclick="abrirMenuLateral()"><i class="fas fa-bars"></i></button>
         <h1>Rádio Brasil CCB</h1>
-        <div class="header-spacer"></div>
+        <a href="https://ccbradiobrasil.blogspot.com/2024/04/privacy-policy.html" target="_blank" class="menu-btn-top">
+            <i class="fas fa-shield-alt"></i>
+        </a>
     </header>
 
     <section>
@@ -199,9 +200,7 @@
             <div class="player-controls">
                 <button class="control-icon" onclick="abrirListaRadios()"><i class="fas fa-list-ul"></i></button>
                 <button class="control-icon" onclick="prevRadio()"><i class="fas fa-backward-step"></i></button>
-                
                 <button class="play-pause-btn" onclick="toggleMainPlay()"><i id="main-play-icon" class="fas fa-play"></i></button>
-                
                 <button class="control-icon" onclick="nextRadio()"><i class="fas fa-forward-step"></i></button>
                 <button class="control-icon"><i class="fas fa-repeat"></i></button>
             </div>
@@ -274,14 +273,12 @@
         const playIcon = document.getElementById('main-play-icon');
 
         async function carregarTodasAsRadios() {
-            // Rádios Fixas
             const radiosFixas = [
                 { nome: "Rádio Live", louvor: "Sua Música ao Vivo", artista: "DJ Central", link: "https://stm43.srvstm.com:8954/stream", img: "https://images.unsplash.com/photo-1614680376593-902f74ccc0a6?auto=format&fit=crop&q=80&w=400&h=400" },
                 { nome: "Louvores Variados", louvor: "Músicas de Louvor", artista: "Diversos Artistas", link: "http://stm1.hoststreaming.com.br:7088/;stream.nsv", img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=400&h=400" }
             ];
 
             try {
-                // Busca da Planilha
                 const response = await fetch(`${WEB_APP_URL}?sheet=ESTACOES`);
                 const linksPlanilha = await response.json(); 
                 
@@ -291,21 +288,15 @@
                     return { nome: nome, louvor: item.louvor || 'Louvor não informado', artista: item.artista || 'Diversos', link: item.link, img: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=400&h=400" };
                 });
 
-                // Junta tudo na lista oficial do App
                 listaDeRadios = [...radiosFixas, ...radiosPlanilha];
-                
             } catch (error) {
                 console.error("Erro na planilha, carregando apenas fixas.");
                 listaDeRadios = radiosFixas;
             }
 
-            // Atualiza a tela com a primeira rádio
-            if(listaDeRadios.length > 0) {
-                atualizarTelaPlayer(0, false);
-            }
+            if(listaDeRadios.length > 0) { atualizarTelaPlayer(0, false); }
         }
 
-        // Função que troca os dados do Player central
         function atualizarTelaPlayer(index, autoPlay = true) {
             indexRadioAtual = index;
             const radio = listaDeRadios[index];
@@ -319,57 +310,29 @@
             document.getElementById('main-audio-src').src = radio.link;
             audioPlayer.load();
 
-            if (autoPlay || tavaTocando) {
-                tocarAudio();
-            } else {
-                playIcon.className = 'fas fa-play';
-            }
+            if (autoPlay || tavaTocando) { tocarAudio(); } else { playIcon.className = 'fas fa-play'; }
         }
 
         function tocarAudio() {
             playIcon.className = 'fas fa-spinner fa-spin';
-            audioPlayer.play().then(() => {
-                playIcon.className = 'fas fa-pause';
-            }).catch(e => {
-                console.log("Erro:", e);
-                playIcon.className = 'fas fa-play';
-            });
+            audioPlayer.play().then(() => { playIcon.className = 'fas fa-pause'; }).catch(e => { playIcon.className = 'fas fa-play'; });
         }
 
-        function toggleMainPlay() {
-            if (audioPlayer.paused) { tocarAudio(); } 
-            else { audioPlayer.pause(); playIcon.className = 'fas fa-play'; }
-        }
+        function toggleMainPlay() { if (audioPlayer.paused) { tocarAudio(); } else { audioPlayer.pause(); playIcon.className = 'fas fa-play'; } }
 
-        // Botões Avançar e Voltar
-        function nextRadio() {
-            let prox = indexRadioAtual + 1;
-            if(prox >= listaDeRadios.length) prox = 0; // Volta pro começo
-            atualizarTelaPlayer(prox, true);
-        }
+        function nextRadio() { let prox = indexRadioAtual + 1; if(prox >= listaDeRadios.length) prox = 0; atualizarTelaPlayer(prox, true); }
+        function prevRadio() { let ant = indexRadioAtual - 1; if(ant < 0) ant = listaDeRadios.length - 1; atualizarTelaPlayer(ant, true); }
 
-        function prevRadio() {
-            let ant = indexRadioAtual - 1;
-            if(ant < 0) ant = listaDeRadios.length - 1; // Vai pro final
-            atualizarTelaPlayer(ant, true);
-        }
-
-        // --- RENDERIZA A LISTA FILTRO (Modal de baixo) ---
         function renderizarListaFiltro() {
             const container = document.getElementById('stations-list-dynamic');
             container.innerHTML = '';
 
             listaDeRadios.forEach((radio, index) => {
                 const isActive = index === indexRadioAtual;
-                
                 const itemDiv = document.createElement('div');
                 itemDiv.className = `station-list-item ${isActive ? 'active-item' : ''}`;
                 
-                // Ao clicar em uma rádio da lista: fecha a lista e toca a rádio escolhida
-                itemDiv.onclick = () => {
-                    fecharListaRadios();
-                    atualizarTelaPlayer(index, true);
-                };
+                itemDiv.onclick = () => { fecharListaRadios(); atualizarTelaPlayer(index, true); };
 
                 itemDiv.innerHTML = `
                     <img src="${radio.img}" alt="Capa">
@@ -387,7 +350,6 @@
             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
             if (/android/i.test(userAgent) && /(wv|Version\/\d+\.\d+)/.test(userAgent)) document.body.classList.add('app-android');
             else document.body.classList.add('navegador-web');
-            
             carregarTodasAsRadios();
             carregarDados(); 
         });
