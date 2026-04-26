@@ -26,40 +26,13 @@
 
         /* --- TELA DE ABERTURA (SPLASH SCREEN) --- */
         #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: #121212;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.8s ease-out, visibility 0.8s;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #121212; z-index: 9999; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; transition: opacity 0.8s ease-out, visibility 0.8s;
         }
-        
-        .splash-logo {
-            font-size: 60px;
-            color: #1db954;
-            margin-bottom: 20px;
-            animation: pulse 1.5s infinite;
-        }
-
-        .splash-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 1px;
-            margin: 0;
-        }
-
-        .splash-subtitle {
-            font-size: 14px;
-            color: #b3b3b3;
-            margin-top: 10px;
-        }
+        .splash-logo { font-size: 60px; color: #1db954; margin-bottom: 20px; animation: pulse 1.5s infinite; }
+        .splash-title { font-size: 28px; font-weight: 700; color: #ffffff; letter-spacing: 1px; margin: 0; }
+        .splash-subtitle { font-size: 14px; color: #b3b3b3; margin-top: 10px; }
 
         @keyframes pulse {
             0% { transform: scale(0.95); opacity: 0.8; }
@@ -67,22 +40,22 @@
             100% { transform: scale(0.95); opacity: 0.8; }
         }
 
-        /* HEADER FIXO NO TOPO - ESTILO APP BAR */
+        /* HEADER FIXO NO TOPO - COM MENU À ESQUERDA */
         header {
-            width: 100%;
-            max-width: 600px;
-            position: sticky;
-            top: 0;
-            background-color: rgba(18, 18, 18, 0.95); 
-            backdrop-filter: blur(10px); 
-            z-index: 100;
-            padding: 20px 0 15px 0;
-            text-align: center;
-            border-bottom: 1px solid #282828;
-            margin-bottom: 20px;
+            width: 100%; max-width: 600px; position: sticky; top: 0;
+            background-color: rgba(18, 18, 18, 0.95); backdrop-filter: blur(10px); 
+            z-index: 100; padding: 15px 0; border-bottom: 1px solid #282828; margin-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center;
         }
 
-        header h1 { font-size: 20px; font-weight: 700; margin: 0; letter-spacing: 0.5px; }
+        .menu-btn-top {
+            background: none; border: none; color: #fff; font-size: 22px; 
+            cursor: pointer; padding: 0 15px; display: flex; align-items: center;
+        }
+
+        header h1 { font-size: 20px; font-weight: 700; margin: 0; letter-spacing: 0.5px; text-align: center; flex-grow: 1; }
+        
+        .header-spacer { width: 52px; } /* Espaçador para manter o título perfeitamente centralizado */
 
         section { width: 100%; max-width: 600px; display: flex; flex-direction: column; }
         section h2 { font-size: 16px; font-weight: 600; margin-bottom: 15px; text-align: left; color: #b3b3b3; text-transform: uppercase; letter-spacing: 1px; }
@@ -103,7 +76,6 @@
         .louvor-em-destaque { font-size: 13px; color: #b3b3b3; margin: 0 0 2px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .artista-em-destaque { font-size: 11px; color: #888888; margin: 0; }
 
-        /* BOTÃO DE PLAY CUSTOMIZADO */
         .play-pause-btn {
             width: 45px; height: 45px; border-radius: 50%; background-color: #1db954; color: #000; border: none;
             display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer;
@@ -129,20 +101,20 @@
         .bottom-nav .active, .bottom-nav a:hover, .bottom-nav button:hover { color: #ffffff; }
         .bottom-nav .active i { color: #1db954; }
 
-        /* --- TELA DE PERFIL (MODAL DESLIZANTE) --- */
+        /* --- TELA DE PERFIL (MODAL DESLIZANTE DE BAIXO PARA CIMA) --- */
         #profile-screen {
             position: fixed; top: 100%; left: 0; width: 100vw; height: 100vh;
             background-color: #121212; z-index: 2000; transition: top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             display: flex; flex-direction: column; align-items: center; padding: 0 20px; box-sizing: border-box;
         }
-        #profile-screen.open { top: 0; } /* Classe que faz a tela subir */
+        #profile-screen.open { top: 0; } 
 
-        .profile-header {
+        .screen-header {
             width: 100%; max-width: 600px; display: flex; align-items: center; justify-content: space-between;
-            padding: 20px 0; border-bottom: 1px solid #282828; margin-bottom: 30px;
+            padding: 20px 0; border-bottom: 1px solid #282828; margin-bottom: 20px;
         }
-        .profile-header h2 { margin: 0; font-size: 20px; color: #fff; }
-        .close-btn { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+        .screen-header h2 { margin: 0; font-size: 18px; color: #fff; text-align: center; flex-grow: 1;}
+        .close-btn { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; padding: 0 10px; }
 
         .profile-form { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
         .input-group { display: flex; flex-direction: column; gap: 8px; }
@@ -154,13 +126,60 @@
         .input-group input:focus { border-color: #1db954; }
 
         .btn-whatsapp {
-            background-color: #25D366; /* Cor oficial do WhatsApp */
-            color: #fff; border: none; border-radius: 50px; padding: 16px; font-size: 16px; font-weight: 700;
+            background-color: #25D366; color: #fff; border: none; border-radius: 50px; padding: 16px; font-size: 16px; font-weight: 700;
             display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px;
             cursor: pointer; transition: transform 0.1s, background 0.3s; font-family: inherit;
         }
         .btn-whatsapp:active { transform: scale(0.98); }
         .btn-whatsapp:hover { background-color: #20b858; }
+
+        /* --- MENU LATERAL ESQUERDO (DRAWER DE OPÇÕES) --- */
+        #menu-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6);
+            z-index: 2999; display: none; opacity: 0; transition: opacity 0.3s ease;
+        }
+        #menu-overlay.open { display: block; opacity: 1; }
+
+        #side-menu {
+            position: fixed; top: 0; left: -320px; width: 280px; max-width: 85vw; height: 100vh;
+            background-color: #181818; z-index: 3000; transition: left 0.3s ease;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.8); display: flex; flex-direction: column;
+        }
+        #side-menu.open { left: 0; }
+
+        .side-menu-header {
+            display: flex; justify-content: space-between; align-items: center; padding: 20px;
+            border-bottom: 1px solid #282828; background-color: #121212;
+        }
+        .side-menu-header h2 { font-size: 18px; margin: 0; color: #fff; }
+        
+        .side-menu-content {
+            padding: 20px 15px; flex-grow: 1; display: flex; flex-direction: column; gap: 10px;
+            overflow-y: auto;
+        }
+        
+        /* Botões do Menu Lateral */
+        .menu-item-btn {
+            background: transparent; border: none; color: #fff; font-size: 16px; font-weight: 500;
+            padding: 15px; display: flex; align-items: center; gap: 15px; border-radius: 8px;
+            cursor: pointer; transition: background 0.3s; width: 100%; text-align: left; font-family: inherit;
+        }
+        .menu-item-btn:hover, .menu-item-btn:active { background: #282828; }
+        .menu-item-btn i { font-size: 20px; color: #1db954; width: 25px; text-align: center; }
+
+        /* --- TELA DE MAPA (MODAL DESLIZANTE DA DIREITA) --- */
+        #map-screen {
+            position: fixed; top: 0; left: 100%; width: 100vw; height: 100vh;
+            background-color: #121212; z-index: 2500; transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex; flex-direction: column; align-items: center; box-sizing: border-box;
+        }
+        #map-screen.open { left: 0; } /* Faz a tela deslizar para a visão principal */
+
+        .map-container-full {
+            width: 100%; flex-grow: 1; /* Preenche todo o resto da tela */
+            background: #282828;
+        }
+        .map-container-full iframe { width: 100%; height: 100%; border: none; }
 
     </style>
 </head>
@@ -172,8 +191,39 @@
         <p class="splash-subtitle">A paz de Deus</p>
     </div>
 
+    <div id="menu-overlay" onclick="fecharMenuLateral()"></div>
+    <div id="side-menu">
+        <div class="side-menu-header">
+            <h2>Navegação</h2>
+            <button class="close-btn" onclick="fecharMenuLateral()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="side-menu-content">
+            <button class="menu-item-btn" onclick="abrirAbaMapa()">
+                <i class="fas fa-map-marked-alt"></i> Congregações CCB
+            </button>
+            
+            <button class="menu-item-btn" onclick="fecharMenuLateral()">
+                <i class="fas fa-home"></i> Início
+            </button>
+        </div>
+    </div>
+
+    <div id="map-screen">
+        <div class="screen-header" style="padding: 20px;">
+            <button class="close-btn" onclick="fecharAbaMapa()"><i class="fas fa-chevron-left"></i></button>
+            <h2>CCB em Formiga - MG</h2>
+            <div style="width: 44px;"></div> </div>
+        <div class="map-container-full">
+            <iframe src="https://maps.google.com/maps?q=Congrega%C3%A7%C3%A3o+Crist%C3%A3+no+Brasil+Formiga+MG&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy"></iframe>
+        </div>
+    </div>
+
     <header>
+        <button class="menu-btn-top" onclick="abrirMenuLateral()">
+            <i class="fas fa-bars"></i>
+        </button>
         <h1>Rádio Brasil CCB</h1>
+        <div class="header-spacer"></div>
     </header>
 
     <section class="estacoes-adicionais">
@@ -217,17 +267,14 @@
         <a href="https://api.whatsapp.com/send/?phone=5537998648790&text&type=phone_number&app_absent=0" target="_blank">
             <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
         </a>
-        <a href="URL_DO_SEU_INSTAGRAM" target="_blank">
-            <i class="fab fa-instagram"></i><span>Instagram</span>
-        </a>
         <button onclick="abrirPerfil()">
             <i class="fas fa-user"></i><span>Perfil</span>
         </button>
     </nav>
 
     <div id="profile-screen">
-        <div class="profile-header">
-            <h2>Meu Perfil</h2>
+        <div class="screen-header">
+            <div style="width: 44px;"></div> <h2>Meu Perfil</h2>
             <button class="close-btn" onclick="fecharPerfil()"><i class="fas fa-chevron-down"></i></button>
         </div>
         
@@ -236,12 +283,10 @@
                 <label>Seu Nome</label>
                 <input type="text" id="inputNome" placeholder="Ex: João Silva" oninput="salvarDados()">
             </div>
-            
             <div class="input-group">
                 <label>Sua Cidade</label>
                 <input type="text" id="inputCidade" placeholder="Sua cidade e estado" oninput="salvarDados()">
             </div>
-
             <div class="input-group">
                 <label>Comum Congregação</label>
                 <input type="text" id="inputCCB" placeholder="Ex: Central" oninput="salvarDados()">
@@ -250,38 +295,51 @@
             <button class="btn-whatsapp" onclick="enviarParaWhatsApp()">
                 <i class="fab fa-whatsapp"></i> Enviar Mensagem
             </button>
-            <p style="font-size: 11px; color: #888; text-align: center; margin-top: 10px;">Seus dados ficam salvos automaticamente no seu celular.</p>
+            <p style="font-size: 11px; color: #888; text-align: center; margin-top: 10px;">Seus dados ficam salvos automaticamente no celular.</p>
         </div>
     </div>
 
     <script>
-        // --- 1. LÓGICA DA TELA DE ABERTURA (SPLASH SCREEN) ---
+        // --- LÓGICA DO MENU LATERAL ---
+        function abrirMenuLateral() {
+            document.getElementById('side-menu').classList.add('open');
+            document.getElementById('menu-overlay').classList.add('open');
+        }
+
+        function fecharMenuLateral() {
+            document.getElementById('side-menu').classList.remove('open');
+            document.getElementById('menu-overlay').classList.remove('open');
+        }
+
+        // --- LÓGICA DA NOVA ABA DO MAPA ---
+        function abrirAbaMapa() {
+            fecharMenuLateral(); // Fecha o menu lateral
+            document.getElementById('map-screen').classList.add('open'); // Desliza a tela do mapa
+        }
+
+        function fecharAbaMapa() {
+            document.getElementById('map-screen').classList.remove('open');
+        }
+
+        // --- LÓGICA DA TELA DE ABERTURA ---
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 splash.style.opacity = '0';
                 splash.style.visibility = 'hidden';
-            }, 2500); // Fica na tela por 2.5 segundos
+            }, 2500); 
         });
 
-        // --- 2. LÓGICA DO PERFIL E WHATSAPP ---
-        function abrirPerfil() {
-            document.getElementById('profile-screen').classList.add('open');
-            carregarDados(); // Puxa os dados salvos ao abrir
-        }
+        // --- LÓGICA DO PERFIL E WHATSAPP ---
+        function abrirPerfil() { document.getElementById('profile-screen').classList.add('open'); carregarDados(); }
+        function fecharPerfil() { document.getElementById('profile-screen').classList.remove('open'); }
 
-        function fecharPerfil() {
-            document.getElementById('profile-screen').classList.remove('open');
-        }
-
-        // Salva os dados no celular da pessoa conforme ela digita
         function salvarDados() {
             localStorage.setItem('ccb_nome', document.getElementById('inputNome').value);
             localStorage.setItem('ccb_cidade', document.getElementById('inputCidade').value);
             localStorage.setItem('ccb_congregacao', document.getElementById('inputCCB').value);
         }
 
-        // Carrega os dados preenchidos quando a pessoa volta no app
         function carregarDados() {
             if(localStorage.getItem('ccb_nome')) document.getElementById('inputNome').value = localStorage.getItem('ccb_nome');
             if(localStorage.getItem('ccb_cidade')) document.getElementById('inputCidade').value = localStorage.getItem('ccb_cidade');
@@ -293,21 +351,14 @@
             const cidade = document.getElementById('inputCidade').value.trim();
             const ccb = document.getElementById('inputCCB').value.trim();
 
-            if (!nome || !cidade || !ccb) {
-                alert("Por favor, preencha todos os campos do perfil antes de enviar.");
-                return;
-            }
+            if (!nome || !cidade || !ccb) { alert("Por favor, preencha todos os campos do perfil antes de enviar."); return; }
 
-            // Monta a mensagem formatada
             const mensagem = `A paz de Deus! Gostaria de participar da Rádio Brasil CCB.\n\n*Nome:* ${nome}\n*Cidade:* ${cidade}\n*Comum Congregação:* ${ccb}`;
-            
-            // Codifica a mensagem para link de internet e abre o WhatsApp com o seu número
             const url = `https://api.whatsapp.com/send/?phone=5537998648790&text=${encodeURIComponent(mensagem)}&type=phone_number&app_absent=0`;
             window.open(url, '_blank');
         }
 
-
-        // --- 3. LÓGICA ORIGINAL DA RÁDIO MANTIDA INTACTA ---
+        // --- LÓGICA DA RÁDIO MANTIDA INTACTA ---
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxjX7K30EgFOfqktK4JAnl0bpXE7UC1iWH-camU5RHxTk6RoxxIpHxhGZzgMxNV0T/exec";
 
         function togglePlay(btn) {
@@ -375,7 +426,7 @@
             if (/android/i.test(userAgent) && /(wv|Version\/\d+\.\d+)/.test(userAgent)) document.body.classList.add('app-android');
             else document.body.classList.add('navegador-web');
             loadPrincipalData();
-            carregarDados(); // Tenta carregar o perfil do usuário logo no início
+            carregarDados(); 
         });
     </script>
 </body>
