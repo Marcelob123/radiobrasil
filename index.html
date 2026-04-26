@@ -9,19 +9,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* BASE TIPO SPOTIFY APP MOBILE */
+        /* BASE TIPO APP PREMIUM */
         body {
             background-color: #121212; 
             color: #ffffff; 
             font-family: 'Montserrat', sans-serif; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 0 15px 90px 15px; 
-            box-sizing: border-box;
-            overflow-x: hidden;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; margin: 0; padding: 0 15px 100px 15px; 
+            box-sizing: border-box; overflow-x: hidden;
         }
 
         /* --- TELA DE ABERTURA (SPLASH SCREEN) --- */
@@ -30,157 +25,123 @@
             background-color: #121212; z-index: 9999; display: flex; flex-direction: column;
             justify-content: center; align-items: center; transition: opacity 0.8s ease-out, visibility 0.8s;
         }
-        .splash-logo { font-size: 60px; color: #1db954; margin-bottom: 20px; animation: pulse 1.5s infinite; }
+        .splash-logo { font-size: 60px; color: #a855f7; margin-bottom: 20px; animation: pulse 1.5s infinite; }
         .splash-title { font-size: 28px; font-weight: 700; color: #ffffff; letter-spacing: 1px; margin: 0; }
         .splash-subtitle { font-size: 14px; color: #b3b3b3; margin-top: 10px; }
 
-        @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.8; }
-        }
+        @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.8; } }
 
-        /* HEADER FIXO NO TOPO - COM MENU À ESQUERDA */
+        /* HEADER FIXO NO TOPO */
         header {
             width: 100%; max-width: 600px; position: sticky; top: 0;
             background-color: rgba(18, 18, 18, 0.95); backdrop-filter: blur(10px); 
-            z-index: 100; padding: 15px 0; border-bottom: 1px solid #282828; margin-bottom: 20px;
+            z-index: 100; padding: 15px 0; margin-bottom: 10px;
             display: flex; justify-content: space-between; align-items: center;
         }
+        .menu-btn-top { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 0 15px; display: flex; align-items: center; }
+        header h1 { font-size: 18px; font-weight: 700; margin: 0; letter-spacing: 0.5px; text-align: center; flex-grow: 1; }
+        .header-spacer { width: 52px; }
 
-        .menu-btn-top {
-            background: none; border: none; color: #fff; font-size: 22px; 
-            cursor: pointer; padding: 0 15px; display: flex; align-items: center;
-        }
-
-        header h1 { font-size: 20px; font-weight: 700; margin: 0; letter-spacing: 0.5px; text-align: center; flex-grow: 1; }
+        /* --- PLAYER ÚNICO CENTRAL --- */
+        section { width: 100%; max-width: 600px; display: flex; flex-direction: column; flex-grow: 1; justify-content: center; }
         
-        .header-spacer { width: 52px; } /* Espaçador para manter o título perfeitamente centralizado */
-
-        section { width: 100%; max-width: 600px; display: flex; flex-direction: column; }
-        section h2 { font-size: 16px; font-weight: 600; margin-bottom: 15px; text-align: left; color: #b3b3b3; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* CARDS DOS PLAYERS */
-        #estacoes-container { width: 100%; display: flex; flex-direction: column; gap: 12px; }
-
-        .additional-player-card {
-            width: 100%; box-sizing: border-box; background: #181818; 
-            padding: 12px; border-radius: 8px; display: flex; align-items: center; transition: background 0.3s ease;
+        .main-player-card {
+            width: 100%; box-sizing: border-box; background: transparent; 
+            padding: 10px 0; display: flex; flex-direction: column; align-items: center;
         }
-        .additional-player-card:active { background: #2a2a2a; }
 
-        .station-img { width: 55px; height: 55px; border-radius: 6px; object-fit: cover; margin-right: 15px; background-color: #282828; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .station-img { 
+            width: 100%; max-width: 340px; aspect-ratio: 1 / 1; 
+            border-radius: 16px; object-fit: cover; margin-bottom: 25px; 
+            background-color: #282828; box-shadow: 0 15px 35px rgba(0,0,0,0.6); 
+            transition: opacity 0.3s ease;
+        }
 
-        .station-info { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
-        .station-info h3 { margin: 0 0 4px 0; font-size: 15px; color: #ffffff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .louvor-em-destaque { font-size: 13px; color: #b3b3b3; margin: 0 0 2px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .artista-em-destaque { font-size: 11px; color: #888888; margin: 0; }
+        .station-info { width: 100%; text-align: center; margin-bottom: 20px; padding: 0 15px; box-sizing: border-box; min-height: 80px; }
+        .station-info h3 { margin: 0 0 6px 0; font-size: 22px; color: #ffffff; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .louvor-em-destaque { font-size: 16px; color: #b3b3b3; margin: 0 0 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .artista-em-destaque { font-size: 14px; color: #888888; margin: 0; }
 
+        .progress-container { width: 100%; max-width: 340px; margin-bottom: 25px; }
+        .progress-bar { width: 100%; height: 4px; background-color: #333; border-radius: 2px; position: relative; margin-bottom: 10px; }
+        .progress-fill { width: 100%; height: 100%; background-color: #a855f7; border-radius: 2px; position: relative; }
+        .progress-fill::after { content: ''; position: absolute; right: -6px; top: -4px; width: 12px; height: 12px; background-color: #a855f7; border-radius: 50%; box-shadow: 0 0 8px rgba(168, 85, 247, 0.6); }
+        .time-info { display: flex; justify-content: space-between; font-size: 12px; color: #b3b3b3; font-weight: 500; }
+
+        .player-controls { width: 100%; max-width: 300px; display: flex; align-items: center; justify-content: space-between; margin: 0 auto; }
+        .control-icon { background: none; border: none; color: #b3b3b3; font-size: 20px; cursor: pointer; transition: color 0.3s; }
+        .control-icon:active { color: #fff; }
+        
         .play-pause-btn {
-            width: 45px; height: 45px; border-radius: 50%; background-color: #1db954; color: #000; border: none;
-            display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer;
-            flex-shrink: 0; margin-left: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); transition: transform 0.1s ease;
+            width: 70px; height: 70px; border-radius: 50%; background-color: #a855f7; color: #fff; border: none;
+            display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer;
+            box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3); transition: transform 0.1s ease, background 0.3s;
         }
-        .play-pause-btn:active { transform: scale(0.95); }
-        .play-pause-btn i { margin-left: 3px; }
+        .play-pause-btn:active { transform: scale(0.92); background-color: #9333ea; }
+        .play-pause-btn i { margin-left: 4px; }
         .play-pause-btn i.fa-pause, .play-pause-btn i.fa-spinner { margin-left: 0; }
+
         .hidden-audio { display: none; }
 
-        /* MENU DE NAVEGAÇÃO NA BASE */
+        /* --- MENU INFERIOR --- */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%; background-color: #181818; 
             border-top: 1px solid #282828; display: flex; justify-content: space-around; 
             align-items: center; padding: 10px 0 15px 0; z-index: 1000;
         }
-        .bottom-nav a, .bottom-nav button {
-            display: flex; flex-direction: column; align-items: center; color: #b3b3b3; 
-            text-decoration: none; font-size: 10px; font-weight: 500; gap: 5px; 
-            transition: color 0.3s; width: 60px; background: none; border: none; cursor: pointer; font-family: inherit;
-        }
+        .bottom-nav a, .bottom-nav button { display: flex; flex-direction: column; align-items: center; color: #b3b3b3; text-decoration: none; font-size: 10px; font-weight: 500; gap: 5px; transition: color 0.3s; width: 60px; background: none; border: none; cursor: pointer; font-family: inherit; }
         .bottom-nav i { font-size: 22px; }
         .bottom-nav .active, .bottom-nav a:hover, .bottom-nav button:hover { color: #ffffff; }
-        .bottom-nav .active i { color: #1db954; }
+        .bottom-nav .active i { color: #a855f7; }
 
-        /* --- TELA DE PERFIL (MODAL DESLIZANTE DE BAIXO PARA CIMA) --- */
-        #profile-screen {
+        /* --- MODAIS COMUNS (Perfil e Lista de Estações) --- */
+        .bottom-sheet {
             position: fixed; top: 100%; left: 0; width: 100vw; height: 100vh;
             background-color: #121212; z-index: 2000; transition: top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             display: flex; flex-direction: column; align-items: center; padding: 0 20px; box-sizing: border-box;
         }
-        #profile-screen.open { top: 0; } 
-
-        .screen-header {
-            width: 100%; max-width: 600px; display: flex; align-items: center; justify-content: space-between;
-            padding: 20px 0; border-bottom: 1px solid #282828; margin-bottom: 20px;
-        }
+        .bottom-sheet.open { top: 0; } 
+        
+        .screen-header { width: 100%; max-width: 600px; display: flex; align-items: center; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid #282828; margin-bottom: 20px; }
         .screen-header h2 { margin: 0; font-size: 18px; color: #fff; text-align: center; flex-grow: 1;}
         .close-btn { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; padding: 0 10px; }
 
+        /* Perfil Form */
         .profile-form { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
         .input-group { display: flex; flex-direction: column; gap: 8px; }
         .input-group label { font-size: 13px; color: #b3b3b3; font-weight: 600; }
-        .input-group input {
-            background-color: #2a2a2a; color: #fff; border: 1px solid #333; border-radius: 8px;
-            padding: 15px; font-size: 15px; font-family: inherit; outline: none; transition: border 0.3s;
-        }
-        .input-group input:focus { border-color: #1db954; }
-
-        .btn-whatsapp {
-            background-color: #25D366; color: #fff; border: none; border-radius: 50px; padding: 16px; font-size: 16px; font-weight: 700;
-            display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px;
-            cursor: pointer; transition: transform 0.1s, background 0.3s; font-family: inherit;
-        }
+        .input-group input { background-color: #2a2a2a; color: #fff; border: 1px solid #333; border-radius: 8px; padding: 15px; font-size: 15px; font-family: inherit; outline: none; transition: border 0.3s; }
+        .input-group input:focus { border-color: #a855f7; }
+        .btn-whatsapp { background-color: #25D366; color: #fff; border: none; border-radius: 50px; padding: 16px; font-size: 16px; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer; transition: transform 0.1s; font-family: inherit; }
         .btn-whatsapp:active { transform: scale(0.98); }
-        .btn-whatsapp:hover { background-color: #20b858; }
 
-        /* --- MENU LATERAL ESQUERDO (DRAWER DE OPÇÕES) --- */
-        #menu-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6);
-            z-index: 2999; display: none; opacity: 0; transition: opacity 0.3s ease;
+        /* Lista de Estações Form (Filtro) */
+        .stations-list-container { width: 100%; max-width: 600px; overflow-y: auto; flex-grow: 1; padding-bottom: 20px; }
+        .station-list-item {
+            display: flex; align-items: center; background: #181818; padding: 12px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: background 0.3s; border: 1px solid transparent;
         }
+        .station-list-item:active { background: #282828; }
+        .station-list-item.active-item { border-color: #a855f7; background: #1f142e; } /* Destaca a que está tocando */
+        .station-list-item img { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; margin-right: 15px; }
+        .station-list-info { flex-grow: 1; overflow: hidden; }
+        .station-list-info h4 { margin: 0 0 4px 0; color: #fff; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .station-list-info p { margin: 0; color: #b3b3b3; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* --- MENU LATERAL & MAPA (MANTIDOS INTACTOS) --- */
+        #menu-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 2999; display: none; opacity: 0; transition: opacity 0.3s ease; }
         #menu-overlay.open { display: block; opacity: 1; }
-
-        #side-menu {
-            position: fixed; top: 0; left: -320px; width: 280px; max-width: 85vw; height: 100vh;
-            background-color: #181818; z-index: 3000; transition: left 0.3s ease;
-            box-shadow: 2px 0 15px rgba(0,0,0,0.8); display: flex; flex-direction: column;
-        }
+        #side-menu { position: fixed; top: 0; left: -320px; width: 280px; max-width: 85vw; height: 100vh; background-color: #181818; z-index: 3000; transition: left 0.3s ease; box-shadow: 2px 0 15px rgba(0,0,0,0.8); display: flex; flex-direction: column; }
         #side-menu.open { left: 0; }
-
-        .side-menu-header {
-            display: flex; justify-content: space-between; align-items: center; padding: 20px;
-            border-bottom: 1px solid #282828; background-color: #121212;
-        }
+        .side-menu-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid #282828; background-color: #121212; }
         .side-menu-header h2 { font-size: 18px; margin: 0; color: #fff; }
-        
-        .side-menu-content {
-            padding: 20px 15px; flex-grow: 1; display: flex; flex-direction: column; gap: 10px;
-            overflow-y: auto;
-        }
-        
-        /* Botões do Menu Lateral */
-        .menu-item-btn {
-            background: transparent; border: none; color: #fff; font-size: 16px; font-weight: 500;
-            padding: 15px; display: flex; align-items: center; gap: 15px; border-radius: 8px;
-            cursor: pointer; transition: background 0.3s; width: 100%; text-align: left; font-family: inherit;
-        }
+        .side-menu-content { padding: 20px 15px; flex-grow: 1; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
+        .menu-item-btn { background: transparent; border: none; color: #fff; font-size: 16px; font-weight: 500; padding: 15px; display: flex; align-items: center; gap: 15px; border-radius: 8px; cursor: pointer; transition: background 0.3s; width: 100%; text-align: left; font-family: inherit; }
         .menu-item-btn:hover, .menu-item-btn:active { background: #282828; }
-        .menu-item-btn i { font-size: 20px; color: #1db954; width: 25px; text-align: center; }
-
-        /* --- TELA DE MAPA (MODAL DESLIZANTE DA DIREITA) --- */
-        #map-screen {
-            position: fixed; top: 0; left: 100%; width: 100vw; height: 100vh;
-            background-color: #121212; z-index: 2500; transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            display: flex; flex-direction: column; align-items: center; box-sizing: border-box;
-        }
-        #map-screen.open { left: 0; } /* Faz a tela deslizar para a visão principal */
-
-        .map-container-full {
-            width: 100%; flex-grow: 1; /* Preenche todo o resto da tela */
-            background: #282828;
-        }
+        .menu-item-btn i { font-size: 20px; color: #a855f7; width: 25px; text-align: center; }
+        #map-screen { position: fixed; top: 0; left: 100%; width: 100vw; height: 100vh; background-color: #121212; z-index: 2500; transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
+        #map-screen.open { left: 0; } 
+        .map-container-full { width: 100%; flex-grow: 1; background: #282828; }
         .map-container-full iframe { width: 100%; height: 100%; border: none; }
-
     </style>
 </head>
 <body>
@@ -198,13 +159,8 @@
             <button class="close-btn" onclick="fecharMenuLateral()"><i class="fas fa-times"></i></button>
         </div>
         <div class="side-menu-content">
-            <button class="menu-item-btn" onclick="abrirAbaMapa()">
-                <i class="fas fa-map-marked-alt"></i> Congregações CCB
-            </button>
-            
-            <button class="menu-item-btn" onclick="fecharMenuLateral()">
-                <i class="fas fa-home"></i> Início
-            </button>
+            <button class="menu-item-btn" onclick="abrirAbaMapa()"><i class="fas fa-map-marked-alt"></i> Congregações CCB</button>
+            <button class="menu-item-btn" onclick="fecharMenuLateral()"><i class="fas fa-home"></i> Início</button>
         </div>
     </div>
 
@@ -212,220 +168,227 @@
         <div class="screen-header" style="padding: 20px;">
             <button class="close-btn" onclick="fecharAbaMapa()"><i class="fas fa-chevron-left"></i></button>
             <h2>CCB em Formiga - MG</h2>
-            <div style="width: 44px;"></div> </div>
+            <div style="width: 44px;"></div>
+        </div>
         <div class="map-container-full">
             <iframe src="https://maps.google.com/maps?q=Congrega%C3%A7%C3%A3o+Crist%C3%A3+no+Brasil+Formiga+MG&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy"></iframe>
         </div>
     </div>
 
     <header>
-        <button class="menu-btn-top" onclick="abrirMenuLateral()">
-            <i class="fas fa-bars"></i>
-        </button>
+        <button class="menu-btn-top" onclick="abrirMenuLateral()"><i class="fas fa-bars"></i></button>
         <h1>Rádio Brasil CCB</h1>
         <div class="header-spacer"></div>
     </header>
 
-    <section class="estacoes-adicionais">
-        <h2>Tocando Agora</h2>
-        
-        <div class="additional-player-card">
-            <img src="https://images.unsplash.com/photo-1614680376593-902f74ccc0a6?auto=format&fit=crop&q=80&w=150&h=150" alt="Capa" class="station-img">
+    <section>
+        <div class="main-player-card">
+            <img id="player-img" src="https://images.unsplash.com/photo-1614680376593-902f74ccc0a6?auto=format&fit=crop&q=80&w=400&h=400" alt="Capa" class="station-img">
+            
             <div class="station-info">
-                <h3>Rádio Live</h3>
-                <p class="louvor-em-destaque">Sua Música ao Vivo</p>
-                <p class="artista-em-destaque">Por: Vários Artistas</p>
+                <h3 id="player-title">Carregando...</h3>
+                <p id="player-louvor" class="louvor-em-destaque">Conectando às rádios</p>
+                <p id="player-artista" class="artista-em-destaque">Aguarde</p>
             </div>
-            <button class="play-pause-btn" onclick="togglePlay(this)"><i class="fas fa-play"></i></button>
-            <audio class="hidden-audio" crossorigin="anonymous">
-                <source src="https://stm43.srvstm.com:8954/stream" type="audio/mpeg">
-            </audio>
-        </div>
-        
-        <div class="additional-player-card">
-            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=150&h=150" alt="Capa" class="station-img">
-            <div class="station-info">
-                <h3>Louvores Variados</h3>
-                <p class="louvor-em-destaque">Músicas de Louvor</p>
-                <p class="artista-em-destaque">Por: Diversos Artistas</p>
-            </div>
-            <button class="play-pause-btn" onclick="togglePlay(this)"><i class="fas fa-play"></i></button>
-            <audio class="hidden-audio" crossorigin="anonymous">
-                <source src="http://stm1.hoststreaming.com.br:7088/;stream.nsv" type="audio/mpeg">
-            </audio>
-        </div>
 
-        <div id="estacoes-container">
-            <p id="loading-stations" style="color: #1db954; font-size: 14px; font-weight: 600; text-align: center; margin-top: 20px;">Carregando estações...</p>
+            <div class="progress-container">
+                <div class="progress-bar"><div class="progress-fill"></div></div>
+                <div class="time-info"><span>AO VIVO</span><span><i class="fas fa-satellite-dish"></i></span></div>
+            </div>
+
+            <div class="player-controls">
+                <button class="control-icon" onclick="abrirListaRadios()"><i class="fas fa-list-ul"></i></button>
+                <button class="control-icon" onclick="prevRadio()"><i class="fas fa-backward-step"></i></button>
+                
+                <button class="play-pause-btn" onclick="toggleMainPlay()"><i id="main-play-icon" class="fas fa-play"></i></button>
+                
+                <button class="control-icon" onclick="nextRadio()"><i class="fas fa-forward-step"></i></button>
+                <button class="control-icon"><i class="fas fa-repeat"></i></button>
+            </div>
+            
+            <audio id="main-audio" crossorigin="anonymous"><source id="main-audio-src" src="" type="audio/mpeg"></audio>
         </div>
     </section>
 
     <nav class="bottom-nav">
-        <a href="index.html" class="active">
-            <i class="fas fa-home"></i><span>Início</span>
-        </a>
-        <a href="https://api.whatsapp.com/send/?phone=5537998648790&text&type=phone_number&app_absent=0" target="_blank">
-            <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
-        </a>
-        <button onclick="abrirPerfil()">
-            <i class="fas fa-user"></i><span>Perfil</span>
-        </button>
+        <a href="index.html" class="active"><i class="fas fa-home"></i><span>Início</span></a>
+        <a href="https://api.whatsapp.com/send/?phone=5537998648790&text&type=phone_number&app_absent=0" target="_blank"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
+        <button onclick="abrirPerfil()"><i class="fas fa-user"></i><span>Perfil</span></button>
     </nav>
 
-    <div id="profile-screen">
+    <div id="profile-screen" class="bottom-sheet">
         <div class="screen-header">
-            <div style="width: 44px;"></div> <h2>Meu Perfil</h2>
+            <div style="width: 44px;"></div>
+            <h2>Meu Perfil</h2>
             <button class="close-btn" onclick="fecharPerfil()"><i class="fas fa-chevron-down"></i></button>
         </div>
-        
         <div class="profile-form">
-            <div class="input-group">
-                <label>Seu Nome</label>
-                <input type="text" id="inputNome" placeholder="Ex: João Silva" oninput="salvarDados()">
-            </div>
-            <div class="input-group">
-                <label>Sua Cidade</label>
-                <input type="text" id="inputCidade" placeholder="Sua cidade e estado" oninput="salvarDados()">
-            </div>
-            <div class="input-group">
-                <label>Comum Congregação</label>
-                <input type="text" id="inputCCB" placeholder="Ex: Central" oninput="salvarDados()">
-            </div>
-
-            <button class="btn-whatsapp" onclick="enviarParaWhatsApp()">
-                <i class="fab fa-whatsapp"></i> Enviar Mensagem
-            </button>
+            <div class="input-group"><label>Seu Nome</label><input type="text" id="inputNome" placeholder="Ex: João Silva" oninput="salvarDados()"></div>
+            <div class="input-group"><label>Sua Cidade</label><input type="text" id="inputCidade" placeholder="Sua cidade e estado" oninput="salvarDados()"></div>
+            <div class="input-group"><label>Comum Congregação</label><input type="text" id="inputCCB" placeholder="Ex: Central" oninput="salvarDados()"></div>
+            <button class="btn-whatsapp" onclick="enviarParaWhatsApp()"><i class="fab fa-whatsapp"></i> Enviar Mensagem</button>
             <p style="font-size: 11px; color: #888; text-align: center; margin-top: 10px;">Seus dados ficam salvos automaticamente no celular.</p>
         </div>
     </div>
 
+    <div id="stations-list-screen" class="bottom-sheet">
+        <div class="screen-header">
+            <div style="width: 44px;"></div>
+            <h2>Escolher Estação</h2>
+            <button class="close-btn" onclick="fecharListaRadios()"><i class="fas fa-chevron-down"></i></button>
+        </div>
+        <div class="stations-list-container" id="stations-list-dynamic">
+            <p style="text-align:center; color:#b3b3b3; margin-top:20px;">Carregando estações...</p>
+        </div>
+    </div>
+
     <script>
-        // --- LÓGICA DO MENU LATERAL ---
-        function abrirMenuLateral() {
-            document.getElementById('side-menu').classList.add('open');
-            document.getElementById('menu-overlay').classList.add('open');
-        }
-
-        function fecharMenuLateral() {
-            document.getElementById('side-menu').classList.remove('open');
-            document.getElementById('menu-overlay').classList.remove('open');
-        }
-
-        // --- LÓGICA DA NOVA ABA DO MAPA ---
-        function abrirAbaMapa() {
-            fecharMenuLateral(); // Fecha o menu lateral
-            document.getElementById('map-screen').classList.add('open'); // Desliza a tela do mapa
-        }
-
-        function fecharAbaMapa() {
-            document.getElementById('map-screen').classList.remove('open');
-        }
-
-        // --- LÓGICA DA TELA DE ABERTURA ---
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                splash.style.opacity = '0';
-                splash.style.visibility = 'hidden';
-            }, 2500); 
-        });
-
-        // --- LÓGICA DO PERFIL E WHATSAPP ---
+        // NAVEGAÇÃO BÁSICA
+        function abrirMenuLateral() { document.getElementById('side-menu').classList.add('open'); document.getElementById('menu-overlay').classList.add('open'); }
+        function fecharMenuLateral() { document.getElementById('side-menu').classList.remove('open'); document.getElementById('menu-overlay').classList.remove('open'); }
+        function abrirAbaMapa() { fecharMenuLateral(); document.getElementById('map-screen').classList.add('open'); }
+        function fecharAbaMapa() { document.getElementById('map-screen').classList.remove('open'); }
         function abrirPerfil() { document.getElementById('profile-screen').classList.add('open'); carregarDados(); }
         function fecharPerfil() { document.getElementById('profile-screen').classList.remove('open'); }
+        function abrirListaRadios() { document.getElementById('stations-list-screen').classList.add('open'); renderizarListaFiltro(); }
+        function fecharListaRadios() { document.getElementById('stations-list-screen').classList.remove('open'); }
 
-        function salvarDados() {
-            localStorage.setItem('ccb_nome', document.getElementById('inputNome').value);
-            localStorage.setItem('ccb_cidade', document.getElementById('inputCidade').value);
-            localStorage.setItem('ccb_congregacao', document.getElementById('inputCCB').value);
-        }
+        window.addEventListener('load', () => { setTimeout(() => { document.getElementById('splash-screen').style.opacity = '0'; document.getElementById('splash-screen').style.visibility = 'hidden'; }, 2500); });
 
-        function carregarDados() {
-            if(localStorage.getItem('ccb_nome')) document.getElementById('inputNome').value = localStorage.getItem('ccb_nome');
-            if(localStorage.getItem('ccb_cidade')) document.getElementById('inputCidade').value = localStorage.getItem('ccb_cidade');
-            if(localStorage.getItem('ccb_congregacao')) document.getElementById('inputCCB').value = localStorage.getItem('ccb_congregacao');
-        }
-
+        // DADOS DO PERFIL
+        function salvarDados() { localStorage.setItem('ccb_nome', document.getElementById('inputNome').value); localStorage.setItem('ccb_cidade', document.getElementById('inputCidade').value); localStorage.setItem('ccb_congregacao', document.getElementById('inputCCB').value); }
+        function carregarDados() { if(localStorage.getItem('ccb_nome')) document.getElementById('inputNome').value = localStorage.getItem('ccb_nome'); if(localStorage.getItem('ccb_cidade')) document.getElementById('inputCidade').value = localStorage.getItem('ccb_cidade'); if(localStorage.getItem('ccb_congregacao')) document.getElementById('inputCCB').value = localStorage.getItem('ccb_congregacao'); }
         function enviarParaWhatsApp() {
-            const nome = document.getElementById('inputNome').value.trim();
-            const cidade = document.getElementById('inputCidade').value.trim();
-            const ccb = document.getElementById('inputCCB').value.trim();
-
-            if (!nome || !cidade || !ccb) { alert("Por favor, preencha todos os campos do perfil antes de enviar."); return; }
-
-            const mensagem = `A paz de Deus! Gostaria de participar da Rádio Brasil CCB.\n\n*Nome:* ${nome}\n*Cidade:* ${cidade}\n*Comum Congregação:* ${ccb}`;
-            const url = `https://api.whatsapp.com/send/?phone=5537998648790&text=${encodeURIComponent(mensagem)}&type=phone_number&app_absent=0`;
-            window.open(url, '_blank');
+            const nome = document.getElementById('inputNome').value.trim(); const cidade = document.getElementById('inputCidade').value.trim(); const ccb = document.getElementById('inputCCB').value.trim();
+            if (!nome || !cidade || !ccb) { alert("Preencha todos os campos do perfil antes de enviar."); return; }
+            const msg = `A paz de Deus! Gostaria de participar da Rádio Brasil CCB.\n\n*Nome:* ${nome}\n*Cidade:* ${cidade}\n*Comum Congregação:* ${ccb}`;
+            window.open(`https://api.whatsapp.com/send/?phone=5537998648790&text=${encodeURIComponent(msg)}&type=phone_number&app_absent=0`, '_blank');
         }
 
-        // --- LÓGICA DA RÁDIO MANTIDA INTACTA ---
+        // --- SISTEMA INTELIGENTE DE PLAYER ÚNICO ---
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxjX7K30EgFOfqktK4JAnl0bpXE7UC1iWH-camU5RHxTk6RoxxIpHxhGZzgMxNV0T/exec";
+        
+        let listaDeRadios = [];
+        let indexRadioAtual = 0;
+        const audioPlayer = document.getElementById('main-audio');
+        const playIcon = document.getElementById('main-play-icon');
 
-        function togglePlay(btn) {
-            const card = btn.closest('.additional-player-card');
-            const audio = card.querySelector('audio');
-            const icon = btn.querySelector('i');
-            
-            document.querySelectorAll('.hidden-audio').forEach(a => {
-                if(a !== audio) {
-                    a.pause();
-                    const otherBtn = a.parentElement.querySelector('.play-pause-btn i');
-                    if(otherBtn) otherBtn.className = 'fas fa-play';
-                }
-            });
+        async function carregarTodasAsRadios() {
+            // Rádios Fixas
+            const radiosFixas = [
+                { nome: "Rádio Live", louvor: "Sua Música ao Vivo", artista: "DJ Central", link: "https://stm43.srvstm.com:8954/stream", img: "https://images.unsplash.com/photo-1614680376593-902f74ccc0a6?auto=format&fit=crop&q=80&w=400&h=400" },
+                { nome: "Louvores Variados", louvor: "Músicas de Louvor", artista: "Diversos Artistas", link: "http://stm1.hoststreaming.com.br:7088/;stream.nsv", img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=400&h=400" }
+            ];
 
-            if (audio.paused) {
-                icon.className = 'fas fa-spinner fa-spin'; 
-                audio.play().then(() => { icon.className = 'fas fa-pause'; }).catch(e => { console.error(e); icon.className = 'fas fa-play'; });
-            } else {
-                audio.pause();
-                icon.className = 'fas fa-play'; 
+            try {
+                // Busca da Planilha
+                const response = await fetch(`${WEB_APP_URL}?sheet=ESTACOES`);
+                const linksPlanilha = await response.json(); 
+                
+                const radiosPlanilha = linksPlanilha.map((item, index) => {
+                    let nome = `Estação ${index + 3}`;
+                    try { const url = new URL(item.link); nome = url.hostname.replace('www.', '').split('.')[0]; nome = nome.charAt(0).toUpperCase() + nome.slice(1); } catch (e) {}
+                    return { nome: nome, louvor: item.louvor || 'Louvor não informado', artista: item.artista || 'Diversos', link: item.link, img: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=400&h=400" };
+                });
+
+                // Junta tudo na lista oficial do App
+                listaDeRadios = [...radiosFixas, ...radiosPlanilha];
+                
+            } catch (error) {
+                console.error("Erro na planilha, carregando apenas fixas.");
+                listaDeRadios = radiosFixas;
+            }
+
+            // Atualiza a tela com a primeira rádio
+            if(listaDeRadios.length > 0) {
+                atualizarTelaPlayer(0, false);
             }
         }
 
-        function loadPrincipalData() { fetchAdditionalStations(); }
+        // Função que troca os dados do Player central
+        function atualizarTelaPlayer(index, autoPlay = true) {
+            indexRadioAtual = index;
+            const radio = listaDeRadios[index];
+            
+            document.getElementById('player-title').innerText = radio.nome;
+            document.getElementById('player-louvor').innerText = radio.louvor;
+            document.getElementById('player-artista').innerText = `Por: ${radio.artista}`;
+            document.getElementById('player-img').src = radio.img;
+            
+            const tavaTocando = !audioPlayer.paused;
+            document.getElementById('main-audio-src').src = radio.link;
+            audioPlayer.load();
 
-        async function fetchAdditionalStations() {
-            const container = document.getElementById('estacoes-container');
-            try {
-                const response = await fetch(`${WEB_APP_URL}?sheet=ESTACOES`);
-                const links = await response.json(); 
-                container.innerHTML = '';
-
-                if (links.length === 0) {
-                    container.innerHTML = '<p style="color: #b3b3b3; text-align: center;">Nenhuma rádio adicionada.</p>';
-                    return;
-                }
-
-                links.forEach((item, index) => { 
-                    let stationName = `Estação ${index + 1}`;
-                    try { const url = new URL(item.link); stationName = url.hostname.replace('www.', '').split('.')[0]; stationName = stationName.charAt(0).toUpperCase() + stationName.slice(1); } catch (e) {}
-
-                    const playerDiv = document.createElement('div');
-                    playerDiv.className = 'additional-player-card';
-
-                    playerDiv.innerHTML = `
-                        <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=150&h=150" alt="Capa" class="station-img">
-                        <div class="station-info">
-                            <h3>${stationName}</h3>
-                            <p class="louvor-em-destaque">${item.louvor || 'Louvor Não Informado'}</p>
-                            <p class="artista-em-destaque">Por: ${item.artista || 'Artista Não Informado'}</p>
-                        </div>
-                        <button class="play-pause-btn" onclick="togglePlay(this)"><i class="fas fa-play"></i></button>
-                        <audio class="hidden-audio" crossorigin="anonymous"><source src="${item.link}" type="audio/mpeg"></audio>
-                    `;
-                    container.appendChild(playerDiv);
-                });
-            } catch (error) {
-                container.innerHTML = '<p style="color: #e22134; text-align: center;">Erro ao carregar as estações.</p>';
+            if (autoPlay || tavaTocando) {
+                tocarAudio();
+            } else {
+                playIcon.className = 'fas fa-play';
             }
+        }
+
+        function tocarAudio() {
+            playIcon.className = 'fas fa-spinner fa-spin';
+            audioPlayer.play().then(() => {
+                playIcon.className = 'fas fa-pause';
+            }).catch(e => {
+                console.log("Erro:", e);
+                playIcon.className = 'fas fa-play';
+            });
+        }
+
+        function toggleMainPlay() {
+            if (audioPlayer.paused) { tocarAudio(); } 
+            else { audioPlayer.pause(); playIcon.className = 'fas fa-play'; }
+        }
+
+        // Botões Avançar e Voltar
+        function nextRadio() {
+            let prox = indexRadioAtual + 1;
+            if(prox >= listaDeRadios.length) prox = 0; // Volta pro começo
+            atualizarTelaPlayer(prox, true);
+        }
+
+        function prevRadio() {
+            let ant = indexRadioAtual - 1;
+            if(ant < 0) ant = listaDeRadios.length - 1; // Vai pro final
+            atualizarTelaPlayer(ant, true);
+        }
+
+        // --- RENDERIZA A LISTA FILTRO (Modal de baixo) ---
+        function renderizarListaFiltro() {
+            const container = document.getElementById('stations-list-dynamic');
+            container.innerHTML = '';
+
+            listaDeRadios.forEach((radio, index) => {
+                const isActive = index === indexRadioAtual;
+                
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `station-list-item ${isActive ? 'active-item' : ''}`;
+                
+                // Ao clicar em uma rádio da lista: fecha a lista e toca a rádio escolhida
+                itemDiv.onclick = () => {
+                    fecharListaRadios();
+                    atualizarTelaPlayer(index, true);
+                };
+
+                itemDiv.innerHTML = `
+                    <img src="${radio.img}" alt="Capa">
+                    <div class="station-list-info">
+                        <h4>${radio.nome}</h4>
+                        <p>${radio.louvor}</p>
+                    </div>
+                    ${isActive ? '<i class="fas fa-volume-up" style="color:#a855f7;"></i>' : ''}
+                `;
+                container.appendChild(itemDiv);
+            });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
             if (/android/i.test(userAgent) && /(wv|Version\/\d+\.\d+)/.test(userAgent)) document.body.classList.add('app-android');
             else document.body.classList.add('navegador-web');
-            loadPrincipalData();
+            
+            carregarTodasAsRadios();
             carregarDados(); 
         });
     </script>
