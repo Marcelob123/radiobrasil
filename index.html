@@ -121,7 +121,7 @@
         }
         .station-list-item:active { background: #282828; }
         .station-list-item.active-item { border-color: #a855f7; background: #1f142e; }
-        .station-list-item img { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; margin-right: 15px; }
+        .station-list-item img { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; margin-right: 15px; background-color: #282828; }
         .station-list-info { flex-grow: 1; overflow: hidden; }
         .station-list-info h4 { margin: 0 0 4px 0; color: #fff; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .station-list-info p { margin: 0; color: #b3b3b3; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -184,7 +184,7 @@
 
     <section>
         <div class="main-player-card">
-            <img id="player-img" src="https://images.unsplash.com/photo-1614680376593-902f74ccc0a6?auto=format&fit=crop&q=80&w=400&h=400" alt="Capa" class="station-img">
+            <img id="player-img" src="https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+CCB" alt="Capa da Rádio" class="station-img" onerror="this.src='https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+CCB'">
             
             <div class="station-info">
                 <h3 id="player-title">Carregando...</h3>
@@ -272,10 +272,13 @@
         const audioPlayer = document.getElementById('main-audio');
         const playIcon = document.getElementById('main-play-icon');
 
+        // URL da imagem de segurança em alta resolução gerada automaticamente
+        const imgSeguranca = "https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+CCB";
+
         async function carregarTodasAsRadios() {
             const radiosFixas = [
-                { nome: "Rádio Live", louvor: "Sua Música ao Vivo", artista: "DJ Central", link: "https://stm43.srvstm.com:8954/stream", img: "https://images.unsplash.com/photo-1614680376593-902f74ccc0a6?auto=format&fit=crop&q=80&w=400&h=400" },
-                { nome: "Louvores Variados", louvor: "Músicas de Louvor", artista: "Diversos Artistas", link: "http://stm1.hoststreaming.com.br:7088/;stream.nsv", img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=400&h=400" }
+                { nome: "Rádio Live", louvor: "Sua Música ao Vivo", artista: "DJ Central", link: "https://stm43.srvstm.com:8954/stream", img: "https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+Live" },
+                { nome: "Louvores Variados", louvor: "Músicas de Louvor", artista: "Diversos Artistas", link: "http://stm1.hoststreaming.com.br:7088/;stream.nsv", img: "https://placehold.co/400x400/181818/a855f7?text=Louvores" }
             ];
 
             try {
@@ -285,7 +288,8 @@
                 const radiosPlanilha = linksPlanilha.map((item, index) => {
                     let nome = `Estação ${index + 3}`;
                     try { const url = new URL(item.link); nome = url.hostname.replace('www.', '').split('.')[0]; nome = nome.charAt(0).toUpperCase() + nome.slice(1); } catch (e) {}
-                    return { nome: nome, louvor: item.louvor || 'Louvor não informado', artista: item.artista || 'Diversos', link: item.link, img: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=400&h=400" };
+                    // Se a planilha não tiver imagem, usa a imagem de segurança
+                    return { nome: nome, louvor: item.louvor || 'Louvor não informado', artista: item.artista || 'Diversos', link: item.link, img: item.img || imgSeguranca };
                 });
 
                 listaDeRadios = [...radiosFixas, ...radiosPlanilha];
@@ -304,7 +308,10 @@
             document.getElementById('player-title').innerText = radio.nome;
             document.getElementById('player-louvor').innerText = radio.louvor;
             document.getElementById('player-artista').innerText = `Por: ${radio.artista}`;
-            document.getElementById('player-img').src = radio.img;
+            
+            // Troca a imagem principal. Se der erro, o onerror no HTML resolve.
+            const playerImg = document.getElementById('player-img');
+            playerImg.src = radio.img;
             
             const tavaTocando = !audioPlayer.paused;
             document.getElementById('main-audio-src').src = radio.link;
@@ -334,8 +341,9 @@
                 
                 itemDiv.onclick = () => { fecharListaRadios(); atualizarTelaPlayer(index, true); };
 
+                // O onerror também é adicionado na miniatura da lista
                 itemDiv.innerHTML = `
-                    <img src="${radio.img}" alt="Capa">
+                    <img src="${radio.img}" alt="Capa" onerror="this.src='${imgSeguranca}'">
                     <div class="station-list-info">
                         <h4>${radio.nome}</h4>
                         <p>${radio.louvor}</p>
