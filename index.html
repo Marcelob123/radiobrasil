@@ -49,7 +49,7 @@
         .progress-fill::after { content: ''; position: absolute; right: -6px; top: -4px; width: 12px; height: 12px; background-color: #a855f7; border-radius: 50%; box-shadow: 0 0 8px rgba(168, 85, 247, 0.6); }
         .time-info { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #b3b3b3; font-weight: 500; }
 
-        /* EQUALIZADOR ANIMADO (NOVO) */
+        /* EQUALIZADOR ANIMADO */
         .equalizer { display: flex; gap: 3px; align-items: flex-end; height: 14px; }
         .eq-bar { width: 4px; background-color: #b3b3b3; border-radius: 2px; transition: height 0.1s; height: 3px; }
         .playing .eq-bar { background-color: #a855f7; animation: eq-play 0.8s infinite alternate ease-in-out; }
@@ -59,7 +59,7 @@
         .playing .eq-bar:nth-child(4) { animation-delay: 0.5s; }
         @keyframes eq-play { 0% { height: 3px; } 100% { height: 14px; } }
 
-        /* CONTROLE DE VOLUME (NOVO) */
+        /* CONTROLE DE VOLUME */
         .volume-container { display: flex; align-items: center; width: 100%; max-width: 340px; gap: 15px; margin-bottom: 25px; color: #b3b3b3; font-size: 14px; }
         .volume-container input { flex-grow: 1; accent-color: #a855f7; height: 4px; cursor: pointer; }
 
@@ -86,12 +86,14 @@
         .screen-header h2 { margin: 0; font-size: 18px; color: #fff; text-align: center; flex-grow: 1;}
         .close-btn { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; padding: 0 10px; }
 
-        /* Perfil Form */
-        .profile-form { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
-        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        /* Formulários Customizados */
+        .input-group { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 600px; }
         .input-group label { font-size: 13px; color: #b3b3b3; font-weight: 600; }
-        .input-group input { background-color: #2a2a2a; color: #fff; border: 1px solid #333; border-radius: 8px; padding: 15px; font-size: 15px; font-family: inherit; outline: none; transition: border 0.3s; }
-        .input-group input:focus { border-color: #a855f7; }
+        .custom-input { background-color: #2a2a2a; color: #fff; border: 1px solid #333; border-radius: 8px; padding: 15px; font-size: 15px; font-family: inherit; outline: none; transition: border 0.3s; width: 100%; box-sizing: border-box; }
+        .custom-input:focus { border-color: #a855f7; }
+        .custom-input option { background-color: #181818; color: #fff; }
+        
+        .profile-form { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
         .btn-whatsapp { background-color: #25D366; color: #fff; border: none; border-radius: 50px; padding: 16px; font-size: 16px; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer; transition: transform 0.1s; font-family: inherit; }
         .btn-whatsapp:active { transform: scale(0.98); }
 
@@ -105,7 +107,7 @@
         .station-list-info h4 { margin: 0 0 4px 0; color: #fff; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .station-list-info p { margin: 0; color: #b3b3b3; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* Menu Temporizador (NOVO) */
+        /* Menu Temporizador */
         .timer-options { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 600px; }
         .timer-btn { background: #2a2a2a; color: #fff; border: none; padding: 16px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
         .timer-btn:active { background: #a855f7; }
@@ -125,6 +127,9 @@
         #map-screen.open { left: 0; } 
         .map-container-full { width: 100%; flex-grow: 1; background: #282828; }
         .map-container-full iframe { width: 100%; height: 100%; border: none; }
+        
+        /* Estilo do Card do Mural */
+        .mural-card-box { background: linear-gradient(145deg, #1f142e, #181818); border: 1px solid #a855f7; border-radius: 12px; padding: 30px 20px; text-align: center; margin-top: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 100%; max-width: 600px; box-sizing: border-box;}
     </style>
 </head>
 <body>
@@ -142,6 +147,8 @@
             <h2>Navegação</h2><button class="close-btn" onclick="fecharMenuLateral()"><i class="fas fa-times"></i></button>
         </div>
         <div class="side-menu-content">
+            <!-- BOTÃO DO MURAL ADICIONADO AQUI -->
+            <button class="menu-item-btn" onclick="abrirMural()"><i class="fas fa-book-open"></i> Mural da Palavra</button>
             <button class="menu-item-btn" onclick="abrirAbaMapa()"><i class="fas fa-map-marked-alt"></i> Congregações CCB</button>
             <button class="menu-item-btn" onclick="fecharMenuLateral()"><i class="fas fa-home"></i> Início</button>
         </div>
@@ -155,7 +162,7 @@
         </div>
     </div>
 
-    <!-- HEADER COM BOTÃO DE COMPARTILHAR (NOVO) -->
+    <!-- HEADER COM BOTÃO DE COMPARTILHAR -->
     <header>
         <button class="menu-btn-top" onclick="abrirMenuLateral()"><i class="fas fa-bars"></i></button>
         <h1>Rádio Brasil CCB</h1>
@@ -175,7 +182,6 @@
                 <p id="player-artista" class="artista-em-destaque">Aguarde</p>
             </div>
 
-            <!-- Equalizador Animado e Progresso (NOVO) -->
             <div class="progress-container">
                 <div class="progress-bar"><div class="progress-fill"></div></div>
                 <div class="time-info">
@@ -186,7 +192,6 @@
                 </div>
             </div>
 
-            <!-- Barra de Volume Deslizante (NOVO) -->
             <div class="volume-container">
                 <i class="fas fa-volume-down"></i>
                 <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
@@ -198,8 +203,6 @@
                 <button class="control-icon" onclick="prevRadio()"><i class="fas fa-backward-step"></i></button>
                 <button class="play-pause-btn" onclick="toggleMainPlay()"><i id="main-play-icon" class="fas fa-play"></i></button>
                 <button class="control-icon" onclick="nextRadio()"><i class="fas fa-forward-step"></i></button>
-                
-                <!-- Botão Temporizador de Sono (NOVO) -->
                 <button class="control-icon" onclick="abrirTemporizador()"><i id="moon-icon" class="fas fa-moon"></i></button>
             </div>
             
@@ -213,13 +216,44 @@
         <button onclick="abrirPerfil()"><i class="fas fa-user"></i><span>Perfil</span></button>
     </nav>
 
+    <!-- Modal do Mural da Palavra (NOVO) -->
+    <div id="mural-screen" class="bottom-sheet">
+        <div class="screen-header"><div style="width: 44px;"></div><h2>Mural da Palavra</h2><button class="close-btn" onclick="fecharMural()"><i class="fas fa-chevron-down"></i></button></div>
+        
+        <p style="color: #b3b3b3; text-align: center; font-size: 14px; margin-top: 0;">Sua mensagem espiritual para cada mês.</p>
+        
+        <div class="input-group">
+            <select id="mural-mes-select" class="custom-input" onchange="atualizarMural()">
+                <option value="1">Janeiro</option>
+                <option value="2">Fevereiro</option>
+                <option value="3">Março</option>
+                <option value="4">Abril</option>
+                <option value="5">Maio</option>
+                <option value="6">Junho</option>
+                <option value="7">Julho</option>
+                <option value="8">Agosto</option>
+                <option value="9">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option>
+            </select>
+        </div>
+
+        <div class="mural-card-box">
+            <i class="fas fa-quote-left" style="color: #a855f7; font-size: 28px; margin-bottom: 15px; opacity: 0.6;"></i>
+            <h3 id="mural-titulo" style="margin: 0 0 15px 0; color: #fff; font-size: 20px;">Carregando...</h3>
+            <p id="mural-texto" style="color: #e0e0e0; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0; font-style: italic;">"..."</p>
+            <p id="mural-referencia" style="color: #a855f7; font-size: 14px; font-weight: bold; margin: 0;"></p>
+        </div>
+    </div>
+
     <!-- Modais de Perfil e Filtro -->
     <div id="profile-screen" class="bottom-sheet">
         <div class="screen-header"><div style="width: 44px;"></div><h2>Meu Perfil</h2><button class="close-btn" onclick="fecharPerfil()"><i class="fas fa-chevron-down"></i></button></div>
         <div class="profile-form">
-            <div class="input-group"><label>Seu Nome</label><input type="text" id="inputNome" placeholder="Ex: João Silva" oninput="salvarDados()"></div>
-            <div class="input-group"><label>Sua Cidade</label><input type="text" id="inputCidade" placeholder="Sua cidade e estado" oninput="salvarDados()"></div>
-            <div class="input-group"><label>Comum Congregação</label><input type="text" id="inputCCB" placeholder="Ex: Central" oninput="salvarDados()"></div>
+            <div class="input-group"><label>Seu Nome</label><input type="text" id="inputNome" class="custom-input" placeholder="Ex: João Silva" oninput="salvarDados()"></div>
+            <div class="input-group"><label>Sua Cidade</label><input type="text" id="inputCidade" class="custom-input" placeholder="Sua cidade e estado" oninput="salvarDados()"></div>
+            <div class="input-group"><label>Comum Congregação</label><input type="text" id="inputCCB" class="custom-input" placeholder="Ex: Central" oninput="salvarDados()"></div>
             <button class="btn-whatsapp" onclick="enviarParaWhatsApp()"><i class="fab fa-whatsapp"></i> Enviar Mensagem</button>
             <p style="font-size: 11px; color: #888; text-align: center; margin-top: 10px;">Seus dados ficam salvos automaticamente no celular.</p>
         </div>
@@ -230,7 +264,7 @@
         <div class="stations-list-container" id="stations-list-dynamic"><p style="text-align:center; color:#b3b3b3; margin-top:20px;">Carregando estações...</p></div>
     </div>
 
-    <!-- Modal Temporizador (NOVO) -->
+    <!-- Modal Temporizador -->
     <div id="timer-screen" class="bottom-sheet">
         <div class="screen-header"><div style="width: 44px;"></div><h2>Temporizador</h2><button class="close-btn" onclick="fecharTemporizador()"><i class="fas fa-chevron-down"></i></button></div>
         <p style="color: #b3b3b3; text-align: center; font-size: 14px; margin-bottom: 20px;">Escolha em quanto tempo a rádio vai desligar sozinha.</p>
@@ -240,7 +274,7 @@
             <button class="timer-btn" onclick="iniciarTemporizador(60)">1 Hora</button>
             <button class="timer-btn" style="color: #ff4d4d; background: #331a1a;" onclick="cancelarTemporizador()">Desativar Temporizador</button>
         </div>
-        <p id="timer-status" style="color: #a855f7; font-size: 14px; margin-top: 25px; font-weight: 600;"></p>
+        <p id="timer-status" style="color: #a855f7; font-size: 14px; margin-top: 25px; font-weight: 600; text-align: center;"></p>
     </div>
 
     <script>
@@ -266,22 +300,18 @@
             window.open(`https://api.whatsapp.com/send/?phone=5537998648790&text=${encodeURIComponent(msg)}&type=phone_number&app_absent=0`, '_blank');
         }
 
-        // FUNÇÃO DE COMPARTILHAMENTO (NOVA)
+        // FUNÇÃO DE COMPARTILHAMENTO
         function compartilharApp() {
             const linkOficial = "https://play.google.com/store/apps/details?id=io.kodular.marcelocaetanonascimento2016.HinosCCBRadio&hl=pt";
             const texto = "Ouça os melhores louvores na Rádio Brasil CCB! Baixe agora o aplicativo:";
-            
-            // Tenta abrir a aba de compartilhar nativa do Android (se suportado pelo WebView)
             if (navigator.share) {
-                navigator.share({ title: 'Rádio Brasil CCB', text: texto, url: linkOficial })
-                .catch(err => console.log('Erro ao compartilhar', err));
+                navigator.share({ title: 'Rádio Brasil CCB', text: texto, url: linkOficial }).catch(err => console.log('Erro ao compartilhar', err));
             } else {
-                // Se falhar (em Android muito antigo), ele já abre no WhatsApp pra pessoa encaminhar
                 window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto + " " + linkOficial)}`, '_blank');
             }
         }
 
-        // LÓGICA DO TEMPORIZADOR DE SONO (NOVA)
+        // LÓGICA DO TEMPORIZADOR DE SONO
         let sleepTimerId;
         function abrirTemporizador() { document.getElementById('timer-screen').classList.add('open'); }
         function fecharTemporizador() { document.getElementById('timer-screen').classList.remove('open'); }
@@ -289,25 +319,25 @@
         function iniciarTemporizador(minutos) {
             clearTimeout(sleepTimerId);
             document.getElementById('timer-status').innerText = `Rádio desligará em ${minutos} minutos.`;
-            document.getElementById('moon-icon').style.color = '#a855f7'; // Acende a lua
+            document.getElementById('moon-icon').style.color = '#a855f7';
             
             sleepTimerId = setTimeout(() => {
                 const audioPlayer = document.getElementById('main-audio');
-                if (!audioPlayer.paused) { toggleMainPlay(); } // Pausa a rádio e o equalizador
-                cancelarTemporizador(); // Limpa as mensagens
-            }, minutos * 60000); // Converte para milissegundos
+                if (!audioPlayer.paused) { toggleMainPlay(); }
+                cancelarTemporizador();
+            }, minutos * 60000); 
             
-            setTimeout(fecharTemporizador, 1000); // Fecha a tela suavemente
+            setTimeout(fecharTemporizador, 1000); 
         }
         
         function cancelarTemporizador() {
             clearTimeout(sleepTimerId);
             document.getElementById('timer-status').innerText = "";
-            document.getElementById('moon-icon').style.color = '#b3b3b3'; // Apaga a lua
+            document.getElementById('moon-icon').style.color = '#b3b3b3';
             setTimeout(fecharTemporizador, 1000);
         }
 
-        // LÓGICA DO CONTROLE DE VOLUME (NOVA)
+        // LÓGICA DO CONTROLE DE VOLUME
         document.getElementById('volume-slider').addEventListener('input', function() {
             document.getElementById('main-audio').volume = this.value;
         });
@@ -361,7 +391,7 @@
             playIcon.className = 'fas fa-spinner fa-spin';
             audioPlayer.play().then(() => { 
                 playIcon.className = 'fas fa-pause'; 
-                eqAnim.classList.add('playing'); // Liga a animação do Equalizador
+                eqAnim.classList.add('playing'); 
             }).catch(e => { 
                 playIcon.className = 'fas fa-play'; 
                 eqAnim.classList.remove('playing');
@@ -373,7 +403,7 @@
             else { 
                 audioPlayer.pause(); 
                 playIcon.className = 'fas fa-play'; 
-                eqAnim.classList.remove('playing'); // Pausa o equalizador
+                eqAnim.classList.remove('playing'); 
             } 
         }
 
@@ -404,6 +434,51 @@
             carregarTodasAsRadios();
             carregarDados(); 
         });
+
+        /* =================================================================
+           SISTEMA DO MURAL DA PALAVRA (NOVO)
+           Edite as palavras de cada mês aqui!
+        ==================================================================== */
+        const palavrasDoMural = {
+            "1": { titulo: "Novo Começo", texto: "Esforça-te, e tem bom ânimo; não temas, nem te espantes; porque o Senhor teu Deus é contigo, por onde quer que andares.", ref: "Josué 1:9" },
+            "2": { titulo: "Fé Inabalável", texto: "Ora, a fé é o firme fundamento das coisas que se esperam, e a prova das coisas que se não veem.", ref: "Hebreus 11:1" },
+            "3": { titulo: "Amor Divino", texto: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.", ref: "João 3:16" },
+            "4": { titulo: "Paz Interior", texto: "Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá. Não se turbe o vosso coração, nem se atemorize.", ref: "João 14:27" },
+            "5": { titulo: "Força na Fraqueza", texto: "Tudo posso naquele que me fortalece.", ref: "Filipenses 4:13" },
+            "6": { titulo: "Luz no Caminho", texto: "Lâmpada para os meus pés é tua palavra, e luz para o meu caminho.", ref: "Salmos 119:105" },
+            "7": { titulo: "Espera no Senhor", texto: "Espera no Senhor, anima-te, e ele fortalecerá o teu coração; espera, pois, no Senhor.", ref: "Salmos 27:14" },
+            "8": { titulo: "Cuidado de Deus", texto: "Lançando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vós.", ref: "1 Pedro 5:7" },
+            "9": { titulo: "Gratidão", texto: "Em tudo dai graças, porque esta é a vontade de Deus em Cristo Jesus para convosco.", ref: "1 Tessalonicenses 5:18" },
+            "10": { titulo: "Renovação", texto: "E não sede conformados com este mundo, mas sede transformados pela renovação do vosso entendimento...", ref: "Romanos 12:2" },
+            "11": { titulo: "Proteção", texto: "O Senhor é o meu pastor, nada me faltará.", ref: "Salmos 23:1" },
+            "12": { titulo: "Alegria e Salvação", texto: "O Senhor é a minha força e o meu cântico; ele me foi por salvação.", ref: "Êxodo 15:2" }
+        };
+
+        function abrirMural() {
+            fecharMenuLateral();
+            document.getElementById('mural-screen').classList.add('open');
+            
+            // Pega o mês atual do celular do usuário (1 = Jan, 2 = Fev...)
+            const mesAtual = new Date().getMonth() + 1; 
+            document.getElementById('mural-mes-select').value = mesAtual;
+            
+            atualizarMural(); // Carrega a palavra na tela
+        }
+
+        function fecharMural() {
+            document.getElementById('mural-screen').classList.remove('open');
+        }
+
+        function atualizarMural() {
+            const mesSelecionado = document.getElementById('mural-mes-select').value;
+            
+            // Puxa os dados da nossa lista de meses lá em cima
+            const dados = palavrasDoMural[mesSelecionado];
+            
+            document.getElementById('mural-titulo').innerText = dados.titulo;
+            document.getElementById('mural-texto').innerText = `"${dados.texto}"`;
+            document.getElementById('mural-referencia').innerText = dados.ref;
+        }
     </script>
 </body>
 </html>
