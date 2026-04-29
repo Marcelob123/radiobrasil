@@ -10,26 +10,16 @@
     
     <style>
         /* BASE TIPO APP PREMIUM */
-        body {
-            background-color: #121212; color: #ffffff; font-family: 'Montserrat', sans-serif; 
-            display: flex; flex-direction: column; align-items: center; min-height: 100vh; 
-            margin: 0; padding: 0 15px 100px 15px; box-sizing: border-box; overflow-x: hidden;
-        }
+        body { background-color: #121212; color: #ffffff; font-family: 'Montserrat', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 0 15px 100px 15px; box-sizing: border-box; overflow-x: hidden; }
 
-        #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #121212; 
-            z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease-out, visibility 0.8s;
-        }
+        #splash-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #121212; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease-out, visibility 0.8s; }
         .splash-logo { font-size: 60px; color: #a855f7; margin-bottom: 20px; animation: pulse 1.5s infinite; }
         .splash-title { font-size: 28px; font-weight: 700; color: #ffffff; letter-spacing: 1px; margin: 0; }
         .splash-subtitle { font-size: 14px; color: #b3b3b3; margin-top: 10px; }
         @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.8; } }
 
         /* HEADER FIXO NO TOPO */
-        header {
-            width: 100%; max-width: 600px; position: sticky; top: 0; background-color: rgba(18, 18, 18, 0.95); 
-            backdrop-filter: blur(10px); z-index: 100; padding: 15px 0; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
-        }
+        header { width: 100%; max-width: 600px; position: sticky; top: 0; background-color: rgba(18, 18, 18, 0.95); backdrop-filter: blur(10px); z-index: 100; padding: 15px 0; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         .menu-btn-top { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 0 15px; display: flex; align-items: center; text-decoration: none; transition: color 0.3s;}
         .menu-btn-top:active { color: #a855f7; }
         header h1 { font-size: 18px; font-weight: 700; margin: 0; letter-spacing: 0.5px; text-align: center; flex-grow: 1; }
@@ -80,39 +70,52 @@
         .bottom-nav .active i { color: #a855f7; }
 
         /* --- MODAIS COMUNS --- */
-        .bottom-sheet { position: fixed; top: 100%; left: 0; width: 100vw; height: 100vh; background-color: #121212; z-index: 2000; transition: top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; align-items: center; padding: 0 20px; box-sizing: border-box; }
+        .bottom-sheet { position: fixed; top: 100%; left: 0; width: 100vw; height: 100vh; background-color: #121212; z-index: 2000; transition: top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; align-items: center; padding: 0 20px; box-sizing: border-box; overflow-y: auto;}
         .bottom-sheet.open { top: 0; } 
-        .screen-header { width: 100%; max-width: 600px; display: flex; align-items: center; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid #282828; margin-bottom: 20px; }
+        .screen-header { width: 100%; max-width: 600px; display: flex; align-items: center; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid #282828; margin-bottom: 20px; flex-shrink: 0;}
         .screen-header h2 { margin: 0; font-size: 18px; color: #fff; text-align: center; flex-grow: 1;}
         .close-btn { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; padding: 0 10px; }
 
         /* Formulários Customizados */
-        .input-group { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 600px; }
+        .input-group { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 600px; margin-bottom: 15px; }
         .input-group label { font-size: 13px; color: #b3b3b3; font-weight: 600; }
         .custom-input { background-color: #2a2a2a; color: #fff; border: 1px solid #333; border-radius: 8px; padding: 15px; font-size: 15px; font-family: inherit; outline: none; transition: border 0.3s; width: 100%; box-sizing: border-box; }
         .custom-input:focus { border-color: #a855f7; }
         .custom-input option { background-color: #181818; color: #fff; }
         
-        .profile-form { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
-        .btn-whatsapp { background-color: #25D366; color: #fff; border: none; border-radius: 50px; padding: 16px; font-size: 16px; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer; transition: transform 0.1s; font-family: inherit; }
-        .btn-whatsapp:active { transform: scale(0.98); }
+        .profile-form { width: 100%; max-width: 600px; display: flex; flex-direction: column; }
+        .btn-primary { background-color: #a855f7; color: #fff; border: none; border-radius: 50px; padding: 16px; font-size: 16px; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer; transition: transform 0.1s; font-family: inherit; width: 100%; max-width: 600px;}
+        .btn-primary:active { transform: scale(0.98); background-color: #9333ea; }
+        .btn-whatsapp { background-color: #25D366; }
+        .btn-whatsapp:active { background-color: #20b858; }
+        .btn-danger { background-color: #dc3545; padding: 8px 12px; font-size: 12px; border-radius: 6px; }
 
         /* Lista Rádios Form */
-        .stations-list-container { width: 100%; max-width: 600px; overflow-y: auto; flex-grow: 1; padding-bottom: 20px; }
-        .station-list-item { display: flex; align-items: center; background: #181818; padding: 12px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: background 0.3s; border: 1px solid transparent; }
+        .stations-list-container { width: 100%; max-width: 600px; flex-grow: 1; padding-bottom: 20px; }
+        .station-list-item { display: flex; align-items: center; background: #181818; padding: 12px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: background 0.3s; border: 1px solid transparent; position: relative;}
         .station-list-item:active { background: #282828; }
         .station-list-item.active-item { border-color: #a855f7; background: #1f142e; }
         .station-list-item img { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; margin-right: 15px; background-color: #282828; }
-        .station-list-info { flex-grow: 1; overflow: hidden; }
-        .station-list-info h4 { margin: 0 0 4px 0; color: #fff; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .station-list-info { flex-grow: 1; overflow: hidden; display: flex; flex-direction: column; gap: 3px;}
+        .station-list-info h4 { margin: 0; color: #fff; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .station-list-info p { margin: 0; color: #b3b3b3; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        /* Badges de Categoria (NOVO) */
+        .badge { font-size: 10px; padding: 3px 6px; border-radius: 4px; font-weight: 700; width: fit-content; text-transform: uppercase;}
+        .badge-radio { background-color: #2d1a42; color: #c48df5; border: 1px solid #4a2b6e; }
+        .badge-louvor { background-color: #1a3342; color: #8dbbf5; border: 1px solid #2b566e; }
+
+        /* Admin List */
+        .admin-item { display: flex; justify-content: space-between; align-items: center; background: #181818; padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #333;}
+        .admin-item-info h4 { margin: 0 0 5px 0; font-size: 14px; color: #fff;}
+        .admin-item-info p { margin: 0; font-size: 11px; color: #888;}
 
         /* Menu Temporizador */
         .timer-options { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 600px; }
         .timer-btn { background: #2a2a2a; color: #fff; border: none; padding: 16px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
         .timer-btn:active { background: #a855f7; }
 
-        /* --- MENU LATERAL & MAPA --- */
+        /* Menu Lateral */
         #menu-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 2999; display: none; opacity: 0; transition: opacity 0.3s ease; }
         #menu-overlay.open { display: block; opacity: 1; }
         #side-menu { position: fixed; top: 0; left: -320px; width: 280px; max-width: 85vw; height: 100vh; background-color: #181818; z-index: 3000; transition: left 0.3s ease; box-shadow: 2px 0 15px rgba(0,0,0,0.8); display: flex; flex-direction: column; }
@@ -123,12 +126,7 @@
         .menu-item-btn { background: transparent; border: none; color: #fff; font-size: 16px; font-weight: 500; padding: 15px; display: flex; align-items: center; gap: 15px; border-radius: 8px; cursor: pointer; transition: background 0.3s; width: 100%; text-align: left; font-family: inherit; }
         .menu-item-btn:hover, .menu-item-btn:active { background: #282828; }
         .menu-item-btn i { font-size: 20px; color: #a855f7; width: 25px; text-align: center; }
-        #map-screen { position: fixed; top: 0; left: 100%; width: 100vw; height: 100vh; background-color: #121212; z-index: 2500; transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
-        #map-screen.open { left: 0; } 
-        .map-container-full { width: 100%; flex-grow: 1; background: #282828; }
-        .map-container-full iframe { width: 100%; height: 100%; border: none; }
         
-        /* Estilo do Card do Mural */
         .mural-card-box { background: linear-gradient(145deg, #1f142e, #181818); border: 1px solid #a855f7; border-radius: 12px; padding: 30px 20px; text-align: center; margin-top: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 100%; max-width: 600px; box-sizing: border-box;}
     </style>
 </head>
@@ -147,28 +145,19 @@
             <h2>Navegação</h2><button class="close-btn" onclick="fecharMenuLateral()"><i class="fas fa-times"></i></button>
         </div>
         <div class="side-menu-content">
-            <!-- BOTÃO DO MURAL ADICIONADO AQUI -->
             <button class="menu-item-btn" onclick="abrirMural()"><i class="fas fa-book-open"></i> Mural da Palavra</button>
             <button class="menu-item-btn" onclick="abrirAbaMapa()"><i class="fas fa-map-marked-alt"></i> Congregações CCB</button>
             <button class="menu-item-btn" onclick="fecharMenuLateral()"><i class="fas fa-home"></i> Início</button>
         </div>
     </div>
-    <div id="map-screen">
-        <div class="screen-header" style="padding: 20px;">
-            <button class="close-btn" onclick="fecharAbaMapa()"><i class="fas fa-chevron-left"></i></button><h2>CCB em Formiga - MG</h2><div style="width: 44px;"></div>
-        </div>
-        <div class="map-container-full">
-            <iframe src="https://maps.google.com/maps?q=Congrega%C3%A7%C3%A3o+Crist%C3%A3+no+Brasil+Formiga+MG&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy"></iframe>
-        </div>
-    </div>
 
-    <!-- HEADER COM BOTÃO DE COMPARTILHAR -->
+    <!-- HEADER COM BOTÃO DE ADMIN (NOVO) -->
     <header>
         <button class="menu-btn-top" onclick="abrirMenuLateral()"><i class="fas fa-bars"></i></button>
         <h1>Rádio Brasil CCB</h1>
         <div style="display: flex; gap: 5px;">
+            <button class="menu-btn-top" onclick="abrirLoginAdmin()"><i class="fas fa-user-shield"></i></button>
             <button class="menu-btn-top" onclick="compartilharApp()"><i class="fas fa-share-nodes"></i></button>
-            <a href="https://ccbradiobrasil.blogspot.com/2024/04/privacy-policy.html" target="_blank" class="menu-btn-top"><i class="fas fa-shield-alt"></i></a>
         </div>
     </header>
 
@@ -185,7 +174,7 @@
             <div class="progress-container">
                 <div class="progress-bar"><div class="progress-fill"></div></div>
                 <div class="time-info">
-                    <span>AO VIVO</span>
+                    <span id="player-tipo-tag">AO VIVO</span>
                     <div class="equalizer" id="equalizer-anim">
                         <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
                     </div>
@@ -216,29 +205,69 @@
         <button onclick="abrirPerfil()"><i class="fas fa-user"></i><span>Perfil</span></button>
     </nav>
 
-    <!-- Modal do Mural da Palavra (NOVO) -->
+    <!-- Modal Login Admin (NOVO) -->
+    <div id="admin-login-screen" class="bottom-sheet">
+        <div class="screen-header"><div style="width: 44px;"></div><h2>Acesso Restrito</h2><button class="close-btn" onclick="fecharLoginAdmin()"><i class="fas fa-chevron-down"></i></button></div>
+        <div class="profile-form">
+            <p style="text-align: center; color: #b3b3b3; font-size: 14px;">Área exclusiva para administradores.</p>
+            <div class="input-group">
+                <label>Senha de Acesso</label>
+                <input type="password" id="inputAdminSenha" class="custom-input" placeholder="Digite a senha">
+            </div>
+            <button class="btn-primary" onclick="verificarSenhaAdmin()"><i class="fas fa-lock-open"></i> Entrar no Painel</button>
+        </div>
+    </div>
+
+    <!-- Modal Painel Admin (NOVO) -->
+    <div id="admin-panel-screen" class="bottom-sheet">
+        <div class="screen-header"><div style="width: 44px;"></div><h2>Painel Admin</h2><button class="close-btn" onclick="fecharAdminPanel()"><i class="fas fa-times"></i></button></div>
+        
+        <div class="profile-form" style="padding-bottom: 30px;">
+            <h3 style="margin-top: 0; color: #a855f7;">Adicionar Novo Áudio</h3>
+            
+            <div class="input-group">
+                <label>Tipo</label>
+                <select id="adminTipo" class="custom-input">
+                    <option value="louvor">Louvor (Música Gravada)</option>
+                    <option value="radio">Rádio (Ao Vivo)</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label>Nome / Título</label>
+                <input type="text" id="adminNome" class="custom-input" placeholder="Ex: Hino 01 ou Rádio X">
+            </div>
+            
+            <div class="input-group">
+                <label>Descrição / Artista</label>
+                <input type="text" id="adminDesc" class="custom-input" placeholder="Ex: Cantor ou Programa">
+            </div>
+            
+            <div class="input-group">
+                <label>Link do Áudio (SoundCloud MP3/Stream)</label>
+                <input type="url" id="adminLink" class="custom-input" placeholder="https://...">
+            </div>
+
+            <button class="btn-primary" onclick="salvarNovoAudio()"><i class="fas fa-plus"></i> Adicionar à Lista</button>
+            
+            <hr style="border: 0; height: 1px; background: #333; margin: 30px 0; width: 100%;">
+            
+            <h3 style="margin-top: 0; color: #a855f7;">Gerenciar Áudios Adicionados</h3>
+            <div id="admin-lista-dinamica" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- Lista administrável aparecerá aqui -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Outros Modais (Mural, Perfil, Rádios, Temporizador) -->
     <div id="mural-screen" class="bottom-sheet">
         <div class="screen-header"><div style="width: 44px;"></div><h2>Mural da Palavra</h2><button class="close-btn" onclick="fecharMural()"><i class="fas fa-chevron-down"></i></button></div>
-        
         <p style="color: #b3b3b3; text-align: center; font-size: 14px; margin-top: 0;">Sua mensagem espiritual para cada mês.</p>
-        
         <div class="input-group">
             <select id="mural-mes-select" class="custom-input" onchange="atualizarMural()">
-                <option value="1">Janeiro</option>
-                <option value="2">Fevereiro</option>
-                <option value="3">Março</option>
-                <option value="4">Abril</option>
-                <option value="5">Maio</option>
-                <option value="6">Junho</option>
-                <option value="7">Julho</option>
-                <option value="8">Agosto</option>
-                <option value="9">Setembro</option>
-                <option value="10">Outubro</option>
-                <option value="11">Novembro</option>
-                <option value="12">Dezembro</option>
+                <option value="1">Janeiro</option><option value="2">Fevereiro</option><option value="3">Março</option><option value="4">Abril</option><option value="5">Maio</option><option value="6">Junho</option><option value="7">Julho</option><option value="8">Agosto</option><option value="9">Setembro</option><option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option>
             </select>
         </div>
-
         <div class="mural-card-box">
             <i class="fas fa-quote-left" style="color: #a855f7; font-size: 28px; margin-bottom: 15px; opacity: 0.6;"></i>
             <h3 id="mural-titulo" style="margin: 0 0 15px 0; color: #fff; font-size: 20px;">Carregando...</h3>
@@ -247,14 +276,13 @@
         </div>
     </div>
 
-    <!-- Modais de Perfil e Filtro -->
     <div id="profile-screen" class="bottom-sheet">
         <div class="screen-header"><div style="width: 44px;"></div><h2>Meu Perfil</h2><button class="close-btn" onclick="fecharPerfil()"><i class="fas fa-chevron-down"></i></button></div>
         <div class="profile-form">
             <div class="input-group"><label>Seu Nome</label><input type="text" id="inputNome" class="custom-input" placeholder="Ex: João Silva" oninput="salvarDados()"></div>
             <div class="input-group"><label>Sua Cidade</label><input type="text" id="inputCidade" class="custom-input" placeholder="Sua cidade e estado" oninput="salvarDados()"></div>
             <div class="input-group"><label>Comum Congregação</label><input type="text" id="inputCCB" class="custom-input" placeholder="Ex: Central" oninput="salvarDados()"></div>
-            <button class="btn-whatsapp" onclick="enviarParaWhatsApp()"><i class="fab fa-whatsapp"></i> Enviar Mensagem</button>
+            <button class="btn-primary btn-whatsapp" onclick="enviarParaWhatsApp()"><i class="fab fa-whatsapp"></i> Enviar Mensagem</button>
             <p style="font-size: 11px; color: #888; text-align: center; margin-top: 10px;">Seus dados ficam salvos automaticamente no celular.</p>
         </div>
     </div>
@@ -264,7 +292,6 @@
         <div class="stations-list-container" id="stations-list-dynamic"><p style="text-align:center; color:#b3b3b3; margin-top:20px;">Carregando estações...</p></div>
     </div>
 
-    <!-- Modal Temporizador -->
     <div id="timer-screen" class="bottom-sheet">
         <div class="screen-header"><div style="width: 44px;"></div><h2>Temporizador</h2><button class="close-btn" onclick="fecharTemporizador()"><i class="fas fa-chevron-down"></i></button></div>
         <p style="color: #b3b3b3; text-align: center; font-size: 14px; margin-bottom: 20px;">Escolha em quanto tempo a rádio vai desligar sozinha.</p>
@@ -287,62 +314,116 @@
         function fecharPerfil() { document.getElementById('profile-screen').classList.remove('open'); }
         function abrirListaRadios() { document.getElementById('stations-list-screen').classList.add('open'); renderizarListaFiltro(); }
         function fecharListaRadios() { document.getElementById('stations-list-screen').classList.remove('open'); }
-        
+        function compartilharApp() { const linkOficial = "https://play.google.com/store/apps/details?id=io.kodular.marcelocaetanonascimento2016.HinosCCBRadio&hl=pt"; const texto = "Ouça os melhores louvores na Rádio Brasil CCB! Baixe agora:"; if (navigator.share) { navigator.share({ title: 'Rádio Brasil CCB', text: texto, url: linkOficial }).catch(err => console.log('Erro ao compartilhar', err)); } else { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto + " " + linkOficial)}`, '_blank'); } }
+
         window.addEventListener('load', () => { setTimeout(() => { document.getElementById('splash-screen').style.opacity = '0'; document.getElementById('splash-screen').style.visibility = 'hidden'; }, 2500); });
 
         // DADOS DO PERFIL
         function salvarDados() { localStorage.setItem('ccb_nome', document.getElementById('inputNome').value); localStorage.setItem('ccb_cidade', document.getElementById('inputCidade').value); localStorage.setItem('ccb_congregacao', document.getElementById('inputCCB').value); }
         function carregarDados() { if(localStorage.getItem('ccb_nome')) document.getElementById('inputNome').value = localStorage.getItem('ccb_nome'); if(localStorage.getItem('ccb_cidade')) document.getElementById('inputCidade').value = localStorage.getItem('ccb_cidade'); if(localStorage.getItem('ccb_congregacao')) document.getElementById('inputCCB').value = localStorage.getItem('ccb_congregacao'); }
-        function enviarParaWhatsApp() {
-            const nome = document.getElementById('inputNome').value.trim(); const cidade = document.getElementById('inputCidade').value.trim(); const ccb = document.getElementById('inputCCB').value.trim();
-            if (!nome || !cidade || !ccb) { alert("Preencha todos os campos do perfil antes de enviar."); return; }
-            const msg = `A paz de Deus! Gostaria de participar da Rádio Brasil CCB.\n\n*Nome:* ${nome}\n*Cidade:* ${cidade}\n*Comum Congregação:* ${ccb}`;
-            window.open(`https://api.whatsapp.com/send/?phone=5537998648790&text=${encodeURIComponent(msg)}&type=phone_number&app_absent=0`, '_blank');
-        }
+        function enviarParaWhatsApp() { const nome = document.getElementById('inputNome').value.trim(); const cidade = document.getElementById('inputCidade').value.trim(); const ccb = document.getElementById('inputCCB').value.trim(); if (!nome || !cidade || !ccb) { alert("Preencha todos os campos."); return; } window.open(`https://api.whatsapp.com/send/?phone=5537998648790&text=${encodeURIComponent(`A paz de Deus! Gostaria de participar da Rádio Brasil CCB.\n\n*Nome:* ${nome}\n*Cidade:* ${cidade}\n*Comum Congregação:* ${ccb}`)}&type=phone_number&app_absent=0`, '_blank'); }
 
-        // FUNÇÃO DE COMPARTILHAMENTO
-        function compartilharApp() {
-            const linkOficial = "https://play.google.com/store/apps/details?id=io.kodular.marcelocaetanonascimento2016.HinosCCBRadio&hl=pt";
-            const texto = "Ouça os melhores louvores na Rádio Brasil CCB! Baixe agora o aplicativo:";
-            if (navigator.share) {
-                navigator.share({ title: 'Rádio Brasil CCB', text: texto, url: linkOficial }).catch(err => console.log('Erro ao compartilhar', err));
-            } else {
-                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto + " " + linkOficial)}`, '_blank');
-            }
-        }
+        // MURAL DA PALAVRA
+        const palavrasDoMural = { "1": { titulo: "Novo Começo", texto: "Esforça-te, e tem bom ânimo; não temas, nem te espantes; porque o Senhor teu Deus é contigo, por onde quer que andares.", ref: "Josué 1:9" }, "2": { titulo: "Fé Inabalável", texto: "Ora, a fé é o firme fundamento das coisas que se esperam, e a prova das coisas que se não veem.", ref: "Hebreus 11:1" }, "3": { titulo: "Amor Divino", texto: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.", ref: "João 3:16" }, "4": { titulo: "Paz Interior", texto: "Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá. Não se turbe o vosso coração, nem se atemorize.", ref: "João 14:27" }, "5": { titulo: "Força na Fraqueza", texto: "Tudo posso naquele que me fortalece.", ref: "Filipenses 4:13" }, "6": { titulo: "Luz no Caminho", texto: "Lâmpada para os meus pés é tua palavra, e luz para o meu caminho.", ref: "Salmos 119:105" }, "7": { titulo: "Espera no Senhor", texto: "Espera no Senhor, anima-te, e ele fortalecerá o teu coração; espera, pois, no Senhor.", ref: "Salmos 27:14" }, "8": { titulo: "Cuidado de Deus", texto: "Lançando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vós.", ref: "1 Pedro 5:7" }, "9": { titulo: "Gratidão", texto: "Em tudo dai graças, porque esta é a vontade de Deus em Cristo Jesus para convosco.", ref: "1 Tessalonicenses 5:18" }, "10": { titulo: "Renovação", texto: "E não sede conformados com este mundo, mas sede transformados pela renovação do vosso entendimento...", ref: "Romanos 12:2" }, "11": { titulo: "Proteção", texto: "O Senhor é o meu pastor, nada me faltará.", ref: "Salmos 23:1" }, "12": { titulo: "Alegria e Salvação", texto: "O Senhor é a minha força e o meu cântico; ele me foi por salvação.", ref: "Êxodo 15:2" } };
+        function abrirMural() { fecharMenuLateral(); document.getElementById('mural-screen').classList.add('open'); const mesAtual = new Date().getMonth() + 1; document.getElementById('mural-mes-select').value = mesAtual; atualizarMural(); }
+        function fecharMural() { document.getElementById('mural-screen').classList.remove('open'); }
+        function atualizarMural() { const mesSelecionado = document.getElementById('mural-mes-select').value; const dados = palavrasDoMural[mesSelecionado]; document.getElementById('mural-titulo').innerText = dados.titulo; document.getElementById('mural-texto').innerText = `"${dados.texto}"`; document.getElementById('mural-referencia').innerText = dados.ref; }
 
-        // LÓGICA DO TEMPORIZADOR DE SONO
+        // TEMPORIZADOR
         let sleepTimerId;
         function abrirTemporizador() { document.getElementById('timer-screen').classList.add('open'); }
         function fecharTemporizador() { document.getElementById('timer-screen').classList.remove('open'); }
-        
-        function iniciarTemporizador(minutos) {
-            clearTimeout(sleepTimerId);
-            document.getElementById('timer-status').innerText = `Rádio desligará em ${minutos} minutos.`;
-            document.getElementById('moon-icon').style.color = '#a855f7';
-            
-            sleepTimerId = setTimeout(() => {
-                const audioPlayer = document.getElementById('main-audio');
-                if (!audioPlayer.paused) { toggleMainPlay(); }
-                cancelarTemporizador();
-            }, minutos * 60000); 
-            
-            setTimeout(fecharTemporizador, 1000); 
-        }
-        
-        function cancelarTemporizador() {
-            clearTimeout(sleepTimerId);
-            document.getElementById('timer-status').innerText = "";
-            document.getElementById('moon-icon').style.color = '#b3b3b3';
-            setTimeout(fecharTemporizador, 1000);
+        function iniciarTemporizador(minutos) { clearTimeout(sleepTimerId); document.getElementById('timer-status').innerText = `Rádio desligará em ${minutos} minutos.`; document.getElementById('moon-icon').style.color = '#a855f7'; sleepTimerId = setTimeout(() => { const audioPlayer = document.getElementById('main-audio'); if (!audioPlayer.paused) { toggleMainPlay(); } cancelarTemporizador(); }, minutos * 60000); setTimeout(fecharTemporizador, 1000); }
+        function cancelarTemporizador() { clearTimeout(sleepTimerId); document.getElementById('timer-status').innerText = ""; document.getElementById('moon-icon').style.color = '#b3b3b3'; setTimeout(fecharTemporizador, 1000); }
+        document.getElementById('volume-slider').addEventListener('input', function() { document.getElementById('main-audio').volume = this.value; });
+
+        // --- SISTEMA ADMIN (NOVO) ---
+        const SENHA_ADMIN = "Marcelinho123.";
+        let audiosLocaisAdmin = []; // Aqui ficam salvos os audios do admin localmente
+
+        function abrirLoginAdmin() { document.getElementById('admin-login-screen').classList.add('open'); document.getElementById('inputAdminSenha').value = ""; }
+        function fecharLoginAdmin() { document.getElementById('admin-login-screen').classList.remove('open'); }
+        function fecharAdminPanel() { document.getElementById('admin-panel-screen').classList.remove('open'); carregarTodasAsRadios(); } // Recarrega lista principal ao fechar
+
+        function verificarSenhaAdmin() {
+            const senhaDigitada = document.getElementById('inputAdminSenha').value;
+            if (senhaDigitada === SENHA_ADMIN) {
+                fecharLoginAdmin();
+                document.getElementById('admin-panel-screen').classList.add('open');
+                carregarAudiosAdmin();
+            } else {
+                alert("Senha incorreta!");
+            }
         }
 
-        // LÓGICA DO CONTROLE DE VOLUME
-        document.getElementById('volume-slider').addEventListener('input', function() {
-            document.getElementById('main-audio').volume = this.value;
-        });
+        function carregarAudiosAdmin() {
+            const salvos = localStorage.getItem('admin_audios');
+            if (salvos) { audiosLocaisAdmin = JSON.parse(salvos); }
+            renderizarListaAdmin();
+        }
 
-        // --- SISTEMA INTELIGENTE DE PLAYER ÚNICO ---
+        function salvarNovoAudio() {
+            const tipo = document.getElementById('adminTipo').value;
+            const nome = document.getElementById('adminNome').value.trim();
+            const desc = document.getElementById('adminDesc').value.trim();
+            const link = document.getElementById('adminLink').value.trim();
+
+            if (!nome || !link) { alert("Nome e Link são obrigatórios!"); return; }
+
+            const novoAudio = {
+                id: Date.now().toString(),
+                nome: nome,
+                louvor: desc || (tipo === 'radio' ? 'Transmissão ao vivo' : 'Faixa de Louvor'),
+                artista: 'Adicionado por Admin',
+                link: link,
+                img: "https://placehold.co/400x400/181818/a855f7?text=" + encodeURIComponent(nome.substring(0, 10)),
+                tipo: tipo // Define se é radio ou louvor
+            };
+
+            audiosLocaisAdmin.push(novoAudio);
+            localStorage.setItem('admin_audios', JSON.stringify(audiosLocaisAdmin));
+            
+            // Limpa form
+            document.getElementById('adminNome').value = "";
+            document.getElementById('adminDesc').value = "";
+            document.getElementById('adminLink').value = "";
+            
+            renderizarListaAdmin();
+            alert("Áudio adicionado com sucesso!");
+        }
+
+        function deletarAudioAdmin(id) {
+            if(confirm("Tem certeza que deseja excluir?")) {
+                audiosLocaisAdmin = audiosLocaisAdmin.filter(audio => audio.id !== id);
+                localStorage.setItem('admin_audios', JSON.stringify(audiosLocaisAdmin));
+                renderizarListaAdmin();
+            }
+        }
+
+        function renderizarListaAdmin() {
+            const container = document.getElementById('admin-lista-dinamica');
+            container.innerHTML = "";
+            
+            if (audiosLocaisAdmin.length === 0) {
+                container.innerHTML = "<p style='color:#888; font-size:12px; text-align:center;'>Nenhum áudio local adicionado ainda.</p>";
+                return;
+            }
+
+            audiosLocaisAdmin.forEach(audio => {
+                const item = document.createElement('div');
+                item.className = "admin-item";
+                item.innerHTML = `
+                    <div class="admin-item-info">
+                        <h4>${audio.nome} <span style="font-size: 10px; color: #a855f7;">(${audio.tipo})</span></h4>
+                        <p>${audio.louvor}</p>
+                    </div>
+                    <button class="btn-primary btn-danger" onclick="deletarAudioAdmin('${audio.id}')"><i class="fas fa-trash"></i></button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // --- SISTEMA INTELIGENTE DE PLAYER ---
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxjX7K30EgFOfqktK4JAnl0bpXE7UC1iWH-camU5RHxTk6RoxxIpHxhGZzgMxNV0T/exec";
         
         let listaDeRadios = [];
@@ -350,24 +431,35 @@
         const audioPlayer = document.getElementById('main-audio');
         const playIcon = document.getElementById('main-play-icon');
         const eqAnim = document.getElementById('equalizer-anim');
-
+        const tipoTag = document.getElementById('player-tipo-tag');
         const imgSeguranca = "https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+CCB";
 
         async function carregarTodasAsRadios() {
+            // 1. Rádios Fixas
             const radiosFixas = [
-                { nome: "Rádio Live", louvor: "Sua Música ao Vivo", artista: "DJ Central", link: "https://stm43.srvstm.com:8954/stream", img: "https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+Live" },
-                { nome: "Louvores Variados", louvor: "Músicas de Louvor", artista: "Diversos Artistas", link: "http://stm1.hoststreaming.com.br:7088/;stream.nsv", img: "https://placehold.co/400x400/181818/a855f7?text=Louvores" }
+                { nome: "Rádio Live", louvor: "Sua Música ao Vivo", artista: "DJ Central", link: "https://stm43.srvstm.com:8954/stream", img: "https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+Live", tipo: "radio" },
+                { nome: "Louvores Variados", louvor: "Músicas de Louvor", artista: "Diversos Artistas", link: "http://stm1.hoststreaming.com.br:7088/;stream.nsv", img: "https://placehold.co/400x400/181818/a855f7?text=Louvores", tipo: "radio" }
             ];
+            
+            // 2. Rádios do Google Sheets
+            let radiosPlanilha = [];
             try {
                 const response = await fetch(`${WEB_APP_URL}?sheet=ESTACOES`);
                 const linksPlanilha = await response.json(); 
-                const radiosPlanilha = linksPlanilha.map((item, index) => {
+                radiosPlanilha = linksPlanilha.map((item, index) => {
                     let nome = `Estação ${index + 3}`;
                     try { const url = new URL(item.link); nome = url.hostname.replace('www.', '').split('.')[0]; nome = nome.charAt(0).toUpperCase() + nome.slice(1); } catch (e) {}
-                    return { nome: nome, louvor: item.louvor || 'Louvor não informado', artista: item.artista || 'Diversos', link: item.link, img: item.img || imgSeguranca };
+                    return { nome: nome, louvor: item.louvor || 'Louvor não informado', artista: item.artista || 'Diversos', link: item.link, img: item.img || imgSeguranca, tipo: "radio" };
                 });
-                listaDeRadios = [...radiosFixas, ...radiosPlanilha];
-            } catch (error) { listaDeRadios = radiosFixas; }
+            } catch (error) { console.log("Erro ao carregar planilha"); }
+
+            // 3. Rádios/Louvores do Admin Local
+            const salvosAdmin = localStorage.getItem('admin_audios');
+            let audiosAdmin = salvosAdmin ? JSON.parse(salvosAdmin) : [];
+
+            // Junta tudo em uma lista só
+            listaDeRadios = [...radiosFixas, ...radiosPlanilha, ...audiosAdmin];
+            
             if(listaDeRadios.length > 0) { atualizarTelaPlayer(0, false); }
         }
 
@@ -378,6 +470,15 @@
             document.getElementById('player-louvor').innerText = radio.louvor;
             document.getElementById('player-artista').innerText = `Por: ${radio.artista}`;
             document.getElementById('player-img').src = radio.img;
+            
+            // Atualiza a TAG na tela se é Rádio ou Louvor
+            if(radio.tipo === 'louvor') {
+                tipoTag.innerText = "LOUVOR";
+                tipoTag.style.color = "#8dbbf5";
+            } else {
+                tipoTag.innerText = "AO VIVO";
+                tipoTag.style.color = "#b3b3b3";
+            }
             
             const tavaTocando = !audioPlayer.paused;
             document.getElementById('main-audio-src').src = radio.link;
@@ -395,18 +496,11 @@
             }).catch(e => { 
                 playIcon.className = 'fas fa-play'; 
                 eqAnim.classList.remove('playing');
+                alert("Erro ao reproduzir. Verifique se o link direto do áudio é válido.");
             });
         }
 
-        function toggleMainPlay() { 
-            if (audioPlayer.paused) { tocarAudio(); } 
-            else { 
-                audioPlayer.pause(); 
-                playIcon.className = 'fas fa-play'; 
-                eqAnim.classList.remove('playing'); 
-            } 
-        }
-
+        function toggleMainPlay() { if (audioPlayer.paused) { tocarAudio(); } else { audioPlayer.pause(); playIcon.className = 'fas fa-play'; eqAnim.classList.remove('playing'); } }
         function nextRadio() { let prox = indexRadioAtual + 1; if(prox >= listaDeRadios.length) prox = 0; atualizarTelaPlayer(prox, true); }
         function prevRadio() { let ant = indexRadioAtual - 1; if(ant < 0) ant = listaDeRadios.length - 1; atualizarTelaPlayer(ant, true); }
 
@@ -418,9 +512,18 @@
                 const itemDiv = document.createElement('div');
                 itemDiv.className = `station-list-item ${isActive ? 'active-item' : ''}`;
                 itemDiv.onclick = () => { fecharListaRadios(); atualizarTelaPlayer(index, true); };
+                
+                // Escolhe a cor e texto da etiquetinha
+                const badgeClass = radio.tipo === 'louvor' ? 'badge-louvor' : 'badge-radio';
+                const badgeText = radio.tipo === 'louvor' ? 'Louvor' : 'Rádio';
+
                 itemDiv.innerHTML = `
                     <img src="${radio.img}" alt="Capa" onerror="this.src='${imgSeguranca}'">
-                    <div class="station-list-info"><h4>${radio.nome}</h4><p>${radio.louvor}</p></div>
+                    <div class="station-list-info">
+                        <span class="badge ${badgeClass}">${badgeText}</span>
+                        <h4>${radio.nome}</h4>
+                        <p>${radio.louvor}</p>
+                    </div>
                     ${isActive ? '<i class="fas fa-volume-up" style="color:#a855f7;"></i>' : ''}
                 `;
                 container.appendChild(itemDiv);
@@ -428,57 +531,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            if (/android/i.test(userAgent) && /(wv|Version\/\d+\.\d+)/.test(userAgent)) document.body.classList.add('app-android');
-            else document.body.classList.add('navegador-web');
             carregarTodasAsRadios();
             carregarDados(); 
         });
-
-        /* =================================================================
-           SISTEMA DO MURAL DA PALAVRA (NOVO)
-           Edite as palavras de cada mês aqui!
-        ==================================================================== */
-        const palavrasDoMural = {
-            "1": { titulo: "Novo Começo", texto: "Esforça-te, e tem bom ânimo; não temas, nem te espantes; porque o Senhor teu Deus é contigo, por onde quer que andares.", ref: "Josué 1:9" },
-            "2": { titulo: "Fé Inabalável", texto: "Ora, a fé é o firme fundamento das coisas que se esperam, e a prova das coisas que se não veem.", ref: "Hebreus 11:1" },
-            "3": { titulo: "Amor Divino", texto: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.", ref: "João 3:16" },
-            "4": { titulo: "Paz Interior", texto: "Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá. Não se turbe o vosso coração, nem se atemorize.", ref: "João 14:27" },
-            "5": { titulo: "Força na Fraqueza", texto: "Tudo posso naquele que me fortalece.", ref: "Filipenses 4:13" },
-            "6": { titulo: "Luz no Caminho", texto: "Lâmpada para os meus pés é tua palavra, e luz para o meu caminho.", ref: "Salmos 119:105" },
-            "7": { titulo: "Espera no Senhor", texto: "Espera no Senhor, anima-te, e ele fortalecerá o teu coração; espera, pois, no Senhor.", ref: "Salmos 27:14" },
-            "8": { titulo: "Cuidado de Deus", texto: "Lançando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vós.", ref: "1 Pedro 5:7" },
-            "9": { titulo: "Gratidão", texto: "Em tudo dai graças, porque esta é a vontade de Deus em Cristo Jesus para convosco.", ref: "1 Tessalonicenses 5:18" },
-            "10": { titulo: "Renovação", texto: "E não sede conformados com este mundo, mas sede transformados pela renovação do vosso entendimento...", ref: "Romanos 12:2" },
-            "11": { titulo: "Proteção", texto: "O Senhor é o meu pastor, nada me faltará.", ref: "Salmos 23:1" },
-            "12": { titulo: "Alegria e Salvação", texto: "O Senhor é a minha força e o meu cântico; ele me foi por salvação.", ref: "Êxodo 15:2" }
-        };
-
-        function abrirMural() {
-            fecharMenuLateral();
-            document.getElementById('mural-screen').classList.add('open');
-            
-            // Pega o mês atual do celular do usuário (1 = Jan, 2 = Fev...)
-            const mesAtual = new Date().getMonth() + 1; 
-            document.getElementById('mural-mes-select').value = mesAtual;
-            
-            atualizarMural(); // Carrega a palavra na tela
-        }
-
-        function fecharMural() {
-            document.getElementById('mural-screen').classList.remove('open');
-        }
-
-        function atualizarMural() {
-            const mesSelecionado = document.getElementById('mural-mes-select').value;
-            
-            // Puxa os dados da nossa lista de meses lá em cima
-            const dados = palavrasDoMural[mesSelecionado];
-            
-            document.getElementById('mural-titulo').innerText = dados.titulo;
-            document.getElementById('mural-texto').innerText = `"${dados.texto}"`;
-            document.getElementById('mural-referencia').innerText = dados.ref;
-        }
     </script>
 </body>
 </html>
