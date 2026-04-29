@@ -100,7 +100,7 @@
         .station-list-info h4 { margin: 0; color: #fff; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .station-list-info p { margin: 0; color: #b3b3b3; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
-        /* Badges de Categoria (NOVO) */
+        /* Badges de Categoria */
         .badge { font-size: 10px; padding: 3px 6px; border-radius: 4px; font-weight: 700; width: fit-content; text-transform: uppercase;}
         .badge-radio { background-color: #2d1a42; color: #c48df5; border: 1px solid #4a2b6e; }
         .badge-louvor { background-color: #1a3342; color: #8dbbf5; border: 1px solid #2b566e; }
@@ -115,7 +115,7 @@
         .timer-btn { background: #2a2a2a; color: #fff; border: none; padding: 16px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
         .timer-btn:active { background: #a855f7; }
 
-        /* Menu Lateral */
+        /* Menu Lateral e Mapa */
         #menu-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 2999; display: none; opacity: 0; transition: opacity 0.3s ease; }
         #menu-overlay.open { display: block; opacity: 1; }
         #side-menu { position: fixed; top: 0; left: -320px; width: 280px; max-width: 85vw; height: 100vh; background-color: #181818; z-index: 3000; transition: left 0.3s ease; box-shadow: 2px 0 15px rgba(0,0,0,0.8); display: flex; flex-direction: column; }
@@ -126,6 +126,12 @@
         .menu-item-btn { background: transparent; border: none; color: #fff; font-size: 16px; font-weight: 500; padding: 15px; display: flex; align-items: center; gap: 15px; border-radius: 8px; cursor: pointer; transition: background 0.3s; width: 100%; text-align: left; font-family: inherit; }
         .menu-item-btn:hover, .menu-item-btn:active { background: #282828; }
         .menu-item-btn i { font-size: 20px; color: #a855f7; width: 25px; text-align: center; }
+        
+        /* AQUI ESTÁ A CORREÇÃO DO MAPA ESCONDIDO! */
+        #map-screen { position: fixed; top: 0; left: 100%; width: 100vw; height: 100vh; background-color: #121212; z-index: 2500; transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
+        #map-screen.open { left: 0; } 
+        .map-container-full { width: 100%; flex-grow: 1; background: #282828; }
+        .map-container-full iframe { width: 100%; height: 100%; border: none; }
         
         .mural-card-box { background: linear-gradient(145deg, #1f142e, #181818); border: 1px solid #a855f7; border-radius: 12px; padding: 30px 20px; text-align: center; margin-top: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 100%; max-width: 600px; box-sizing: border-box;}
     </style>
@@ -151,7 +157,6 @@
         </div>
     </div>
 
-    <!-- HEADER COM BOTÃO DE ADMIN (NOVO) -->
     <header>
         <button class="menu-btn-top" onclick="abrirMenuLateral()"><i class="fas fa-bars"></i></button>
         <h1>Rádio Brasil CCB</h1>
@@ -205,7 +210,7 @@
         <button onclick="abrirPerfil()"><i class="fas fa-user"></i><span>Perfil</span></button>
     </nav>
 
-    <!-- Modal Login Admin (NOVO) -->
+    <!-- Modal Login Admin -->
     <div id="admin-login-screen" class="bottom-sheet">
         <div class="screen-header"><div style="width: 44px;"></div><h2>Acesso Restrito</h2><button class="close-btn" onclick="fecharLoginAdmin()"><i class="fas fa-chevron-down"></i></button></div>
         <div class="profile-form">
@@ -218,11 +223,12 @@
         </div>
     </div>
 
-    <!-- Modal Painel Admin (NOVO) -->
+    <!-- Modal Painel Admin (COM PHP INTEGRADO) -->
     <div id="admin-panel-screen" class="bottom-sheet">
         <div class="screen-header"><div style="width: 44px;"></div><h2>Painel Admin</h2><button class="close-btn" onclick="fecharAdminPanel()"><i class="fas fa-times"></i></button></div>
         
         <div class="profile-form" style="padding-bottom: 30px;">
+            <p style="color: #ff9800; font-size: 12px; text-align: center;">Conectado ao Banco de Dados (PHPMyAdmin)</p>
             <h3 style="margin-top: 0; color: #a855f7;">Adicionar Novo Áudio</h3>
             
             <div class="input-group">
@@ -244,22 +250,31 @@
             </div>
             
             <div class="input-group">
-                <label>Link do Áudio (SoundCloud MP3/Stream)</label>
+                <label>Link do Áudio (GitHub MP3/Stream)</label>
                 <input type="url" id="adminLink" class="custom-input" placeholder="https://...">
             </div>
 
-            <button class="btn-primary" onclick="salvarNovoAudio()"><i class="fas fa-plus"></i> Adicionar à Lista</button>
+            <button class="btn-primary" onclick="salvarNovoAudio()"><i class="fas fa-cloud-upload-alt"></i> Salvar no Banco de Dados</button>
             
             <hr style="border: 0; height: 1px; background: #333; margin: 30px 0; width: 100%;">
             
-            <h3 style="margin-top: 0; color: #a855f7;">Gerenciar Áudios Adicionados</h3>
+            <h3 style="margin-top: 0; color: #a855f7;">Gerenciar Áudios do Banco</h3>
             <div id="admin-lista-dinamica" style="display: flex; flex-direction: column; gap: 10px;">
                 <!-- Lista administrável aparecerá aqui -->
             </div>
         </div>
     </div>
 
-    <!-- Outros Modais (Mural, Perfil, Rádios, Temporizador) -->
+    <!-- Outros Modais (Mural, Perfil, Rádios, Temporizador, Mapa) -->
+    <div id="map-screen">
+        <div class="screen-header" style="padding: 20px;">
+            <button class="close-btn" onclick="fecharAbaMapa()"><i class="fas fa-chevron-left"></i></button><h2>CCB em Formiga - MG</h2><div style="width: 44px;"></div>
+        </div>
+        <div class="map-container-full">
+            <iframe src="https://maps.google.com/maps?q=Congrega%C3%A7%C3%A3o+Crist%C3%A3+no+Brasil+Formiga+MG&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy"></iframe>
+        </div>
+    </div>
+
     <div id="mural-screen" class="bottom-sheet">
         <div class="screen-header"><div style="width: 44px;"></div><h2>Mural da Palavra</h2><button class="close-btn" onclick="fecharMural()"><i class="fas fa-chevron-down"></i></button></div>
         <p style="color: #b3b3b3; text-align: center; font-size: 14px; margin-top: 0;">Sua mensagem espiritual para cada mês.</p>
@@ -337,13 +352,20 @@
         function cancelarTemporizador() { clearTimeout(sleepTimerId); document.getElementById('timer-status').innerText = ""; document.getElementById('moon-icon').style.color = '#b3b3b3'; setTimeout(fecharTemporizador, 1000); }
         document.getElementById('volume-slider').addEventListener('input', function() { document.getElementById('main-audio').volume = this.value; });
 
-        // --- SISTEMA ADMIN (NOVO) ---
+
+        // =====================================================================
+        // --- SISTEMA ADMIN CONECTADO AO PHP/MYSQL ---
+        // =====================================================================
         const SENHA_ADMIN = "Marcelinho123.";
-        let audiosLocaisAdmin = []; // Aqui ficam salvos os audios do admin localmente
+        let audiosLocaisAdmin = []; 
+
+        // ATENÇÃO: TROQUE ESTES LINKS PELO LINK REAL DE ONDE SEUS ARQUIVOS PHP ESTÃO HOSPEDADOS
+        const URL_SALVAR_PHP = "https://SEUSITE.COM.BR/salvar_audio.php";
+        const URL_LISTAR_PHP = "https://SEUSITE.COM.BR/listar_audios.php";
 
         function abrirLoginAdmin() { document.getElementById('admin-login-screen').classList.add('open'); document.getElementById('inputAdminSenha').value = ""; }
         function fecharLoginAdmin() { document.getElementById('admin-login-screen').classList.remove('open'); }
-        function fecharAdminPanel() { document.getElementById('admin-panel-screen').classList.remove('open'); carregarTodasAsRadios(); } // Recarrega lista principal ao fechar
+        function fecharAdminPanel() { document.getElementById('admin-panel-screen').classList.remove('open'); carregarTodasAsRadios(); }
 
         function verificarSenhaAdmin() {
             const senhaDigitada = document.getElementById('inputAdminSenha').value;
@@ -356,13 +378,7 @@
             }
         }
 
-        function carregarAudiosAdmin() {
-            const salvos = localStorage.getItem('admin_audios');
-            if (salvos) { audiosLocaisAdmin = JSON.parse(salvos); }
-            renderizarListaAdmin();
-        }
-
-        function salvarNovoAudio() {
+        async function salvarNovoAudio() {
             const tipo = document.getElementById('adminTipo').value;
             const nome = document.getElementById('adminNome').value.trim();
             const desc = document.getElementById('adminDesc').value.trim();
@@ -370,42 +386,66 @@
 
             if (!nome || !link) { alert("Nome e Link são obrigatórios!"); return; }
 
-            const novoAudio = {
-                id: Date.now().toString(),
+            // Botão carregando
+            const btn = document.querySelector('button[onclick="salvarNovoAudio()"]');
+            const textoOriginal = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando no Servidor...';
+
+            const dadosParaEnviar = {
+                tipo: tipo,
                 nome: nome,
-                louvor: desc || (tipo === 'radio' ? 'Transmissão ao vivo' : 'Faixa de Louvor'),
-                artista: 'Adicionado por Admin',
-                link: link,
-                img: "https://placehold.co/400x400/181818/a855f7?text=" + encodeURIComponent(nome.substring(0, 10)),
-                tipo: tipo // Define se é radio ou louvor
+                descricao: desc || (tipo === 'radio' ? 'Transmissão ao vivo' : 'Faixa de Louvor'),
+                link: link
             };
 
-            audiosLocaisAdmin.push(novoAudio);
-            localStorage.setItem('admin_audios', JSON.stringify(audiosLocaisAdmin));
+            try {
+                const resposta = await fetch(URL_SALVAR_PHP, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dadosParaEnviar)
+                });
+                
+                const resultado = await resposta.json();
+                
+                if(resultado.sucesso) {
+                    alert("Áudio salvo com sucesso para todos os usuários!");
+                    document.getElementById('adminNome').value = "";
+                    document.getElementById('adminDesc').value = "";
+                    document.getElementById('adminLink').value = "";
+                    carregarAudiosAdmin(); // Atualiza a lista do admin
+                    carregarTodasAsRadios(); // Atualiza o app principal em segundo plano
+                } else {
+                    alert("Erro ao salvar no banco: " + resultado.erro);
+                }
+            } catch (erro) {
+                alert("Atenção: Configure a URL_SALVAR_PHP correta da sua hospedagem no código.");
+                console.error("Erro de conexão PHP:", erro);
+            }
             
-            // Limpa form
-            document.getElementById('adminNome').value = "";
-            document.getElementById('adminDesc').value = "";
-            document.getElementById('adminLink').value = "";
-            
-            renderizarListaAdmin();
-            alert("Áudio adicionado com sucesso!");
+            btn.innerHTML = textoOriginal; // Volta o botão ao normal
+        }
+
+        async function carregarAudiosAdmin() {
+            try {
+                const resposta = await fetch(URL_LISTAR_PHP);
+                audiosLocaisAdmin = await resposta.json();
+                renderizarListaAdmin();
+            } catch (erro) {
+                console.error("Erro ao puxar dados do PHP:", erro);
+                document.getElementById('admin-lista-dinamica').innerHTML = "<p style='color:#888; font-size:12px; text-align:center;'>Aguardando configuração do servidor PHP.</p>";
+            }
         }
 
         function deletarAudioAdmin(id) {
-            if(confirm("Tem certeza que deseja excluir?")) {
-                audiosLocaisAdmin = audiosLocaisAdmin.filter(audio => audio.id !== id);
-                localStorage.setItem('admin_audios', JSON.stringify(audiosLocaisAdmin));
-                renderizarListaAdmin();
-            }
+            alert("A exclusão direta precisa da criação do arquivo deletar_audio.php no servidor. Por enquanto, exclua diretamente no phpMyAdmin.");
         }
 
         function renderizarListaAdmin() {
             const container = document.getElementById('admin-lista-dinamica');
             container.innerHTML = "";
             
-            if (audiosLocaisAdmin.length === 0) {
-                container.innerHTML = "<p style='color:#888; font-size:12px; text-align:center;'>Nenhum áudio local adicionado ainda.</p>";
+            if (!audiosLocaisAdmin || audiosLocaisAdmin.length === 0) {
+                container.innerHTML = "<p style='color:#888; font-size:12px; text-align:center;'>Nenhum áudio encontrado no banco de dados.</p>";
                 return;
             }
 
@@ -453,9 +493,14 @@
                 });
             } catch (error) { console.log("Erro ao carregar planilha"); }
 
-            // 3. Rádios/Louvores do Admin Local
-            const salvosAdmin = localStorage.getItem('admin_audios');
-            let audiosAdmin = salvosAdmin ? JSON.parse(salvosAdmin) : [];
+            // 3. Rádios/Louvores do Servidor PHP
+            let audiosAdmin = [];
+            try {
+                const respostaPHP = await fetch(URL_LISTAR_PHP);
+                if(respostaPHP.ok) {
+                    audiosAdmin = await respostaPHP.json();
+                }
+            } catch (error) { console.log("Banco PHP ainda não configurado para o player público."); }
 
             // Junta tudo em uma lista só
             listaDeRadios = [...radiosFixas, ...radiosPlanilha, ...audiosAdmin];
@@ -496,7 +541,6 @@
             }).catch(e => { 
                 playIcon.className = 'fas fa-play'; 
                 eqAnim.classList.remove('playing');
-                alert("Erro ao reproduzir. Verifique se o link direto do áudio é válido.");
             });
         }
 
