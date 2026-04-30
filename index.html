@@ -150,7 +150,6 @@
         <p class="splash-subtitle">A paz de Deus</p>
     </div>
 
-    <!-- Modais Menu e Mapa -->
     <div id="menu-overlay" onclick="fecharMenuLateral()"></div>
     <div id="side-menu">
         <div class="side-menu-header">
@@ -167,9 +166,7 @@
         <button class="menu-btn-top" onclick="abrirMenuLateral()"><i class="fas fa-bars"></i></button>
         <h1>Rádio Brasil CCB</h1>
         <div style="display: flex; gap: 5px;">
-            <!-- NOVO BOTÃO DE SINCRONIZAR -->
             <button class="menu-btn-top" onclick="forcarSincronizacao()" id="btn-sync" title="Sincronizar Dados"><i class="fas fa-sync-alt" id="btn-sync-icon"></i></button>
-            
             <button class="menu-btn-top" onclick="abrirLoginAdmin()"><i class="fas fa-user-shield"></i></button>
             <button class="menu-btn-top" onclick="compartilharApp()"><i class="fas fa-share-nodes"></i></button>
         </div>
@@ -237,7 +234,7 @@
         <div class="screen-header"><div style="width: 44px;"></div><h2>Painel Admin</h2><button class="close-btn" onclick="fecharAdminPanel()"><i class="fas fa-times"></i></button></div>
         
         <div class="profile-form" style="padding-bottom: 30px;">
-            <p style="color: #ff9800; font-size: 12px; text-align: center;">Conectado ao Banco de Dados</p>
+            <p style="color: #ff9800; font-size: 12px; text-align: center;">Conectado ao Banco de Dados PHP/MySQL</p>
             
             <h3 id="titulo-form-admin" style="margin-top: 0; color: #a855f7;">Adicionar Novo Áudio</h3>
             
@@ -278,7 +275,7 @@
         </div>
     </div>
 
-    <!-- Outros Modais (Mural, Perfil, Rádios, Temporizador, Mapa) -->
+    <!-- Outros Modais -->
     <div id="map-screen">
         <div class="screen-header" style="padding: 20px;">
             <button class="close-btn" onclick="fecharAbaMapa()"><i class="fas fa-chevron-left"></i></button><h2>CCB em Formiga - MG</h2><div style="width: 44px;"></div>
@@ -367,8 +364,9 @@
 
 
         // =====================================================================
-        // --- CONEXÃO COM O SERVIDOR PHP ---
+        // --- CONEXÃO COM O SERVIDOR PHP E SISTEMA CRUD ---
         // =====================================================================
+        
         const URL_SALVAR_PHP = "https://financelypro.com.br/radiobrasil/salvar_audio.php";
         const URL_LISTAR_PHP = "https://financelypro.com.br/radiobrasil/listar_audios.php";
         const URL_EXCLUIR_PHP = "https://financelypro.com.br/radiobrasil/excluir_audio.php";
@@ -495,7 +493,8 @@
 
         async function carregarAudiosAdmin() {
             try {
-                const resposta = await fetch(URL_LISTAR_PHP);
+                // Adicionando o "?t=" para forçar ignorar o Cache na edição!
+                const resposta = await fetch(URL_LISTAR_PHP + "?t=" + Date.now());
                 audiosLocaisAdmin = await resposta.json();
                 renderizarListaAdmin();
             } catch (erro) {
@@ -528,8 +527,6 @@
         }
 
         // --- SISTEMA INTELIGENTE DE PLAYER (OTIMIZADO) ---
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxjX7K30EgFOfqktK4JAnl0bpXE7UC1iWH-camU5RHxTk6RoxxIpHxhGZzgMxNV0T/exec";
-        
         let listaDeRadios = [];
         let indexRadioAtual = 0;
         const audioPlayer = document.getElementById('main-audio');
@@ -541,58 +538,52 @@
         // FUNÇÃO DE SINCRONIZAÇÃO FORÇADA
         async function forcarSincronizacao() {
             const btnIcon = document.getElementById('btn-sync-icon');
-            btnIcon.classList.add('fa-spin'); // Faz a rodinha girar
-            document.getElementById('player-louvor').innerText = "Sincronizando banco de dados...";
-            document.getElementById('player-artista').innerText = "Aguarde um momento";
+            btnIcon.classList.add('fa-spin'); 
             
             await carregarTodasAsRadios();
             
             btnIcon.classList.remove('fa-spin');
             if(document.getElementById('stations-list-screen').classList.contains('open')){
-                renderizarListaFiltro(); // Atualiza a lista caso ela esteja aberta
+                renderizarListaFiltro(); 
             }
         }
 
         async function carregarTodasAsRadios() {
+            // As duas rádios fixas de volta ao aplicativo!
             const radiosFixas = [
                 { nome: "Rádio Live", louvor: "Sua Música ao Vivo", artista: "DJ Central", link: "https://stm43.srvstm.com:8954/stream", img: "https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+Live", tipo: "radio" },
                 { nome: "Louvores Variados", louvor: "Músicas de Louvor", artista: "Diversos Artistas", link: "http://stm1.hoststreaming.com.br:7088/;stream.nsv", img: "https://placehold.co/400x400/181818/a855f7?text=Louvores", tipo: "radio" }
             ];
-            
-            let radiosPlanilha = [];
+
             let audiosAdmin = [];
 
             try {
-                // Requisições paralelas para carregar 2x mais rápido!
-                const [resPlanilha, resPhp] = await Promise.allSettled([
-                    fetch(`${WEB_APP_URL}?sheet=ESTACOES`),
-                    fetch(URL_LISTAR_PHP)
-                ]);
-
-                if (resPlanilha.status === 'fulfilled' && resPlanilha.value.ok) {
-                    const linksPlanilha = await resPlanilha.value.json(); 
-                    radiosPlanilha = linksPlanilha.map((item, index) => {
-                        let nome = `Estação ${index + 3}`;
-                        try { const url = new URL(item.link); nome = url.hostname.replace('www.', '').split('.')[0]; nome = nome.charAt(0).toUpperCase() + nome.slice(1); } catch (e) {}
-                        return { nome: nome, louvor: item.louvor || 'Louvor não informado', artista: item.artista || 'Diversos', link: item.link, img: item.img || imgSeguranca, tipo: "radio" };
-                    });
+                // Aqui está o segredo contra o CACHE: "?t=" + Date.now()
+                // Ele obriga o celular a baixar a lista fresca do banco de dados na mesma hora
+                const resPhp = await fetch(URL_LISTAR_PHP + "?t=" + Date.now());
+                if (resPhp.ok) {
+                    audiosAdmin = await resPhp.json();
                 }
-                
-                if (resPhp.status === 'fulfilled' && resPhp.value.ok) {
-                    audiosAdmin = await resPhp.value.json();
-                }
-            } catch (error) { console.log("Erro na sincronização paralela"); }
+            } catch (error) { console.log("Erro na sincronização"); }
 
-            listaDeRadios = [...radiosFixas, ...radiosPlanilha, ...audiosAdmin];
+            // Agora sim, as fixas + as novas do PHP
+            listaDeRadios = [...radiosFixas, ...audiosAdmin];
             
             if(listaDeRadios.length > 0) { 
-                // Se o indice atual ficou maior que a lista (ex: apagamos a ultima musica), volta pro inicio
                 if(indexRadioAtual >= listaDeRadios.length) indexRadioAtual = 0;
                 atualizarTelaPlayer(indexRadioAtual, false); 
+            } else {
+                document.getElementById('player-title').innerText = "Lista Vazia";
+                document.getElementById('player-louvor').innerText = "Adicione músicas no painel";
+                document.getElementById('player-artista').innerText = "Administrador";
+                document.getElementById('player-img').src = imgSeguranca;
+                document.getElementById('stations-list-dynamic').innerHTML = "<p style='text-align:center; color:#888;'>Nenhum áudio no banco de dados.</p>";
             }
         }
 
         function atualizarTelaPlayer(index, autoPlay = true) {
+            if(listaDeRadios.length === 0) return; 
+            
             indexRadioAtual = index;
             const radio = listaDeRadios[index];
             document.getElementById('player-title').innerText = radio.nome;
@@ -621,16 +612,20 @@
             playIcon.className = 'fas fa-play';
             eqAnim.classList.remove('playing');
             document.getElementById('player-louvor').innerText = "Indisponível no momento";
-            document.getElementById('player-louvor').style.color = "#dc3545"; // Fica vermelho
+            document.getElementById('player-louvor').style.color = "#dc3545"; 
             document.getElementById('player-artista').innerText = "Falha ao conectar";
             tipoTag.innerText = "ERRO";
             tipoTag.style.color = "#dc3545";
         });
 
         function tocarAudio() {
+            if(listaDeRadios.length === 0) {
+                alert("Adicione rádios no painel primeiro!");
+                return;
+            }
+            
             playIcon.className = 'fas fa-spinner fa-spin';
             
-            // Retorna a cor ao normal caso estivesse vermelho de erro antes
             document.getElementById('player-louvor').style.color = "#b3b3b3";
             document.getElementById('player-louvor').innerText = "Conectando..."; 
             
@@ -638,7 +633,6 @@
                 playIcon.className = 'fas fa-pause'; 
                 eqAnim.classList.add('playing'); 
                 
-                // Restaura o nome real do louvor após conectar
                 document.getElementById('player-louvor').innerText = listaDeRadios[indexRadioAtual].louvor;
                 const isLouvor = listaDeRadios[indexRadioAtual].tipo === 'louvor';
                 tipoTag.innerText = isLouvor ? "LOUVOR" : "AO VIVO";
@@ -648,7 +642,7 @@
                 playIcon.className = 'fas fa-play'; 
                 eqAnim.classList.remove('playing');
                 document.getElementById('player-louvor').innerText = "Indisponível no momento";
-                document.getElementById('player-louvor').style.color = "#dc3545"; // Fica vermelho
+                document.getElementById('player-louvor').style.color = "#dc3545"; 
                 document.getElementById('player-artista').innerText = "Tente outra estação";
                 tipoTag.innerText = "ERRO";
                 tipoTag.style.color = "#dc3545";
@@ -656,12 +650,18 @@
         }
 
         function toggleMainPlay() { if (audioPlayer.paused) { tocarAudio(); } else { audioPlayer.pause(); playIcon.className = 'fas fa-play'; eqAnim.classList.remove('playing'); } }
-        function nextRadio() { let prox = indexRadioAtual + 1; if(prox >= listaDeRadios.length) prox = 0; atualizarTelaPlayer(prox, true); }
-        function prevRadio() { let ant = indexRadioAtual - 1; if(ant < 0) ant = listaDeRadios.length - 1; atualizarTelaPlayer(ant, true); }
+        function nextRadio() { if(listaDeRadios.length===0)return; let prox = indexRadioAtual + 1; if(prox >= listaDeRadios.length) prox = 0; atualizarTelaPlayer(prox, true); }
+        function prevRadio() { if(listaDeRadios.length===0)return; let ant = indexRadioAtual - 1; if(ant < 0) ant = listaDeRadios.length - 1; atualizarTelaPlayer(ant, true); }
 
         function renderizarListaFiltro() {
             const container = document.getElementById('stations-list-dynamic');
             container.innerHTML = '';
+            
+            if(listaDeRadios.length === 0) {
+                 container.innerHTML = "<p style='text-align:center; color:#888;'>Nenhum áudio no banco de dados.</p>";
+                 return;
+            }
+            
             listaDeRadios.forEach((radio, index) => {
                 const isActive = index === indexRadioAtual;
                 const itemDiv = document.createElement('div');
