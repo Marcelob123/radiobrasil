@@ -34,7 +34,7 @@
         .artista-em-destaque { font-size: 14px; color: #888888; margin: 0; transition: color 0.3s;}
 
         .progress-container { width: 100%; max-width: 340px; margin-bottom: 15px; }
-        .progress-bar { width: 100%; height: 6px; background-color: #333; border-radius: 3px; position: relative; margin-bottom: 10px; cursor: pointer; } /* Mudado cursor para pointer */
+        .progress-bar { width: 100%; height: 6px; background-color: #333; border-radius: 3px; position: relative; margin-bottom: 10px; cursor: pointer; }
         .progress-fill { width: 100%; height: 100%; background-color: #a855f7; border-radius: 3px; position: relative; pointer-events: none;}
         .progress-fill::after { content: ''; position: absolute; right: -6px; top: -3px; width: 12px; height: 12px; background-color: #a855f7; border-radius: 50%; box-shadow: 0 0 8px rgba(168, 85, 247, 0.6); }
         .time-info { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #b3b3b3; font-weight: 500; }
@@ -183,7 +183,7 @@
             </div>
 
             <div class="progress-container">
-                <!-- Barra de progresso editada para funcionar como controle deslizante -->
+                <!-- Barra de progresso -->
                 <div class="progress-bar" id="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
                 <div class="time-info">
                     <span id="tempo-atual">AO VIVO</span>
@@ -207,7 +207,8 @@
                 <button class="control-icon" onclick="abrirTemporizador()"><i id="moon-icon" class="fas fa-moon"></i></button>
             </div>
             
-            <audio id="main-audio" crossorigin="anonymous"><source id="main-audio-src" src="" type="audio/mpeg"></audio>
+            <!-- CORREÇÃO DO ÁUDIO: Tag crossorigin removida para permitir todas as rádios e MP3 -->
+            <audio id="main-audio" preload="auto"></audio>
         </div>
     </section>
 
@@ -534,12 +535,10 @@
         const tipoTag = document.getElementById('player-tipo-tag');
         const imgSeguranca = "https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+CCB";
         
-        // Elementos da barra de tempo e progresso
         const tempoAtualSpan = document.getElementById('tempo-atual');
         const progressBar = document.getElementById('progress-bar');
         const progressFill = document.getElementById('progress-fill');
 
-        // Função para converter segundos em MM:SS
         function formatarTempo(segundos) {
             if (isNaN(segundos) || !isFinite(segundos)) return "00:00";
             let min = Math.floor(segundos / 60);
@@ -547,7 +546,6 @@
             return (min < 10 ? "0" + min : min) + ":" + (seg < 10 ? "0" + seg : seg);
         }
 
-        // Atualiza a barrinha de tempo conforme a música toca
         audioPlayer.addEventListener('timeupdate', () => {
             const radioAtual = listaDeRadios[indexRadioAtual];
             if (!radioAtual) return;
@@ -557,13 +555,11 @@
                 progressFill.style.width = porcentagem + '%';
                 tempoAtualSpan.innerText = formatarTempo(audioPlayer.currentTime) + " / " + formatarTempo(audioPlayer.duration);
             } else {
-                // Se for Rádio, a barra fica parada cheia
                 progressFill.style.width = '100%';
                 tempoAtualSpan.innerText = "AO VIVO";
             }
         });
 
-        // Quando a música carrega, já mostra o tempo total antes mesmo de dar play
         audioPlayer.addEventListener('loadedmetadata', () => {
             const radioAtual = listaDeRadios[indexRadioAtual];
             if (radioAtual && radioAtual.tipo === 'louvor') {
@@ -571,17 +567,13 @@
             }
         });
 
-        // Clique na barrinha para passar a música para frente/trás
         progressBar.addEventListener('click', function(e) {
             const radioAtual = listaDeRadios[indexRadioAtual];
             if (!radioAtual || radioAtual.tipo !== 'louvor' || !audioPlayer.duration) return;
 
-            // Calcula onde o usuário clicou
             const rect = this.getBoundingClientRect();
             const cliqueX = e.clientX - rect.left;
             const porcentagem = cliqueX / rect.width;
-
-            // Pula a música para a porcentagem clicada
             audioPlayer.currentTime = porcentagem * audioPlayer.duration;
         });
 
@@ -635,7 +627,7 @@
             if(radio.tipo === 'louvor') {
                 tipoTag.innerText = "LOUVOR";
                 tipoTag.style.color = "#8dbbf5";
-                tempoAtualSpan.innerText = "00:00 / 00:00"; // Reseta antes da música carregar
+                tempoAtualSpan.innerText = "00:00 / 00:00"; 
                 progressFill.style.width = '0%';
             } else {
                 tipoTag.innerText = "AO VIVO";
@@ -645,7 +637,9 @@
             }
             
             const tavaTocando = !audioPlayer.paused;
-            document.getElementById('main-audio-src').src = radio.link;
+            
+            // CORREÇÃO: Força o áudio direto no player, burlando o bloqueio de segurança
+            audioPlayer.src = radio.link;
             audioPlayer.load();
 
             if (autoPlay || tavaTocando) { tocarAudio(); } 
