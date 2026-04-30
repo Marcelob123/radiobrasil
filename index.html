@@ -127,7 +127,6 @@
         .menu-item-btn:hover, .menu-item-btn:active { background: #282828; }
         .menu-item-btn i { font-size: 20px; color: #a855f7; width: 25px; text-align: center; }
         
-        /* AQUI ESTÁ A CORREÇÃO DO MAPA ESCONDIDO! */
         #map-screen { position: fixed; top: 0; left: 100%; width: 100vw; height: 100vh; background-color: #121212; z-index: 2500; transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
         #map-screen.open { left: 0; } 
         .map-container-full { width: 100%; flex-grow: 1; background: #282828; }
@@ -250,7 +249,7 @@
             </div>
             
             <div class="input-group">
-                <label>Link do Áudio (GitHub MP3/Stream)</label>
+                <label>Link do Áudio Direto</label>
                 <input type="url" id="adminLink" class="custom-input" placeholder="https://...">
             </div>
 
@@ -354,14 +353,19 @@
 
 
         // =====================================================================
-        // --- SISTEMA ADMIN CONECTADO AO PHP/MYSQL ---
+        // --- CONEXÃO COM O SERVIDOR DA INTEGRATOR (ATUALIZADO) ---
         // =====================================================================
+        // Como o domínio do seu servidor cPanel é financelypro.com.br, 
+        // a configuração da ponte já está apontando para ele e os alertas 
+        // de erro chatos foram removidos.
+        
+        const URL_SALVAR_PHP = "https://financelypro.com.br/radiobrasil/salvar_audio.php";
+        const URL_LISTAR_PHP = "https://financelypro.com.br/radiobrasil/listar_audios.php";
+        
+        // =====================================================================
+
         const SENHA_ADMIN = "Marcelinho123.";
         let audiosLocaisAdmin = []; 
-
-        // ATENÇÃO: TROQUE ESTES LINKS PELO LINK REAL DE ONDE SEUS ARQUIVOS PHP ESTÃO HOSPEDADOS
-        const URL_SALVAR_PHP = "https://SEUSITE.COM.BR/salvar_audio.php";
-        const URL_LISTAR_PHP = "https://SEUSITE.COM.BR/listar_audios.php";
 
         function abrirLoginAdmin() { document.getElementById('admin-login-screen').classList.add('open'); document.getElementById('inputAdminSenha').value = ""; }
         function fecharLoginAdmin() { document.getElementById('admin-login-screen').classList.remove('open'); }
@@ -412,13 +416,13 @@
                     document.getElementById('adminNome').value = "";
                     document.getElementById('adminDesc').value = "";
                     document.getElementById('adminLink').value = "";
-                    carregarAudiosAdmin(); // Atualiza a lista do admin
-                    carregarTodasAsRadios(); // Atualiza o app principal em segundo plano
+                    carregarAudiosAdmin(); 
+                    carregarTodasAsRadios(); 
                 } else {
                     alert("Erro ao salvar no banco: " + resultado.erro);
                 }
             } catch (erro) {
-                alert("Atenção: Configure a URL_SALVAR_PHP correta da sua hospedagem no código.");
+                alert("Erro ao enviar! O servidor da Integrator (financelypro.com.br) não permitiu o salvamento. Verifique se os arquivos PHP estão lá na pasta correta.");
                 console.error("Erro de conexão PHP:", erro);
             }
             
@@ -432,12 +436,12 @@
                 renderizarListaAdmin();
             } catch (erro) {
                 console.error("Erro ao puxar dados do PHP:", erro);
-                document.getElementById('admin-lista-dinamica').innerHTML = "<p style='color:#888; font-size:12px; text-align:center;'>Aguardando configuração do servidor PHP.</p>";
+                document.getElementById('admin-lista-dinamica').innerHTML = "<p style='color:#888; font-size:12px; text-align:center;'>Nenhum áudio encontrado ou erro ao conectar com a Integrator.</p>";
             }
         }
 
         function deletarAudioAdmin(id) {
-            alert("A exclusão direta precisa da criação do arquivo deletar_audio.php no servidor. Por enquanto, exclua diretamente no phpMyAdmin.");
+            alert("A exclusão precisa da criação do arquivo deletar_audio.php no servidor. Por enquanto, exclua diretamente no phpMyAdmin.");
         }
 
         function renderizarListaAdmin() {
@@ -500,7 +504,7 @@
                 if(respostaPHP.ok) {
                     audiosAdmin = await respostaPHP.json();
                 }
-            } catch (error) { console.log("Banco PHP ainda não configurado para o player público."); }
+            } catch (error) { console.log("Erro ao puxar audios do PHP"); }
 
             // Junta tudo em uma lista só
             listaDeRadios = [...radiosFixas, ...radiosPlanilha, ...audiosAdmin];
