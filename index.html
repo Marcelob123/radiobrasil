@@ -34,9 +34,9 @@
         .artista-em-destaque { font-size: 14px; color: #888888; margin: 0; transition: color 0.3s;}
 
         .progress-container { width: 100%; max-width: 340px; margin-bottom: 15px; }
-        .progress-bar { width: 100%; height: 4px; background-color: #333; border-radius: 2px; position: relative; margin-bottom: 10px; }
-        .progress-fill { width: 100%; height: 100%; background-color: #a855f7; border-radius: 2px; position: relative; }
-        .progress-fill::after { content: ''; position: absolute; right: -6px; top: -4px; width: 12px; height: 12px; background-color: #a855f7; border-radius: 50%; box-shadow: 0 0 8px rgba(168, 85, 247, 0.6); }
+        .progress-bar { width: 100%; height: 6px; background-color: #333; border-radius: 3px; position: relative; margin-bottom: 10px; cursor: pointer; } /* Mudado cursor para pointer */
+        .progress-fill { width: 100%; height: 100%; background-color: #a855f7; border-radius: 3px; position: relative; pointer-events: none;}
+        .progress-fill::after { content: ''; position: absolute; right: -6px; top: -3px; width: 12px; height: 12px; background-color: #a855f7; border-radius: 50%; box-shadow: 0 0 8px rgba(168, 85, 247, 0.6); }
         .time-info { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #b3b3b3; font-weight: 500; }
 
         /* EQUALIZADOR ANIMADO */
@@ -183,9 +183,10 @@
             </div>
 
             <div class="progress-container">
-                <div class="progress-bar"><div class="progress-fill"></div></div>
+                <!-- Barra de progresso editada para funcionar como controle deslizante -->
+                <div class="progress-bar" id="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
                 <div class="time-info">
-                    <span id="player-tipo-tag">AO VIVO</span>
+                    <span id="tempo-atual">AO VIVO</span>
                     <div class="equalizer" id="equalizer-anim">
                         <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
                     </div>
@@ -362,7 +363,6 @@
         function cancelarTemporizador() { clearTimeout(sleepTimerId); document.getElementById('timer-status').innerText = ""; document.getElementById('moon-icon').style.color = '#b3b3b3'; setTimeout(fecharTemporizador, 1000); }
         document.getElementById('volume-slider').addEventListener('input', function() { document.getElementById('main-audio').volume = this.value; });
 
-
         // =====================================================================
         // --- CONEXÃO COM O SERVIDOR PHP E SISTEMA CRUD ---
         // =====================================================================
@@ -493,7 +493,6 @@
 
         async function carregarAudiosAdmin() {
             try {
-                // Adicionando o "?t=" para forçar ignorar o Cache na edição!
                 const resposta = await fetch(URL_LISTAR_PHP + "?t=" + Date.now());
                 audiosLocaisAdmin = await resposta.json();
                 renderizarListaAdmin();
@@ -526,7 +525,7 @@
             });
         }
 
-        // --- SISTEMA INTELIGENTE DE PLAYER (OTIMIZADO) ---
+        // --- SISTEMA INTELIGENTE DE PLAYER E PROGRESSO ---
         let listaDeRadios = [];
         let indexRadioAtual = 0;
         const audioPlayer = document.getElementById('main-audio');
@@ -534,14 +533,62 @@
         const eqAnim = document.getElementById('equalizer-anim');
         const tipoTag = document.getElementById('player-tipo-tag');
         const imgSeguranca = "https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+CCB";
+        
+        // Elementos da barra de tempo e progresso
+        const tempoAtualSpan = document.getElementById('tempo-atual');
+        const progressBar = document.getElementById('progress-bar');
+        const progressFill = document.getElementById('progress-fill');
 
-        // FUNÇÃO DE SINCRONIZAÇÃO FORÇADA
+        // Função para converter segundos em MM:SS
+        function formatarTempo(segundos) {
+            if (isNaN(segundos) || !isFinite(segundos)) return "00:00";
+            let min = Math.floor(segundos / 60);
+            let seg = Math.floor(segundos % 60);
+            return (min < 10 ? "0" + min : min) + ":" + (seg < 10 ? "0" + seg : seg);
+        }
+
+        // Atualiza a barrinha de tempo conforme a música toca
+        audioPlayer.addEventListener('timeupdate', () => {
+            const radioAtual = listaDeRadios[indexRadioAtual];
+            if (!radioAtual) return;
+
+            if (radioAtual.tipo === 'louvor' && audioPlayer.duration) {
+                const porcentagem = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                progressFill.style.width = porcentagem + '%';
+                tempoAtualSpan.innerText = formatarTempo(audioPlayer.currentTime) + " / " + formatarTempo(audioPlayer.duration);
+            } else {
+                // Se for Rádio, a barra fica parada cheia
+                progressFill.style.width = '100%';
+                tempoAtualSpan.innerText = "AO VIVO";
+            }
+        });
+
+        // Quando a música carrega, já mostra o tempo total antes mesmo de dar play
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            const radioAtual = listaDeRadios[indexRadioAtual];
+            if (radioAtual && radioAtual.tipo === 'louvor') {
+                tempoAtualSpan.innerText = "00:00 / " + formatarTempo(audioPlayer.duration);
+            }
+        });
+
+        // Clique na barrinha para passar a música para frente/trás
+        progressBar.addEventListener('click', function(e) {
+            const radioAtual = listaDeRadios[indexRadioAtual];
+            if (!radioAtual || radioAtual.tipo !== 'louvor' || !audioPlayer.duration) return;
+
+            // Calcula onde o usuário clicou
+            const rect = this.getBoundingClientRect();
+            const cliqueX = e.clientX - rect.left;
+            const porcentagem = cliqueX / rect.width;
+
+            // Pula a música para a porcentagem clicada
+            audioPlayer.currentTime = porcentagem * audioPlayer.duration;
+        });
+
         async function forcarSincronizacao() {
             const btnIcon = document.getElementById('btn-sync-icon');
             btnIcon.classList.add('fa-spin'); 
-            
             await carregarTodasAsRadios();
-            
             btnIcon.classList.remove('fa-spin');
             if(document.getElementById('stations-list-screen').classList.contains('open')){
                 renderizarListaFiltro(); 
@@ -549,7 +596,6 @@
         }
 
         async function carregarTodasAsRadios() {
-            // As duas rádios fixas de volta ao aplicativo!
             const radiosFixas = [
                 { nome: "Rádio Live", louvor: "Sua Música ao Vivo", artista: "DJ Central", link: "https://stm43.srvstm.com:8954/stream", img: "https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+Live", tipo: "radio" },
                 { nome: "Louvores Variados", louvor: "Músicas de Louvor", artista: "Diversos Artistas", link: "http://stm1.hoststreaming.com.br:7088/;stream.nsv", img: "https://placehold.co/400x400/181818/a855f7?text=Louvores", tipo: "radio" }
@@ -558,15 +604,10 @@
             let audiosAdmin = [];
 
             try {
-                // Aqui está o segredo contra o CACHE: "?t=" + Date.now()
-                // Ele obriga o celular a baixar a lista fresca do banco de dados na mesma hora
                 const resPhp = await fetch(URL_LISTAR_PHP + "?t=" + Date.now());
-                if (resPhp.ok) {
-                    audiosAdmin = await resPhp.json();
-                }
+                if (resPhp.ok) { audiosAdmin = await resPhp.json(); }
             } catch (error) { console.log("Erro na sincronização"); }
 
-            // Agora sim, as fixas + as novas do PHP
             listaDeRadios = [...radiosFixas, ...audiosAdmin];
             
             if(listaDeRadios.length > 0) { 
@@ -594,9 +635,13 @@
             if(radio.tipo === 'louvor') {
                 tipoTag.innerText = "LOUVOR";
                 tipoTag.style.color = "#8dbbf5";
+                tempoAtualSpan.innerText = "00:00 / 00:00"; // Reseta antes da música carregar
+                progressFill.style.width = '0%';
             } else {
                 tipoTag.innerText = "AO VIVO";
                 tipoTag.style.color = "#b3b3b3";
+                tempoAtualSpan.innerText = "AO VIVO";
+                progressFill.style.width = '100%';
             }
             
             const tavaTocando = !audioPlayer.paused;
@@ -607,7 +652,7 @@
             else { playIcon.className = 'fas fa-play'; eqAnim.classList.remove('playing'); }
         }
 
-        // LIDA COM ERROS SE A RÁDIO CAIR OU LINK QUEBRAR
+        // LIDA COM ERROS
         audioPlayer.addEventListener('error', function() {
             playIcon.className = 'fas fa-play';
             eqAnim.classList.remove('playing');
@@ -619,13 +664,9 @@
         });
 
         function tocarAudio() {
-            if(listaDeRadios.length === 0) {
-                alert("Adicione rádios no painel primeiro!");
-                return;
-            }
+            if(listaDeRadios.length === 0) { alert("Adicione rádios no painel primeiro!"); return; }
             
             playIcon.className = 'fas fa-spinner fa-spin';
-            
             document.getElementById('player-louvor').style.color = "#b3b3b3";
             document.getElementById('player-louvor').innerText = "Conectando..."; 
             
