@@ -20,7 +20,7 @@
 
         /* HEADER FIXO NO TOPO */
         header { width: 100%; max-width: 600px; position: sticky; top: 0; background-color: rgba(18, 18, 18, 0.95); backdrop-filter: blur(10px); z-index: 100; padding: 15px 0; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .menu-btn-top { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 0 15px; display: flex; align-items: center; text-decoration: none; transition: color 0.3s;}
+        .menu-btn-top { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 0 10px; display: flex; align-items: center; text-decoration: none; transition: color 0.3s;}
         .menu-btn-top:active { color: #a855f7; }
         header h1 { font-size: 18px; font-weight: 700; margin: 0; letter-spacing: 0.5px; text-align: center; flex-grow: 1; }
 
@@ -30,8 +30,8 @@
         .station-img { width: 100%; max-width: 340px; aspect-ratio: 1 / 1; border-radius: 16px; object-fit: cover; margin-bottom: 25px; background-color: #282828; box-shadow: 0 15px 35px rgba(0,0,0,0.6); transition: opacity 0.3s ease; }
         .station-info { width: 100%; text-align: center; margin-bottom: 20px; padding: 0 15px; box-sizing: border-box; min-height: 80px; }
         .station-info h3 { margin: 0 0 6px 0; font-size: 22px; color: #ffffff; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .louvor-em-destaque { font-size: 16px; color: #b3b3b3; margin: 0 0 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .artista-em-destaque { font-size: 14px; color: #888888; margin: 0; }
+        .louvor-em-destaque { font-size: 16px; color: #b3b3b3; margin: 0 0 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.3s; }
+        .artista-em-destaque { font-size: 14px; color: #888888; margin: 0; transition: color 0.3s;}
 
         .progress-container { width: 100%; max-width: 340px; margin-bottom: 15px; }
         .progress-bar { width: 100%; height: 4px; background-color: #333; border-radius: 2px; position: relative; margin-bottom: 10px; }
@@ -84,11 +84,16 @@
         .custom-input option { background-color: #181818; color: #fff; }
         
         .profile-form { width: 100%; max-width: 600px; display: flex; flex-direction: column; }
-        .btn-primary { background-color: #a855f7; color: #fff; border: none; border-radius: 50px; padding: 16px; font-size: 16px; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer; transition: transform 0.1s; font-family: inherit; width: 100%; max-width: 600px;}
+        .btn-primary { background-color: #a855f7; color: #fff; border: none; border-radius: 50px; padding: 16px; font-size: 16px; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer; transition: transform 0.1s; font-family: inherit; width: 100%; max-width: 600px; box-sizing: border-box;}
         .btn-primary:active { transform: scale(0.98); background-color: #9333ea; }
         .btn-whatsapp { background-color: #25D366; }
         .btn-whatsapp:active { background-color: #20b858; }
-        .btn-danger { background-color: #dc3545; padding: 8px 12px; font-size: 12px; border-radius: 6px; }
+        .btn-danger { background-color: #dc3545; }
+        
+        .btn-acao-lista { padding: 8px 12px; font-size: 12px; border-radius: 6px; border: none; color: #fff; cursor: pointer; transition: 0.2s;}
+        .btn-acao-lista:active { transform: scale(0.95); }
+        .bg-red { background-color: #dc3545; }
+        .bg-blue { background-color: #2b566e; }
 
         /* Lista Rádios Form */
         .stations-list-container { width: 100%; max-width: 600px; flex-grow: 1; padding-bottom: 20px; }
@@ -106,9 +111,11 @@
         .badge-louvor { background-color: #1a3342; color: #8dbbf5; border: 1px solid #2b566e; }
 
         /* Admin List */
-        .admin-item { display: flex; justify-content: space-between; align-items: center; background: #181818; padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #333;}
-        .admin-item-info h4 { margin: 0 0 5px 0; font-size: 14px; color: #fff;}
-        .admin-item-info p { margin: 0; font-size: 11px; color: #888;}
+        .admin-item { display: flex; justify-content: space-between; align-items: center; background: #181818; padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #333; gap: 10px;}
+        .admin-item-info { flex-grow: 1; overflow: hidden; }
+        .admin-item-info h4 { margin: 0 0 5px 0; font-size: 14px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .admin-item-info p { margin: 0; font-size: 11px; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .admin-actions { display: flex; gap: 6px; flex-shrink: 0;}
 
         /* Menu Temporizador */
         .timer-options { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 600px; }
@@ -160,6 +167,9 @@
         <button class="menu-btn-top" onclick="abrirMenuLateral()"><i class="fas fa-bars"></i></button>
         <h1>Rádio Brasil CCB</h1>
         <div style="display: flex; gap: 5px;">
+            <!-- NOVO BOTÃO DE SINCRONIZAR -->
+            <button class="menu-btn-top" onclick="forcarSincronizacao()" id="btn-sync" title="Sincronizar Dados"><i class="fas fa-sync-alt" id="btn-sync-icon"></i></button>
+            
             <button class="menu-btn-top" onclick="abrirLoginAdmin()"><i class="fas fa-user-shield"></i></button>
             <button class="menu-btn-top" onclick="compartilharApp()"><i class="fas fa-share-nodes"></i></button>
         </div>
@@ -222,13 +232,14 @@
         </div>
     </div>
 
-    <!-- Modal Painel Admin (COM PHP INTEGRADO) -->
+    <!-- Modal Painel Admin -->
     <div id="admin-panel-screen" class="bottom-sheet">
         <div class="screen-header"><div style="width: 44px;"></div><h2>Painel Admin</h2><button class="close-btn" onclick="fecharAdminPanel()"><i class="fas fa-times"></i></button></div>
         
         <div class="profile-form" style="padding-bottom: 30px;">
-            <p style="color: #ff9800; font-size: 12px; text-align: center;">Conectado ao Banco de Dados (PHPMyAdmin)</p>
-            <h3 style="margin-top: 0; color: #a855f7;">Adicionar Novo Áudio</h3>
+            <p style="color: #ff9800; font-size: 12px; text-align: center;">Conectado ao Banco de Dados</p>
+            
+            <h3 id="titulo-form-admin" style="margin-top: 0; color: #a855f7;">Adicionar Novo Áudio</h3>
             
             <div class="input-group">
                 <label>Tipo</label>
@@ -253,7 +264,10 @@
                 <input type="url" id="adminLink" class="custom-input" placeholder="https://...">
             </div>
 
-            <button class="btn-primary" onclick="salvarNovoAudio()"><i class="fas fa-cloud-upload-alt"></i> Salvar no Banco de Dados</button>
+            <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+                <button id="btn-salvar-admin" class="btn-primary" onclick="salvarOuEditarAudio()"><i class="fas fa-cloud-upload-alt"></i> Salvar no Banco de Dados</button>
+                <button id="btn-cancelar-edicao" class="btn-primary btn-danger" style="display: none;" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
+            </div>
             
             <hr style="border: 0; height: 1px; background: #333; margin: 30px 0; width: 100%;">
             
@@ -353,23 +367,24 @@
 
 
         // =====================================================================
-        // --- CONEXÃO COM O SERVIDOR DA INTEGRATOR (ATUALIZADO) ---
+        // --- CONEXÃO COM O SERVIDOR PHP ---
         // =====================================================================
-        // Como o domínio do seu servidor cPanel é financelypro.com.br, 
-        // a configuração da ponte já está apontando para ele e os alertas 
-        // de erro chatos foram removidos.
-        
         const URL_SALVAR_PHP = "https://financelypro.com.br/radiobrasil/salvar_audio.php";
         const URL_LISTAR_PHP = "https://financelypro.com.br/radiobrasil/listar_audios.php";
+        const URL_EXCLUIR_PHP = "https://financelypro.com.br/radiobrasil/excluir_audio.php";
+        const URL_EDITAR_PHP = "https://financelypro.com.br/radiobrasil/editar_audio.php";
         
-        // =====================================================================
-
         const SENHA_ADMIN = "Marcelinho123.";
         let audiosLocaisAdmin = []; 
+        let idEditandoAtual = null;
 
         function abrirLoginAdmin() { document.getElementById('admin-login-screen').classList.add('open'); document.getElementById('inputAdminSenha').value = ""; }
         function fecharLoginAdmin() { document.getElementById('admin-login-screen').classList.remove('open'); }
-        function fecharAdminPanel() { document.getElementById('admin-panel-screen').classList.remove('open'); carregarTodasAsRadios(); }
+        function fecharAdminPanel() { 
+            document.getElementById('admin-panel-screen').classList.remove('open'); 
+            cancelarEdicao(); 
+            carregarTodasAsRadios(); 
+        }
 
         function verificarSenhaAdmin() {
             const senhaDigitada = document.getElementById('inputAdminSenha').value;
@@ -382,7 +397,7 @@
             }
         }
 
-        async function salvarNovoAudio() {
+        async function salvarOuEditarAudio() {
             const tipo = document.getElementById('adminTipo').value;
             const nome = document.getElementById('adminNome').value.trim();
             const desc = document.getElementById('adminDesc').value.trim();
@@ -390,10 +405,9 @@
 
             if (!nome || !link) { alert("Nome e Link são obrigatórios!"); return; }
 
-            // Botão carregando
-            const btn = document.querySelector('button[onclick="salvarNovoAudio()"]');
+            const btn = document.getElementById('btn-salvar-admin');
             const textoOriginal = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando no Servidor...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
 
             const dadosParaEnviar = {
                 tipo: tipo,
@@ -402,8 +416,14 @@
                 link: link
             };
 
+            let urlDestino = URL_SALVAR_PHP;
+            if (idEditandoAtual !== null) {
+                dadosParaEnviar.id = idEditandoAtual;
+                urlDestino = URL_EDITAR_PHP;
+            }
+
             try {
-                const resposta = await fetch(URL_SALVAR_PHP, {
+                const resposta = await fetch(urlDestino, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(dadosParaEnviar)
@@ -412,21 +432,65 @@
                 const resultado = await resposta.json();
                 
                 if(resultado.sucesso) {
-                    alert("Áudio salvo com sucesso para todos os usuários!");
-                    document.getElementById('adminNome').value = "";
-                    document.getElementById('adminDesc').value = "";
-                    document.getElementById('adminLink').value = "";
+                    alert(resultado.mensagem);
+                    cancelarEdicao(); 
                     carregarAudiosAdmin(); 
                     carregarTodasAsRadios(); 
                 } else {
-                    alert("Erro ao salvar no banco: " + resultado.erro);
+                    alert("Erro no banco: " + resultado.erro);
                 }
             } catch (erro) {
-                alert("Erro ao enviar! O servidor da Integrator (financelypro.com.br) não permitiu o salvamento. Verifique se os arquivos PHP estão lá na pasta correta.");
-                console.error("Erro de conexão PHP:", erro);
+                alert("Erro ao conectar com a hospedagem.");
             }
             
-            btn.innerHTML = textoOriginal; // Volta o botão ao normal
+            btn.innerHTML = textoOriginal; 
+        }
+
+        function prepararEdicao(id, tipo, nome, louvor, link) {
+            idEditandoAtual = id;
+            document.getElementById('adminTipo').value = tipo;
+            document.getElementById('adminNome').value = nome;
+            document.getElementById('adminDesc').value = louvor;
+            document.getElementById('adminLink').value = link;
+
+            document.getElementById('titulo-form-admin').innerText = "Editar Áudio";
+            document.getElementById('btn-salvar-admin').innerHTML = '<i class="fas fa-save"></i> Salvar Alterações';
+            document.getElementById('btn-salvar-admin').style.backgroundColor = '#4a2b6e';
+            document.getElementById('btn-cancelar-edicao').style.display = 'flex';
+            document.getElementById('admin-panel-screen').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function cancelarEdicao() {
+            idEditandoAtual = null;
+            document.getElementById('adminTipo').value = "louvor";
+            document.getElementById('adminNome').value = "";
+            document.getElementById('adminDesc').value = "";
+            document.getElementById('adminLink').value = "";
+
+            document.getElementById('titulo-form-admin').innerText = "Adicionar Novo Áudio";
+            document.getElementById('btn-salvar-admin').innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Salvar no Banco de Dados';
+            document.getElementById('btn-salvar-admin').style.backgroundColor = '#a855f7';
+            document.getElementById('btn-cancelar-edicao').style.display = 'none';
+        }
+
+        async function deletarAudioAdmin(id) {
+            if(!confirm("Tem certeza que deseja apagar essa música do aplicativo de todo mundo?")) { return; }
+            try {
+                const resposta = await fetch(URL_EXCLUIR_PHP, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: id })
+                });
+                const resultado = await resposta.json();
+                if(resultado.sucesso) {
+                    carregarAudiosAdmin(); 
+                    carregarTodasAsRadios(); 
+                } else {
+                    alert("Erro ao excluir: " + resultado.erro);
+                }
+            } catch (erro) {
+                alert("Erro ao conectar com a hospedagem para excluir.");
+            }
         }
 
         async function carregarAudiosAdmin() {
@@ -435,24 +499,17 @@
                 audiosLocaisAdmin = await resposta.json();
                 renderizarListaAdmin();
             } catch (erro) {
-                console.error("Erro ao puxar dados do PHP:", erro);
-                document.getElementById('admin-lista-dinamica').innerHTML = "<p style='color:#888; font-size:12px; text-align:center;'>Nenhum áudio encontrado ou erro ao conectar com a Integrator.</p>";
+                document.getElementById('admin-lista-dinamica').innerHTML = "<p style='color:#888; font-size:12px; text-align:center;'>Erro ao conectar com a Integrator.</p>";
             }
-        }
-
-        function deletarAudioAdmin(id) {
-            alert("A exclusão precisa da criação do arquivo deletar_audio.php no servidor. Por enquanto, exclua diretamente no phpMyAdmin.");
         }
 
         function renderizarListaAdmin() {
             const container = document.getElementById('admin-lista-dinamica');
             container.innerHTML = "";
-            
             if (!audiosLocaisAdmin || audiosLocaisAdmin.length === 0) {
                 container.innerHTML = "<p style='color:#888; font-size:12px; text-align:center;'>Nenhum áudio encontrado no banco de dados.</p>";
                 return;
             }
-
             audiosLocaisAdmin.forEach(audio => {
                 const item = document.createElement('div');
                 item.className = "admin-item";
@@ -461,13 +518,16 @@
                         <h4>${audio.nome} <span style="font-size: 10px; color: #a855f7;">(${audio.tipo})</span></h4>
                         <p>${audio.louvor}</p>
                     </div>
-                    <button class="btn-primary btn-danger" onclick="deletarAudioAdmin('${audio.id}')"><i class="fas fa-trash"></i></button>
+                    <div class="admin-actions">
+                        <button class="btn-acao-lista bg-blue" onclick="prepararEdicao('${audio.id}', '${audio.tipo}', '${audio.nome}', '${audio.louvor}', '${audio.link}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn-acao-lista bg-red" onclick="deletarAudioAdmin('${audio.id}')"><i class="fas fa-trash"></i></button>
+                    </div>
                 `;
                 container.appendChild(item);
             });
         }
 
-        // --- SISTEMA INTELIGENTE DE PLAYER ---
+        // --- SISTEMA INTELIGENTE DE PLAYER (OTIMIZADO) ---
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxjX7K30EgFOfqktK4JAnl0bpXE7UC1iWH-camU5RHxTk6RoxxIpHxhGZzgMxNV0T/exec";
         
         let listaDeRadios = [];
@@ -478,38 +538,58 @@
         const tipoTag = document.getElementById('player-tipo-tag');
         const imgSeguranca = "https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+CCB";
 
+        // FUNÇÃO DE SINCRONIZAÇÃO FORÇADA
+        async function forcarSincronizacao() {
+            const btnIcon = document.getElementById('btn-sync-icon');
+            btnIcon.classList.add('fa-spin'); // Faz a rodinha girar
+            document.getElementById('player-louvor').innerText = "Sincronizando banco de dados...";
+            document.getElementById('player-artista').innerText = "Aguarde um momento";
+            
+            await carregarTodasAsRadios();
+            
+            btnIcon.classList.remove('fa-spin');
+            if(document.getElementById('stations-list-screen').classList.contains('open')){
+                renderizarListaFiltro(); // Atualiza a lista caso ela esteja aberta
+            }
+        }
+
         async function carregarTodasAsRadios() {
-            // 1. Rádios Fixas
             const radiosFixas = [
                 { nome: "Rádio Live", louvor: "Sua Música ao Vivo", artista: "DJ Central", link: "https://stm43.srvstm.com:8954/stream", img: "https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+Live", tipo: "radio" },
                 { nome: "Louvores Variados", louvor: "Músicas de Louvor", artista: "Diversos Artistas", link: "http://stm1.hoststreaming.com.br:7088/;stream.nsv", img: "https://placehold.co/400x400/181818/a855f7?text=Louvores", tipo: "radio" }
             ];
             
-            // 2. Rádios do Google Sheets
             let radiosPlanilha = [];
-            try {
-                const response = await fetch(`${WEB_APP_URL}?sheet=ESTACOES`);
-                const linksPlanilha = await response.json(); 
-                radiosPlanilha = linksPlanilha.map((item, index) => {
-                    let nome = `Estação ${index + 3}`;
-                    try { const url = new URL(item.link); nome = url.hostname.replace('www.', '').split('.')[0]; nome = nome.charAt(0).toUpperCase() + nome.slice(1); } catch (e) {}
-                    return { nome: nome, louvor: item.louvor || 'Louvor não informado', artista: item.artista || 'Diversos', link: item.link, img: item.img || imgSeguranca, tipo: "radio" };
-                });
-            } catch (error) { console.log("Erro ao carregar planilha"); }
-
-            // 3. Rádios/Louvores do Servidor PHP
             let audiosAdmin = [];
-            try {
-                const respostaPHP = await fetch(URL_LISTAR_PHP);
-                if(respostaPHP.ok) {
-                    audiosAdmin = await respostaPHP.json();
-                }
-            } catch (error) { console.log("Erro ao puxar audios do PHP"); }
 
-            // Junta tudo em uma lista só
+            try {
+                // Requisições paralelas para carregar 2x mais rápido!
+                const [resPlanilha, resPhp] = await Promise.allSettled([
+                    fetch(`${WEB_APP_URL}?sheet=ESTACOES`),
+                    fetch(URL_LISTAR_PHP)
+                ]);
+
+                if (resPlanilha.status === 'fulfilled' && resPlanilha.value.ok) {
+                    const linksPlanilha = await resPlanilha.value.json(); 
+                    radiosPlanilha = linksPlanilha.map((item, index) => {
+                        let nome = `Estação ${index + 3}`;
+                        try { const url = new URL(item.link); nome = url.hostname.replace('www.', '').split('.')[0]; nome = nome.charAt(0).toUpperCase() + nome.slice(1); } catch (e) {}
+                        return { nome: nome, louvor: item.louvor || 'Louvor não informado', artista: item.artista || 'Diversos', link: item.link, img: item.img || imgSeguranca, tipo: "radio" };
+                    });
+                }
+                
+                if (resPhp.status === 'fulfilled' && resPhp.value.ok) {
+                    audiosAdmin = await resPhp.value.json();
+                }
+            } catch (error) { console.log("Erro na sincronização paralela"); }
+
             listaDeRadios = [...radiosFixas, ...radiosPlanilha, ...audiosAdmin];
             
-            if(listaDeRadios.length > 0) { atualizarTelaPlayer(0, false); }
+            if(listaDeRadios.length > 0) { 
+                // Se o indice atual ficou maior que a lista (ex: apagamos a ultima musica), volta pro inicio
+                if(indexRadioAtual >= listaDeRadios.length) indexRadioAtual = 0;
+                atualizarTelaPlayer(indexRadioAtual, false); 
+            }
         }
 
         function atualizarTelaPlayer(index, autoPlay = true) {
@@ -520,7 +600,6 @@
             document.getElementById('player-artista').innerText = `Por: ${radio.artista}`;
             document.getElementById('player-img').src = radio.img;
             
-            // Atualiza a TAG na tela se é Rádio ou Louvor
             if(radio.tipo === 'louvor') {
                 tipoTag.innerText = "LOUVOR";
                 tipoTag.style.color = "#8dbbf5";
@@ -537,14 +616,42 @@
             else { playIcon.className = 'fas fa-play'; eqAnim.classList.remove('playing'); }
         }
 
+        // LIDA COM ERROS SE A RÁDIO CAIR OU LINK QUEBRAR
+        audioPlayer.addEventListener('error', function() {
+            playIcon.className = 'fas fa-play';
+            eqAnim.classList.remove('playing');
+            document.getElementById('player-louvor').innerText = "Indisponível no momento";
+            document.getElementById('player-louvor').style.color = "#dc3545"; // Fica vermelho
+            document.getElementById('player-artista').innerText = "Falha ao conectar";
+            tipoTag.innerText = "ERRO";
+            tipoTag.style.color = "#dc3545";
+        });
+
         function tocarAudio() {
             playIcon.className = 'fas fa-spinner fa-spin';
+            
+            // Retorna a cor ao normal caso estivesse vermelho de erro antes
+            document.getElementById('player-louvor').style.color = "#b3b3b3";
+            document.getElementById('player-louvor').innerText = "Conectando..."; 
+            
             audioPlayer.play().then(() => { 
                 playIcon.className = 'fas fa-pause'; 
                 eqAnim.classList.add('playing'); 
+                
+                // Restaura o nome real do louvor após conectar
+                document.getElementById('player-louvor').innerText = listaDeRadios[indexRadioAtual].louvor;
+                const isLouvor = listaDeRadios[indexRadioAtual].tipo === 'louvor';
+                tipoTag.innerText = isLouvor ? "LOUVOR" : "AO VIVO";
+                tipoTag.style.color = isLouvor ? "#8dbbf5" : "#b3b3b3";
+
             }).catch(e => { 
                 playIcon.className = 'fas fa-play'; 
                 eqAnim.classList.remove('playing');
+                document.getElementById('player-louvor').innerText = "Indisponível no momento";
+                document.getElementById('player-louvor').style.color = "#dc3545"; // Fica vermelho
+                document.getElementById('player-artista').innerText = "Tente outra estação";
+                tipoTag.innerText = "ERRO";
+                tipoTag.style.color = "#dc3545";
             });
         }
 
@@ -561,7 +668,6 @@
                 itemDiv.className = `station-list-item ${isActive ? 'active-item' : ''}`;
                 itemDiv.onclick = () => { fecharListaRadios(); atualizarTelaPlayer(index, true); };
                 
-                // Escolhe a cor e texto da etiquetinha
                 const badgeClass = radio.tipo === 'louvor' ? 'badge-louvor' : 'badge-radio';
                 const badgeText = radio.tipo === 'louvor' ? 'Louvor' : 'Rádio';
 
