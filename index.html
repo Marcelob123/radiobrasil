@@ -34,8 +34,8 @@
         .artista-em-destaque { font-size: 14px; color: #888888; margin: 0; transition: color 0.3s;}
 
         .progress-container { width: 100%; max-width: 340px; margin-bottom: 15px; }
-        .progress-bar { width: 100%; height: 4px; background-color: #333; border-radius: 2px; position: relative; margin-bottom: 10px; }
-        .progress-fill { width: 100%; height: 100%; background-color: #a855f7; border-radius: 2px; position: relative; }
+        .progress-bar { width: 100%; height: 4px; background-color: #333; border-radius: 2px; position: relative; margin-bottom: 10px; cursor: pointer; }
+        .progress-fill { width: 0%; height: 100%; background-color: #a855f7; border-radius: 2px; position: relative; pointer-events: none; }
         .progress-fill::after { content: ''; position: absolute; right: -6px; top: -4px; width: 12px; height: 12px; background-color: #a855f7; border-radius: 50%; box-shadow: 0 0 8px rgba(168, 85, 247, 0.6); }
         .time-info { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #b3b3b3; font-weight: 500; }
 
@@ -79,7 +79,7 @@
         /* Formulários Customizados */
         .input-group { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 600px; margin-bottom: 15px; }
         .input-group label { font-size: 13px; color: #b3b3b3; font-weight: 600; }
-        .custom-input { background-color: #2a2a2a; color: #fff; border: 1px solid #333; border-radius: 8px; padding: 15px; font-size: 15px; font-family: inherit; outline: none; transition: border 0.3s; width: 100%; box-sizing: border-box; }
+        .custom-input { background-color: #2a2a2a; color: #fff; border: 1px solid #333; border-radius: 8px; padding: 15px; font-size: 15px; font-family: inherit; outline: none; transition: border 0.3s; width: 100%; box-sizing: border-box; resize: vertical; }
         .custom-input:focus { border-color: #a855f7; }
         .custom-input option { background-color: #181818; color: #fff; }
         
@@ -121,18 +121,6 @@
         .timer-options { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 600px; }
         .timer-btn { background: #2a2a2a; color: #fff; border: none; padding: 16px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
         .timer-btn:active { background: #a855f7; }
-
-        /* Menu Lateral e Mapa */
-        #menu-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 2999; display: none; opacity: 0; transition: opacity 0.3s ease; }
-        #menu-overlay.open { display: block; opacity: 1; }
-        #side-menu { position: fixed; top: 0; left: -320px; width: 280px; max-width: 85vw; height: 100vh; background-color: #181818; z-index: 3000; transition: left 0.3s ease; box-shadow: 2px 0 15px rgba(0,0,0,0.8); display: flex; flex-direction: column; }
-        #side-menu.open { left: 0; }
-        .side-menu-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid #282828; background-color: #121212; }
-        .side-menu-header h2 { font-size: 18px; margin: 0; color: #fff; }
-        .side-menu-content { padding: 20px 15px; flex-grow: 1; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
-        .menu-item-btn { background: transparent; border: none; color: #fff; font-size: 16px; font-weight: 500; padding: 15px; display: flex; align-items: center; gap: 15px; border-radius: 8px; cursor: pointer; transition: background 0.3s; width: 100%; text-align: left; font-family: inherit; }
-        .menu-item-btn:hover, .menu-item-btn:active { background: #282828; }
-        .menu-item-btn i { font-size: 20px; color: #a855f7; width: 25px; text-align: center; }
         
         #map-screen { position: fixed; top: 0; left: 100%; width: 100vw; height: 100vh; background-color: #121212; z-index: 2500; transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
         #map-screen.open { left: 0; } 
@@ -140,6 +128,29 @@
         .map-container-full iframe { width: 100%; height: 100%; border: none; }
         
         .mural-card-box { background: linear-gradient(145deg, #1f142e, #181818); border: 1px solid #a855f7; border-radius: 12px; padding: 30px 20px; text-align: center; margin-top: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 100%; max-width: 600px; box-sizing: border-box;}
+
+        /* --- ESTILOS DO PEDIDO DE ORAÇÃO --- */
+        .oracao-tabs { display: flex; width: 100%; max-width: 600px; margin-bottom: 15px; background: #181818; border-radius: 8px; padding: 5px; box-sizing: border-box;}
+        .oracao-tab-btn { flex: 1; padding: 12px; text-align: center; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; color: #888; transition: 0.3s; background: transparent; border: none;}
+        .oracao-tab-btn.active { background: #2a2a2a; color: #fff; }
+        .oracao-header-box { width: 100%; max-width: 600px; background-image: url('https://images.unsplash.com/photo-1544427920-c49ccf08c146?q=80&w=600&auto=format&fit=crop'); background-size: cover; background-position: center; border-radius: 12px; position: relative; overflow: hidden; margin-bottom: 20px; }
+        .oracao-header-overlay { background: linear-gradient(to right, rgba(18,18,18,0.95), rgba(18,18,18,0.6)); padding: 25px 20px; }
+        .oracao-quote-box { background: #1f142e; border-left: 4px solid #a855f7; padding: 15px; border-radius: 0 8px 8px 0; margin-bottom: 20px; width: 100%; max-width: 600px; box-sizing: border-box;}
+        
+        .ident-toggle-container { display: flex; gap: 10px; width: 100%; margin-bottom: 15px; }
+        .ident-card { flex: 1; border: 1px solid #333; background: #181818; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; transition: 0.2s; color: #b3b3b3; }
+        .ident-card.active { border-color: #a855f7; background: #1f142e; color: #a855f7; }
+        .ident-card i { font-size: 20px; margin-bottom: 8px; display: block; }
+        .ident-card h4 { font-size: 13px; margin: 0 0 5px 0; color: #fff;}
+        .ident-card p { font-size: 10px; margin: 0; opacity: 0.7; color: #b3b3b3;}
+        
+        .oracao-feed-box { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 12px; padding-bottom: 30px;}
+        .oracao-feed-item { background: #181818; border-radius: 10px; padding: 16px; border-left: 4px solid #a855f7; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
+        .oracao-feed-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 11px; color: #888; border-bottom: 1px solid #282828; padding-bottom: 8px;}
+        .oracao-feed-nome { font-weight: 700; color: #d4a5ff; font-size: 14px; display: flex; align-items: center; gap: 6px;}
+        .oracao-feed-badge { background: #2d1a42; color: #c48df5; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; text-transform: uppercase;}
+        .oracao-feed-texto { font-size: 15px; color: #e9edef; line-height: 1.5; margin: 0 0 10px 0; white-space: pre-wrap;}
+        .oracao-feed-detalhes { font-size: 13px; color: #b3b3b3; background: #121212; padding: 10px; border-radius: 6px; margin: 0; font-style: italic;}
 
         /* --- CHAT ESTILO WHATSAPP DARK MODE --- */
         .chat-container { display: flex; flex-direction: column; width: 100%; max-width: 600px; height: calc(100vh - 120px); background-color: #0b141a; }
@@ -171,17 +182,16 @@
         <p class="splash-subtitle">A paz de Deus</p>
     </div>
 
-    <div id="menu-overlay" onclick="fecharMenuLateral()"></div>
-    <div id="side-menu">
-        <div class="side-menu-header">
-            <h2>Navegação</h2><button class="close-btn" onclick="fecharMenuLateral()"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="side-menu-content">
-            <button class="menu-item-btn" onclick="abrirMural()"><i class="fas fa-book-open"></i> Mural da Palavra</button>
-            <button class="menu-item-btn" onclick="abrirAbaMapa()"><i class="fas fa-map-marked-alt"></i> Congregações CCB</button>
-            <button class="menu-item-btn" onclick="compartilharApp()"><i class="fas fa-share-nodes"></i> Compartilhar App</button>
-            <button class="menu-item-btn" onclick="abrirLoginAdmin()"><i class="fas fa-user-shield"></i> Área Admin</button>
-            <button class="menu-item-btn" onclick="fecharMenuLateral()"><i class="fas fa-home"></i> Início</button>
+    <div id="menu-overlay" onclick="fecharMenuLateral()" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 2999; display: none; opacity: 0; transition: 0.3s;"></div>
+    
+    <div id="side-menu" style="position: fixed; top: 0; left: -320px; width: 280px; height: 100vh; background: #181818; z-index: 3000; transition: 0.3s; display: flex; flex-direction: column;">
+        <div class="screen-header" style="padding: 20px; border-bottom: 1px solid #282828;"><h2>Navegação</h2><button class="close-btn" onclick="fecharMenuLateral()"><i class="fas fa-times"></i></button></div>
+        <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto;">
+            <button onclick="abrirMural()" style="background:transparent; border:none; color:#fff; text-align:left; font-size:16px; padding:15px; border-radius:8px; cursor:pointer;"><i class="fas fa-book-open" style="color:#a855f7; margin-right:15px;"></i> Mural da Palavra</button>
+            <button onclick="abrirAbaMapa()" style="background:transparent; border:none; color:#fff; text-align:left; font-size:16px; padding:15px; border-radius:8px; cursor:pointer;"><i class="fas fa-map-marked-alt" style="color:#a855f7; margin-right:15px;"></i> Congregações CCB</button>
+            <button onclick="compartilharApp()" style="background:transparent; border:none; color:#fff; text-align:left; font-size:16px; padding:15px; border-radius:8px; cursor:pointer;"><i class="fas fa-share-nodes" style="color:#a855f7; margin-right:15px;"></i> Compartilhar App</button>
+            <button onclick="abrirLoginAdmin()" style="background:transparent; border:none; color:#fff; text-align:left; font-size:16px; padding:15px; border-radius:8px; cursor:pointer;"><i class="fas fa-user-shield" style="color:#a855f7; margin-right:15px;"></i> Área Admin</button>
+            <button onclick="fecharMenuLateral()" style="background:transparent; border:none; color:#fff; text-align:left; font-size:16px; padding:15px; border-radius:8px; cursor:pointer;"><i class="fas fa-home" style="color:#a855f7; margin-right:15px;"></i> Início</button>
         </div>
     </div>
 
@@ -189,22 +199,21 @@
         <button class="menu-btn-top" onclick="abrirMenuLateral()"><i class="fas fa-bars"></i></button>
         <h1>Rádio Brasil CCB</h1>
         <div style="display: flex; gap: 5px;">
-            <button class="menu-btn-top" onclick="forcarSincronizacao()" id="btn-sync" title="Sincronizar Dados"><i class="fas fa-sync-alt" id="btn-sync-icon"></i></button>
+            <button class="menu-btn-top" onclick="forcarSincronizacao()" id="btn-sync"><i class="fas fa-sync-alt" id="btn-sync-icon"></i></button>
         </div>
     </header>
 
     <section>
         <div class="main-player-card">
-            <img id="player-img" src="https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+CCB" alt="Capa" class="station-img" onerror="this.src='https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+CCB'">
-            
+            <img id="player-img" src="https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+CCB" class="station-img" onerror="this.src='https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+CCB'">
             <div class="station-info">
                 <h3 id="player-title">Carregando...</h3>
                 <p id="player-louvor" class="louvor-em-destaque">Conectando às rádios</p>
                 <p id="player-artista" class="artista-em-destaque">Aguarde</p>
             </div>
-
+            
             <div class="progress-container">
-                <div class="progress-bar"><div class="progress-fill"></div></div>
+                <div class="progress-bar" id="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
                 <div class="time-info">
                     <span id="player-tipo-tag">AO VIVO</span>
                     <div class="equalizer" id="equalizer-anim">
@@ -212,13 +221,12 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="volume-container">
                 <i class="fas fa-volume-down"></i>
                 <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
                 <i class="fas fa-volume-up"></i>
             </div>
-
             <div class="player-controls">
                 <button class="control-icon" onclick="abrirListaRadios()"><i class="fas fa-list-ul"></i></button>
                 <button class="control-icon" onclick="prevRadio()"><i class="fas fa-backward-step"></i></button>
@@ -231,14 +239,17 @@
         </div>
     </section>
 
+    <!-- NAVEGAÇÃO INFERIOR CORRIGIDA: INÍCIO | CHAT | PEDIDOS | PERFIL -->
     <nav class="bottom-nav">
         <a href="index.html" class="active"><i class="fas fa-home"></i><span>Início</span></a>
         <button onclick="abrirChat()"><i class="fas fa-comments"></i><span>Chat</span></button>
-        <button onclick="abrirWhatsAppDireto()" style="background:none; border:none; cursor:pointer;"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></button>
+        <button onclick="abrirOracao()"><i class="fas fa-praying-hands"></i><span>Pedidos</span></button>
         <button onclick="abrirPerfil()"><i class="fas fa-user"></i><span>Perfil</span></button>
     </nav>
 
-    <!-- Modal do Chat -->
+    <!-- ========================================== -->
+    <!-- TELA DO CHAT (WHATSAPP STYLE) -->
+    <!-- ========================================== -->
     <div id="chat-screen" class="bottom-sheet" style="padding: 0;">
         <div class="screen-header" style="background-color: #202c33; margin-bottom: 0; padding: 15px 15px; border-bottom: none; width: 100%;">
             <div style="display:flex; align-items:center; gap: 15px; width: 100%;">
@@ -274,102 +285,124 @@
         </div>
     </div>
 
-    <!-- Modal Login Admin -->
+    <!-- ========================================== -->
+    <!-- TELA DE PEDIDOS DE ORAÇÃO -->
+    <!-- ========================================== -->
+    <div id="oracao-screen" class="bottom-sheet">
+        <div class="screen-header"><div style="width: 44px;"></div><h2>Intercessão</h2><button class="close-btn" onclick="fecharOracao()"><i class="fas fa-chevron-down"></i></button></div>
+        
+        <div class="oracao-tabs">
+            <button class="oracao-tab-btn active" id="tab-fazer" onclick="mudarAbaOracao('fazer')">Fazer Pedido</button>
+            <button class="oracao-tab-btn" id="tab-ver" onclick="mudarAbaOracao('ver')">Mural de Orações</button>
+        </div>
+
+        <div id="aba-fazer-pedido" style="width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: center; padding-bottom: 40px;">
+            <div class="oracao-header-box">
+                <div class="oracao-header-overlay">
+                    <h2 style="margin:0 0 5px 0; color:#fff; font-size:24px;">Estamos aqui<br>para orar por você.</h2>
+                    <p style="margin:0; color:#b3b3b3; font-size:12px;">Deixe seu pedido e nossa equipe de intercessão e a irmandade estarão orando.</p>
+                </div>
+            </div>
+            
+            <div class="oracao-quote-box">
+                <i class="fas fa-quote-left" style="color: rgba(168, 85, 247, 0.4); font-size: 20px; float: left; margin-right: 10px;"></i>
+                <p style="margin: 0; font-size: 13px; color: #e9edef; font-style: italic;">Não andeis ansiosos de coisa alguma; em tudo, porém, sejam conhecidas, diante de Deus, as vossas petições, pela oração e pela súplica, com ação de graças.</p>
+                <span style="display: block; text-align: right; color: #a855f7; font-size: 11px; font-weight: bold; margin-top: 8px;">Filipenses 4:6</span>
+            </div>
+
+            <div class="profile-form">
+                <div class="input-group">
+                    <label>Sobre o que você gostaria de pedir oração? <span style="color:#dc3545;">*</span></label>
+                    <textarea id="oracao-pedido" class="custom-input" rows="4" placeholder="Escreva aqui seu pedido principal..." maxlength="1000"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Como deseja identificar seu pedido?</label>
+                    <div class="ident-toggle-container">
+                        <div class="ident-card active" id="btn-ident-nome" onclick="escolherIdentificacao('nome')">
+                            <i class="far fa-user"></i>
+                            <h4>Com meu nome</h4>
+                            <p>Seu nome será mostrado</p>
+                        </div>
+                        <div class="ident-card" id="btn-ident-sigilo" onclick="escolherIdentificacao('sigilo')">
+                            <i class="fas fa-lock"></i>
+                            <h4>Em sigilo</h4>
+                            <p>Seu nome será ocultado</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Categoria (opcional)</label>
+                    <select id="oracao-categoria" class="custom-input">
+                        <option value="Saúde / Enfermidade">Saúde / Enfermidade</option>
+                        <option value="Família / Casamento">Família / Casamento</option>
+                        <option value="Vida Financeira">Vida Financeira</option>
+                        <option value="Vida Espiritual">Vida Espiritual</option>
+                        <option value="Causas na Justiça">Causas na Justiça</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Deseja adicionar mais detalhes? (opcional)</label>
+                    <textarea id="oracao-detalhes" class="custom-input" rows="3" placeholder="Fale mais detalhes se desejar..." maxlength="500"></textarea>
+                </div>
+
+                <button class="btn-primary" onclick="enviarOracao()"><i class="fas fa-paper-plane"></i> Enviar pedido de oração</button>
+                <p style="text-align: center; color: #888; font-size: 11px; margin-top: 15px;"><i class="fas fa-shield-alt"></i> Seus pedidos são tratados com amor e respeito.</p>
+            </div>
+        </div>
+
+        <div id="aba-ver-pedidos" class="oracao-feed-box" style="display: none;">
+            <p style="text-align:center; color:#888; font-size:12px; margin-top:20px;">Carregando pedidos...</p>
+        </div>
+    </div>
+
+    <!-- Modais Anteriores -->
     <div id="admin-login-screen" class="bottom-sheet">
         <div class="screen-header"><div style="width: 44px;"></div><h2>Acesso Restrito</h2><button class="close-btn" onclick="fecharLoginAdmin()"><i class="fas fa-chevron-down"></i></button></div>
         <div class="profile-form">
-            <p style="text-align: center; color: #b3b3b3; font-size: 14px;">Área exclusiva para administradores.</p>
-            <div class="input-group">
-                <label>Senha de Acesso</label>
-                <input type="password" id="inputAdminSenha" class="custom-input" placeholder="Digite a senha">
-            </div>
-            <button class="btn-primary" onclick="verificarSenhaAdmin()"><i class="fas fa-lock-open"></i> Entrar no Painel</button>
+            <div class="input-group"><label>Senha de Acesso</label><input type="password" id="inputAdminSenha" class="custom-input" placeholder="Digite a senha"></div>
+            <button class="btn-primary" onclick="verificarSenhaAdmin()">Entrar no Painel</button>
         </div>
     </div>
 
-    <!-- Modal Painel Admin -->
     <div id="admin-panel-screen" class="bottom-sheet">
         <div class="screen-header"><div style="width: 44px;"></div><h2>Painel Admin</h2><button class="close-btn" onclick="fecharAdminPanel()"><i class="fas fa-times"></i></button></div>
-        
         <div class="profile-form" style="padding-bottom: 30px;">
-            <p style="color: #ff9800; font-size: 12px; text-align: center;">Conectado ao Banco de Dados PHP/MySQL</p>
-            
             <h3 id="titulo-form-admin" style="margin-top: 0; color: #a855f7;">Adicionar Novo Áudio</h3>
-            
-            <div class="input-group">
-                <label>Tipo</label>
-                <select id="adminTipo" class="custom-input">
-                    <option value="louvor">Louvor (Música Gravada)</option>
-                    <option value="radio">Rádio (Ao Vivo)</option>
-                </select>
-            </div>
-            
-            <div class="input-group">
-                <label>Nome / Título</label>
-                <input type="text" id="adminNome" class="custom-input" placeholder="Ex: Hino 01 ou Rádio X">
-            </div>
-            
-            <div class="input-group">
-                <label>Descrição / Artista</label>
-                <input type="text" id="adminDesc" class="custom-input" placeholder="Ex: Cantor ou Programa">
-            </div>
-            
-            <div class="input-group">
-                <label>Link do Áudio Direto</label>
-                <input type="url" id="adminLink" class="custom-input" placeholder="https://...">
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
-                <button id="btn-salvar-admin" class="btn-primary" onclick="salvarOuEditarAudio()"><i class="fas fa-cloud-upload-alt"></i> Salvar no Banco de Dados</button>
-                <button id="btn-cancelar-edicao" class="btn-primary btn-danger" style="display: none;" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar Edição</button>
-            </div>
-            
+            <div class="input-group"><label>Tipo</label><select id="adminTipo" class="custom-input"><option value="louvor">Louvor</option><option value="radio">Rádio</option></select></div>
+            <div class="input-group"><label>Nome / Título</label><input type="text" id="adminNome" class="custom-input" placeholder="Ex: Hino 01"></div>
+            <div class="input-group"><label>Descrição / Artista</label><input type="text" id="adminDesc" class="custom-input" placeholder="Ex: Cantor"></div>
+            <div class="input-group"><label>Link do Áudio</label><input type="url" id="adminLink" class="custom-input" placeholder="https://..."></div>
+            <button id="btn-salvar-admin" class="btn-primary" onclick="salvarOuEditarAudio()">Salvar no Banco</button>
+            <button id="btn-cancelar-edicao" class="btn-primary btn-danger" style="display: none;" onclick="cancelarEdicao()">Cancelar Edição</button>
             <hr style="border: 0; height: 1px; background: #333; margin: 30px 0; width: 100%;">
-            
-            <h3 style="margin-top: 0; color: #a855f7;">Gerenciar Áudios do Banco</h3>
-            <div id="admin-lista-dinamica" style="display: flex; flex-direction: column; gap: 10px;">
-                <!-- Lista administrável aparecerá aqui -->
-            </div>
-
-            <hr style="border: 0; height: 1px; background: #333; margin: 30px 0; width: 100%;">
-            
-            <button class="btn-primary btn-danger" onclick="limparChatAdmin()" style="margin-top: 20px;"><i class="fas fa-trash-alt"></i> Esvaziar Todo o Chat</button>
+            <h3 style="margin-top: 0; color: #a855f7;">Gerenciar Áudios</h3>
+            <div id="admin-lista-dinamica" style="display: flex; flex-direction: column; gap: 10px;"></div>
         </div>
     </div>
 
-    <!-- Outros Modais -->
     <div id="map-screen">
-        <div class="screen-header" style="padding: 20px;">
-            <button class="close-btn" onclick="fecharAbaMapa()"><i class="fas fa-chevron-left"></i></button><h2>CCB em Formiga - MG</h2><div style="width: 44px;"></div>
-        </div>
-        <div class="map-container-full">
-            <iframe src="https://maps.google.com/maps?q=Congrega%C3%A7%C3%A3o+Crist%C3%A3+no+Brasil+Formiga+MG&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy"></iframe>
-        </div>
+        <div class="screen-header" style="padding: 20px;"><button class="close-btn" onclick="fecharAbaMapa()"><i class="fas fa-chevron-left"></i></button><h2>CCB em Formiga</h2><div style="width: 44px;"></div></div>
+        <div class="map-container-full"><iframe src="https://maps.google.com/maps?q=Congrega%C3%A7%C3%A3o+Crist%C3%A3+no+Brasil+Formiga+MG&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy"></iframe></div>
     </div>
 
     <div id="mural-screen" class="bottom-sheet">
         <div class="screen-header"><div style="width: 44px;"></div><h2>Mural da Palavra</h2><button class="close-btn" onclick="fecharMural()"><i class="fas fa-chevron-down"></i></button></div>
-        <p style="color: #b3b3b3; text-align: center; font-size: 14px; margin-top: 0;">Sua mensagem espiritual para cada mês.</p>
-        <div class="input-group">
-            <select id="mural-mes-select" class="custom-input" onchange="atualizarMural()">
-                <option value="1">Janeiro</option><option value="2">Fevereiro</option><option value="3">Março</option><option value="4">Abril</option><option value="5">Maio</option><option value="6">Junho</option><option value="7">Julho</option><option value="8">Agosto</option><option value="9">Setembro</option><option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option>
-            </select>
-        </div>
-        <div class="mural-card-box">
-            <i class="fas fa-quote-left" style="color: #a855f7; font-size: 28px; margin-bottom: 15px; opacity: 0.6;"></i>
-            <h3 id="mural-titulo" style="margin: 0 0 15px 0; color: #fff; font-size: 20px;">Carregando...</h3>
-            <p id="mural-texto" style="color: #e0e0e0; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0; font-style: italic;">"..."</p>
-            <p id="mural-referencia" style="color: #a855f7; font-size: 14px; font-weight: bold; margin: 0;"></p>
-        </div>
+        <div class="input-group"><select id="mural-mes-select" class="custom-input" onchange="atualizarMural()"><option value="1">Janeiro</option><option value="2">Fevereiro</option><option value="3">Março</option><option value="4">Abril</option><option value="5">Maio</option><option value="6">Junho</option><option value="7">Julho</option><option value="8">Agosto</option><option value="9">Setembro</option><option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option></select></div>
+        <div class="mural-card-box"><i class="fas fa-quote-left" style="color: #a855f7; font-size: 28px; margin-bottom: 15px; opacity: 0.6;"></i><h3 id="mural-titulo" style="color: #fff; font-size: 20px;">Carregando...</h3><p id="mural-texto" style="color: #e0e0e0; font-size: 16px; font-style: italic;"></p><p id="mural-referencia" style="color: #a855f7; font-size: 14px; font-weight: bold;"></p></div>
     </div>
 
     <div id="profile-screen" class="bottom-sheet">
         <div class="screen-header"><div style="width: 44px;"></div><h2>Meu Perfil</h2><button class="close-btn" onclick="fecharPerfil()"><i class="fas fa-chevron-down"></i></button></div>
         <div class="profile-form">
-            <div class="input-group"><label>Seu Nome</label><input type="text" id="inputNome" class="custom-input" placeholder="Ex: João Silva" oninput="salvarDados()"></div>
-            <div class="input-group"><label>Sua Cidade</label><input type="text" id="inputCidade" class="custom-input" placeholder="Sua cidade e estado" oninput="salvarDados()"></div>
+            <p style="text-align: center; color: #a855f7; font-size: 12px; margin-top: 0;">Preencha para participar da Comunidade!</p>
+            <div class="input-group"><label>Seu Nome (Obrigatório)</label><input type="text" id="inputNome" class="custom-input" placeholder="Ex: João Silva" oninput="salvarDados()"></div>
+            <div class="input-group"><label>Sua Cidade (Obrigatório)</label><input type="text" id="inputCidade" class="custom-input" placeholder="Sua cidade e estado" oninput="salvarDados()"></div>
             <div class="input-group"><label>Comum Congregação</label><input type="text" id="inputCCB" class="custom-input" placeholder="Ex: Central" oninput="salvarDados()"></div>
-            <button class="btn-primary btn-whatsapp" onclick="enviarParaWhatsApp()"><i class="fab fa-whatsapp"></i> Enviar Mensagem</button>
+            <button class="btn-primary btn-whatsapp" onclick="enviarParaWhatsApp()"><i class="fab fa-whatsapp"></i> Contato WhatsApp</button>
             <p style="font-size: 11px; color: #888; text-align: center; margin-top: 10px;">Seus dados ficam salvos automaticamente no celular.</p>
         </div>
     </div>
@@ -381,20 +414,14 @@
 
     <div id="timer-screen" class="bottom-sheet">
         <div class="screen-header"><div style="width: 44px;"></div><h2>Temporizador</h2><button class="close-btn" onclick="fecharTemporizador()"><i class="fas fa-chevron-down"></i></button></div>
-        <p style="color: #b3b3b3; text-align: center; font-size: 14px; margin-bottom: 20px;">Escolha em quanto tempo a rádio vai desligar sozinha.</p>
-        <div class="timer-options">
-            <button class="timer-btn" onclick="iniciarTemporizador(15)">15 Minutos</button>
-            <button class="timer-btn" onclick="iniciarTemporizador(30)">30 Minutos</button>
-            <button class="timer-btn" onclick="iniciarTemporizador(60)">1 Hora</button>
-            <button class="timer-btn" style="color: #ff4d4d; background: #331a1a;" onclick="cancelarTemporizador()">Desativar Temporizador</button>
-        </div>
+        <div class="timer-options"><button class="timer-btn" onclick="iniciarTemporizador(15)">15 Minutos</button><button class="timer-btn" onclick="iniciarTemporizador(30)">30 Minutos</button><button class="timer-btn" onclick="iniciarTemporizador(60)">1 Hora</button><button class="timer-btn" style="color: #ff4d4d; background: #331a1a;" onclick="cancelarTemporizador()">Desativar Temporizador</button></div>
         <p id="timer-status" style="color: #a855f7; font-size: 14px; margin-top: 25px; font-weight: 600; text-align: center;"></p>
     </div>
 
     <script>
         // NAVEGAÇÃO BÁSICA
-        function abrirMenuLateral() { document.getElementById('side-menu').classList.add('open'); document.getElementById('menu-overlay').classList.add('open'); }
-        function fecharMenuLateral() { document.getElementById('side-menu').classList.remove('open'); document.getElementById('menu-overlay').classList.remove('open'); }
+        function abrirMenuLateral() { document.getElementById('side-menu').style.left = '0'; document.getElementById('menu-overlay').style.display = 'block'; setTimeout(()=>document.getElementById('menu-overlay').style.opacity='1',10); }
+        function fecharMenuLateral() { document.getElementById('side-menu').style.left = '-320px'; document.getElementById('menu-overlay').style.opacity='0'; setTimeout(()=>document.getElementById('menu-overlay').style.display='none',300); }
         function abrirAbaMapa() { fecharMenuLateral(); document.getElementById('map-screen').classList.add('open'); }
         function fecharAbaMapa() { document.getElementById('map-screen').classList.remove('open'); }
         function abrirPerfil() { document.getElementById('profile-screen').classList.add('open'); carregarDados(); }
@@ -402,31 +429,13 @@
         function abrirListaRadios() { document.getElementById('stations-list-screen').classList.add('open'); renderizarListaFiltro(); }
         function fecharListaRadios() { document.getElementById('stations-list-screen').classList.remove('open'); }
         
-        // MUDANÇA: WhatsApp e Compartilhar corrigidos para não dar erro no celular
-        function abrirWhatsAppDireto() {
-            window.location.href = "https://wa.me/5537998648790";
-        }
-        function compartilharApp() { 
-            fecharMenuLateral();
-            const linkOficial = "https://play.google.com/store/apps/details?id=io.kodular.marcelocaetanonascimento2016.HinosCCBRadio&hl=pt"; 
-            const texto = "Ouça os melhores louvores na Rádio Brasil CCB! Baixe agora:"; 
-            if (navigator.share) { 
-                navigator.share({ title: 'Rádio Brasil CCB', text: texto, url: linkOficial }).catch(err => console.log('Erro ao compartilhar', err)); 
-            } else { 
-                window.location.href = `https://wa.me/?text=${encodeURIComponent(texto + " " + linkOficial)}`; 
-            } 
-        }
+        function compartilharApp() { fecharMenuLateral(); const linkOficial = "https://play.google.com/store/apps/details?id=io.kodular.marcelocaetanonascimento2016.HinosCCBRadio&hl=pt"; const texto = "Ouça os melhores louvores na Rádio Brasil CCB! Baixe agora:"; if (navigator.share) { navigator.share({ title: 'Rádio Brasil CCB', text: texto, url: linkOficial }).catch(err => console.log('Erro ao compartilhar', err)); } else { window.location.href = `https://wa.me/?text=${encodeURIComponent(texto + " " + linkOficial)}`; } }
 
         window.addEventListener('load', () => { setTimeout(() => { document.getElementById('splash-screen').style.opacity = '0'; document.getElementById('splash-screen').style.visibility = 'hidden'; }, 2500); });
 
-        // DADOS DO PERFIL
         function salvarDados() { localStorage.setItem('ccb_nome', document.getElementById('inputNome').value); localStorage.setItem('ccb_cidade', document.getElementById('inputCidade').value); localStorage.setItem('ccb_congregacao', document.getElementById('inputCCB').value); }
         function carregarDados() { if(localStorage.getItem('ccb_nome')) document.getElementById('inputNome').value = localStorage.getItem('ccb_nome'); if(localStorage.getItem('ccb_cidade')) document.getElementById('inputCidade').value = localStorage.getItem('ccb_cidade'); if(localStorage.getItem('ccb_congregacao')) document.getElementById('inputCCB').value = localStorage.getItem('ccb_congregacao'); }
-        function enviarParaWhatsApp() { 
-            const nome = document.getElementById('inputNome').value.trim(); const cidade = document.getElementById('inputCidade').value.trim(); const ccb = document.getElementById('inputCCB').value.trim(); 
-            if (!nome || !cidade || !ccb) { alert("Preencha todos os campos."); return; } 
-            window.location.href = `https://wa.me/5537998648790?text=${encodeURIComponent(`A paz de Deus! Gostaria de participar da Rádio Brasil CCB.\n\n*Nome:* ${nome}\n*Cidade:* ${cidade}\n*Comum Congregação:* ${ccb}`)}`; 
-        }
+        function enviarParaWhatsApp() { const nome = document.getElementById('inputNome').value.trim(); const cidade = document.getElementById('inputCidade').value.trim(); const ccb = document.getElementById('inputCCB').value.trim(); if (!nome || !cidade || !ccb) { alert("Preencha todos os campos."); return; } window.location.href = `https://wa.me/5537998648790?text=${encodeURIComponent(`A paz de Deus! Gostaria de participar da Rádio Brasil CCB.\n\n*Nome:* ${nome}\n*Cidade:* ${cidade}\n*Comum Congregação:* ${ccb}`)}`; }
 
         // MURAL DA PALAVRA
         const palavrasDoMural = { "1": { titulo: "Novo Começo", texto: "Esforça-te, e tem bom ânimo; não temas, nem te espantes; porque o Senhor teu Deus é contigo, por onde quer que andares.", ref: "Josué 1:9" }, "2": { titulo: "Fé Inabalável", texto: "Ora, a fé é o firme fundamento das coisas que se esperam, e a prova das coisas que se não veem.", ref: "Hebreus 11:1" }, "3": { titulo: "Amor Divino", texto: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.", ref: "João 3:16" }, "4": { titulo: "Paz Interior", texto: "Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá. Não se turbe o vosso coração, nem se atemorize.", ref: "João 14:27" }, "5": { titulo: "Força na Fraqueza", texto: "Tudo posso naquele que me fortalece.", ref: "Filipenses 4:13" }, "6": { titulo: "Luz no Caminho", texto: "Lâmpada para os meus pés é tua palavra, e luz para o meu caminho.", ref: "Salmos 119:105" }, "7": { titulo: "Espera no Senhor", texto: "Espera no Senhor, anima-te, e ele fortalecerá o teu coração; espera, pois, no Senhor.", ref: "Salmos 27:14" }, "8": { titulo: "Cuidado de Deus", texto: "Lançando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vós.", ref: "1 Pedro 5:7" }, "9": { titulo: "Gratidão", texto: "Em tudo dai graças, porque esta é a vontade de Deus em Cristo Jesus para convosco.", ref: "1 Tessalonicenses 5:18" }, "10": { titulo: "Renovação", texto: "E não sede conformados com este mundo, mas sede transformados pela renovação do vosso entendimento...", ref: "Romanos 12:2" }, "11": { titulo: "Proteção", texto: "O Senhor é o meu pastor, nada me faltará.", ref: "Salmos 23:1" }, "12": { titulo: "Alegria e Salvação", texto: "O Senhor é a minha força e o meu cântico; ele me foi por salvação.", ref: "Êxodo 15:2" } };
@@ -442,9 +451,8 @@
         function cancelarTemporizador() { clearTimeout(sleepTimerId); document.getElementById('timer-status').innerText = ""; document.getElementById('moon-icon').style.color = '#b3b3b3'; setTimeout(fecharTemporizador, 1000); }
         document.getElementById('volume-slider').addEventListener('input', function() { document.getElementById('main-audio').volume = this.value; });
 
-
         // =====================================================================
-        // --- CHAT COMUNIDADE (WHATSAPP STYLE + ANTI-CACHE) ---
+        // --- CHAT COMUNIDADE (WHATSAPP STYLE) ---
         // =====================================================================
         const URL_SALVAR_CHAT = "https://financelypro.com.br/radiobrasil/salvar_chat.php";
         const URL_LISTAR_CHAT = "https://financelypro.com.br/radiobrasil/listar_chat.php";
@@ -559,9 +567,115 @@
 
 
         // =====================================================================
-        // --- CONEXÃO COM O SERVIDOR PHP E SISTEMA CRUD ---
+        // --- SISTEMA DE PEDIDOS DE ORAÇÃO ---
         // =====================================================================
-        
+        const URL_SALVAR_ORACAO = "https://financelypro.com.br/radiobrasil/salvar_oracao.php";
+        const URL_LISTAR_ORACAO = "https://financelypro.com.br/radiobrasil/listar_oracao.php";
+        let sigiloAtivado = false;
+
+        function abrirOracao() {
+            fecharMenuLateral();
+            const nome = localStorage.getItem('ccb_nome');
+            if(!nome) {
+                alert("Para acessar a Intercessão, preencha seu Nome e Cidade no Perfil.");
+                abrirPerfil(); return;
+            }
+            document.getElementById('oracao-screen').classList.add('open');
+            mudarAbaOracao('fazer');
+        }
+
+        function fecharOracao() { document.getElementById('oracao-screen').classList.remove('open'); }
+
+        function mudarAbaOracao(aba) {
+            if(aba === 'fazer') {
+                document.getElementById('tab-fazer').classList.add('active');
+                document.getElementById('tab-ver').classList.remove('active');
+                document.getElementById('aba-fazer-pedido').style.display = 'flex';
+                document.getElementById('aba-ver-pedidos').style.display = 'none';
+            } else {
+                document.getElementById('tab-fazer').classList.remove('active');
+                document.getElementById('tab-ver').classList.add('active');
+                document.getElementById('aba-fazer-pedido').style.display = 'none';
+                document.getElementById('aba-ver-pedidos').style.display = 'flex';
+                carregarPedidosOracao();
+            }
+        }
+
+        function escolherIdentificacao(tipo) {
+            if(tipo === 'nome') {
+                sigiloAtivado = false;
+                document.getElementById('btn-ident-nome').classList.add('active');
+                document.getElementById('btn-ident-sigilo').classList.remove('active');
+            } else {
+                sigiloAtivado = true;
+                document.getElementById('btn-ident-sigilo').classList.add('active');
+                document.getElementById('btn-ident-nome').classList.remove('active');
+            }
+        }
+
+        async function enviarOracao() {
+            const pedido = document.getElementById('oracao-pedido').value.trim();
+            const categoria = document.getElementById('oracao-categoria').value;
+            const detalhes = document.getElementById('oracao-detalhes').value.trim();
+            const nome = localStorage.getItem('ccb_nome');
+            const cidade = localStorage.getItem('ccb_cidade');
+
+            if(!pedido) { alert("Por favor, escreva o seu pedido de oração."); return; }
+
+            const dados = { nome: nome, cidade: cidade, sigilo: sigiloAtivado, categoria: categoria, pedido: pedido, detalhes: detalhes };
+
+            try {
+                const res = await fetch(URL_SALVAR_ORACAO, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados)
+                });
+                const resultado = await res.json();
+                if(resultado.sucesso) {
+                    alert("Seu pedido foi registrado com sucesso. Estaremos orando por você!");
+                    document.getElementById('oracao-pedido').value = '';
+                    document.getElementById('oracao-detalhes').value = '';
+                    mudarAbaOracao('ver');
+                } else { alert("Erro ao salvar pedido."); }
+            } catch(e) { alert("Erro de conexão ao enviar pedido."); }
+        }
+
+        async function carregarPedidosOracao() {
+            const box = document.getElementById('aba-ver-pedidos');
+            box.innerHTML = '<p style="text-align:center; color:#888; font-size:12px; margin-top:20px;"><i class="fas fa-spinner fa-spin"></i> Buscando caderno de oração...</p>';
+            try {
+                const res = await fetch(URL_LISTAR_ORACAO + "?t=" + Date.now());
+                const pedidos = await res.json();
+                if(pedidos.length === 0) {
+                    box.innerHTML = '<p style="text-align:center; color:#888; font-size:13px; margin-top:30px;">Nenhum pedido registrado no momento.</p>';
+                    return;
+                }
+                
+                box.innerHTML = '';
+                pedidos.forEach(p => {
+                    const nomeVisual = p.sigilo == 1 ? "Irmão(ã) em sigilo" : p.nome;
+                    const cidadeVisual = p.sigilo == 1 ? "" : ` - ${p.cidade}`;
+                    const detalhesVisual = p.detalhes ? `<p class="oracao-feed-detalhes">"${p.detalhes}"</p>` : '';
+                    
+                    const div = document.createElement('div');
+                    div.className = 'oracao-feed-item';
+                    div.innerHTML = `
+                        <div class="oracao-feed-header">
+                            <span class="oracao-feed-badge"><i class="fas fa-hands-helping"></i> ${p.categoria}</span>
+                            <span>${p.data_formatada}</span>
+                        </div>
+                        <div class="oracao-feed-nome"><i class="fas fa-user-circle"></i> ${nomeVisual} <span style="font-weight:normal; font-size:11px; color:#888;">${cidadeVisual}</span></div>
+                        <p class="oracao-feed-texto">${p.pedido}</p>
+                        ${detalhesVisual}
+                    `;
+                    box.appendChild(div);
+                });
+            } catch(e) {
+                box.innerHTML = '<p style="text-align:center; color:#dc3545; font-size:12px; margin-top:20px;">Falha de conexão. Crie os arquivos PHP no cPanel.</p>';
+            }
+        }
+
+        // =====================================================================
+        // --- ADMINISTRAÇÃO E CONEXÃO COM O SERVIDOR PHP ---
+        // =====================================================================
         const URL_SALVAR_PHP = "https://financelypro.com.br/radiobrasil/salvar_audio.php";
         const URL_LISTAR_PHP = "https://financelypro.com.br/radiobrasil/listar_audios.php";
         const URL_EXCLUIR_PHP = "https://financelypro.com.br/radiobrasil/excluir_audio.php";
@@ -573,285 +687,64 @@
 
         function abrirLoginAdmin() { fecharMenuLateral(); document.getElementById('admin-login-screen').classList.add('open'); document.getElementById('inputAdminSenha').value = ""; }
         function fecharLoginAdmin() { document.getElementById('admin-login-screen').classList.remove('open'); }
-        function fecharAdminPanel() { 
-            document.getElementById('admin-panel-screen').classList.remove('open'); 
-            cancelarEdicao(); 
-            carregarTodasAsRadios(); 
-        }
-
-        function verificarSenhaAdmin() {
-            const senhaDigitada = document.getElementById('inputAdminSenha').value;
-            if (senhaDigitada === SENHA_ADMIN) {
-                fecharLoginAdmin();
-                document.getElementById('admin-panel-screen').classList.add('open');
-                carregarAudiosAdmin();
-            } else {
-                alert("Senha incorreta!");
-            }
-        }
-
-        async function limparChatAdmin() {
-            if(!confirm("CUIDADO: Isso vai apagar TODAS as mensagens do chat de todos os usuários. Continuar?")) return;
-            const senhaAtual = document.getElementById('inputAdminSenha').value; 
-            try {
-                const resposta = await fetch(URL_LIMPAR_CHAT, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ senha: senhaAtual })
-                });
-                const resultado = await resposta.json();
-                if(resultado.sucesso) { alert("O Chat foi limpo com sucesso!"); } 
-                else { alert("Erro ao limpar chat. Verifique se o PHP foi criado."); }
-            } catch (erro) { alert("Erro de conexão ao tentar limpar o chat."); }
-        }
+        function fecharAdminPanel() { document.getElementById('admin-panel-screen').classList.remove('open'); cancelarEdicao(); carregarTodasAsRadios(); }
+        function verificarSenhaAdmin() { const senhaDigitada = document.getElementById('inputAdminSenha').value; if (senhaDigitada === SENHA_ADMIN) { fecharLoginAdmin(); document.getElementById('admin-panel-screen').classList.add('open'); carregarAudiosAdmin(); } else { alert("Senha incorreta!"); } }
 
         async function salvarOuEditarAudio() {
-            const tipo = document.getElementById('adminTipo').value;
-            const nome = document.getElementById('adminNome').value.trim();
-            const desc = document.getElementById('adminDesc').value.trim();
-            const link = document.getElementById('adminLink').value.trim();
-
+            const tipo = document.getElementById('adminTipo').value; const nome = document.getElementById('adminNome').value.trim(); const desc = document.getElementById('adminDesc').value.trim(); const link = document.getElementById('adminLink').value.trim();
             if (!nome || !link) { alert("Nome e Link são obrigatórios!"); return; }
-
-            const btn = document.getElementById('btn-salvar-admin');
-            const textoOriginal = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
-
-            const dadosParaEnviar = {
-                tipo: tipo,
-                nome: nome,
-                descricao: desc || (tipo === 'radio' ? 'Transmissão ao vivo' : 'Faixa de Louvor'),
-                link: link
-            };
-
-            let urlDestino = URL_SALVAR_PHP;
-            if (idEditandoAtual !== null) {
-                dadosParaEnviar.id = idEditandoAtual;
-                urlDestino = URL_EDITAR_PHP;
-            }
-
-            try {
-                const resposta = await fetch(urlDestino, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dadosParaEnviar)
-                });
-                
-                const resultado = await resposta.json();
-                
-                if(resultado.sucesso) {
-                    alert(resultado.mensagem);
-                    cancelarEdicao(); 
-                    carregarAudiosAdmin(); 
-                    carregarTodasAsRadios(); 
-                } else {
-                    alert("Erro no banco: " + resultado.erro);
-                }
-            } catch (erro) {
-                alert("Erro ao conectar com a hospedagem.");
-            }
-            
+            const btn = document.getElementById('btn-salvar-admin'); const textoOriginal = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+            const dadosParaEnviar = { tipo: tipo, nome: nome, descricao: desc || (tipo === 'radio' ? 'Transmissão ao vivo' : 'Faixa de Louvor'), link: link };
+            let urlDestino = URL_SALVAR_PHP; if (idEditandoAtual !== null) { dadosParaEnviar.id = idEditandoAtual; urlDestino = URL_EDITAR_PHP; }
+            try { const resposta = await fetch(urlDestino, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dadosParaEnviar) }); const resultado = await resposta.json(); if(resultado.sucesso) { alert(resultado.mensagem); cancelarEdicao(); carregarAudiosAdmin(); carregarTodasAsRadios(); } else { alert("Erro no banco: " + resultado.erro); } } catch (erro) { alert("Erro ao conectar com a hospedagem."); }
             btn.innerHTML = textoOriginal; 
         }
 
-        function prepararEdicao(id, tipo, nome, louvor, link) {
-            idEditandoAtual = id;
-            document.getElementById('adminTipo').value = tipo;
-            document.getElementById('adminNome').value = nome;
-            document.getElementById('adminDesc').value = louvor;
-            document.getElementById('adminLink').value = link;
-
-            document.getElementById('titulo-form-admin').innerText = "Editar Áudio";
-            document.getElementById('btn-salvar-admin').innerHTML = '<i class="fas fa-save"></i> Salvar Alterações';
-            document.getElementById('btn-salvar-admin').style.backgroundColor = '#4a2b6e';
-            document.getElementById('btn-cancelar-edicao').style.display = 'flex';
-            document.getElementById('admin-panel-screen').scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function cancelarEdicao() {
-            idEditandoAtual = null;
-            document.getElementById('adminTipo').value = "louvor";
-            document.getElementById('adminNome').value = "";
-            document.getElementById('adminDesc').value = "";
-            document.getElementById('adminLink').value = "";
-
-            document.getElementById('titulo-form-admin').innerText = "Adicionar Novo Áudio";
-            document.getElementById('btn-salvar-admin').innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Salvar no Banco de Dados';
-            document.getElementById('btn-salvar-admin').style.backgroundColor = '#a855f7';
-            document.getElementById('btn-cancelar-edicao').style.display = 'none';
-        }
-
-        async function deletarAudioAdmin(id) {
-            if(!confirm("Tem certeza que deseja apagar essa música do aplicativo de todo mundo?")) { return; }
-            try {
-                const resposta = await fetch(URL_EXCLUIR_PHP, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: id })
-                });
-                const resultado = await resposta.json();
-                if(resultado.sucesso) {
-                    carregarAudiosAdmin(); 
-                    carregarTodasAsRadios(); 
-                } else {
-                    alert("Erro ao excluir: " + resultado.erro);
-                }
-            } catch (erro) {
-                alert("Erro ao conectar com a hospedagem para excluir.");
-            }
-        }
-
-        async function carregarAudiosAdmin() {
-            try {
-                const resposta = await fetch(URL_LISTAR_PHP + "?t=" + Date.now());
-                audiosLocaisAdmin = await resposta.json();
-                renderizarListaAdmin();
-            } catch (erro) {
-                document.getElementById('admin-lista-dinamica').innerHTML = "<p style='color:#888; font-size:12px; text-align:center;'>Erro ao conectar com a Integrator.</p>";
-            }
-        }
-
-        function renderizarListaAdmin() {
-            const container = document.getElementById('admin-lista-dinamica');
-            container.innerHTML = "";
-            if (!audiosLocaisAdmin || audiosLocaisAdmin.length === 0) {
-                container.innerHTML = "<p style='color:#888; font-size:12px; text-align:center;'>Nenhum áudio encontrado no banco de dados.</p>";
-                return;
-            }
-            audiosLocaisAdmin.forEach(audio => {
-                const item = document.createElement('div');
-                item.className = "admin-item";
-                item.innerHTML = `
-                    <div class="admin-item-info">
-                        <h4>${audio.nome} <span style="font-size: 10px; color: #a855f7;">(${audio.tipo})</span></h4>
-                        <p>${audio.louvor}</p>
-                    </div>
-                    <div class="admin-actions">
-                        <button class="btn-acao-lista bg-blue" onclick="prepararEdicao('${audio.id}', '${audio.tipo}', '${audio.nome}', '${audio.louvor}', '${audio.link}')"><i class="fas fa-edit"></i></button>
-                        <button class="btn-acao-lista bg-red" onclick="deletarAudioAdmin('${audio.id}')"><i class="fas fa-trash"></i></button>
-                    </div>
-                `;
-                container.appendChild(item);
-            });
-        }
+        function prepararEdicao(id, tipo, nome, louvor, link) { idEditandoAtual = id; document.getElementById('adminTipo').value = tipo; document.getElementById('adminNome').value = nome; document.getElementById('adminDesc').value = louvor; document.getElementById('adminLink').value = link; document.getElementById('titulo-form-admin').innerText = "Editar Áudio"; document.getElementById('btn-salvar-admin').innerHTML = '<i class="fas fa-save"></i> Salvar Alterações'; document.getElementById('btn-salvar-admin').style.backgroundColor = '#4a2b6e'; document.getElementById('btn-cancelar-edicao').style.display = 'flex'; document.getElementById('admin-panel-screen').scrollTo({ top: 0, behavior: 'smooth' }); }
+        function cancelarEdicao() { idEditandoAtual = null; document.getElementById('adminTipo').value = "louvor"; document.getElementById('adminNome').value = ""; document.getElementById('adminDesc').value = ""; document.getElementById('adminLink').value = ""; document.getElementById('titulo-form-admin').innerText = "Adicionar Novo Áudio"; document.getElementById('btn-salvar-admin').innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Salvar no Banco de Dados'; document.getElementById('btn-salvar-admin').style.backgroundColor = '#a855f7'; document.getElementById('btn-cancelar-edicao').style.display = 'none'; }
+        async function deletarAudioAdmin(id) { if(!confirm("Tem certeza que deseja apagar essa música do aplicativo de todo mundo?")) { return; } try { const resposta = await fetch(URL_EXCLUIR_PHP, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: id }) }); const resultado = await resposta.json(); if(resultado.sucesso) { carregarAudiosAdmin(); carregarTodasAsRadios(); } else { alert("Erro ao excluir: " + resultado.erro); } } catch (erro) { alert("Erro ao conectar com a hospedagem para excluir."); } }
+        async function carregarAudiosAdmin() { try { const resposta = await fetch(URL_LISTAR_PHP + "?t=" + Date.now()); audiosLocaisAdmin = await resposta.json(); renderizarListaAdmin(); } catch (erro) { document.getElementById('admin-lista-dinamica').innerHTML = "<p style='color:#888; font-size:12px; text-align:center;'>Erro ao conectar com a Integrator.</p>"; } }
+        function renderizarListaAdmin() { const container = document.getElementById('admin-lista-dinamica'); container.innerHTML = ""; if (!audiosLocaisAdmin || audiosLocaisAdmin.length === 0) { container.innerHTML = "<p style='color:#888; font-size:12px; text-align:center;'>Nenhum áudio encontrado no banco de dados.</p>"; return; } audiosLocaisAdmin.forEach(audio => { const item = document.createElement('div'); item.className = "admin-item"; item.innerHTML = `<div class="admin-item-info"><h4>${audio.nome} <span style="font-size: 10px; color: #a855f7;">(${audio.tipo})</span></h4><p>${audio.louvor}</p></div><div class="admin-actions"><button class="btn-acao-lista bg-blue" onclick="prepararEdicao('${audio.id}', '${audio.tipo}', '${audio.nome}', '${audio.louvor}', '${audio.link}')"><i class="fas fa-edit"></i></button><button class="btn-acao-lista bg-red" onclick="deletarAudioAdmin('${audio.id}')"><i class="fas fa-trash"></i></button></div>`; container.appendChild(item); }); }
 
         // =====================================================================
         // --- SISTEMA INTELIGENTE DE PLAYER ---
         // =====================================================================
-        let listaDeRadios = [];
-        let indexRadioAtual = 0;
-        const audioPlayer = document.getElementById('main-audio');
-        const playIcon = document.getElementById('main-play-icon');
-        const eqAnim = document.getElementById('equalizer-anim');
-        const tipoTag = document.getElementById('player-tipo-tag');
-        const imgSeguranca = "https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+CCB";
+        let listaDeRadios = []; let indexRadioAtual = 0; const audioPlayer = document.getElementById('main-audio'); const playIcon = document.getElementById('main-play-icon'); const eqAnim = document.getElementById('equalizer-anim'); const tipoTag = document.getElementById('player-tipo-tag');
+        const tempoAtualSpan = document.getElementById('player-tipo-tag'); 
+        const progressBar = document.getElementById('progress-bar');
+        const progressFill = document.getElementById('progress-fill');
 
-        async function forcarSincronizacao() {
-            const btnIcon = document.getElementById('btn-sync-icon');
-            btnIcon.classList.add('fa-spin'); 
-            
-            await carregarTodasAsRadios();
-            
-            btnIcon.classList.remove('fa-spin');
-            if(document.getElementById('stations-list-screen').classList.contains('open')){
-                renderizarListaFiltro(); 
-            }
-        }
+        async function forcarSincronizacao() { const btnIcon = document.getElementById('btn-sync-icon'); btnIcon.classList.add('fa-spin'); await carregarTodasAsRadios(); btnIcon.classList.remove('fa-spin'); if(document.getElementById('stations-list-screen').classList.contains('open')){ renderizarListaFiltro(); } }
 
         async function carregarTodasAsRadios() {
             const radiosFixas = [
                 { nome: "Rádio Live", louvor: "Sua Música ao Vivo", artista: "DJ Central", link: "https://stm43.srvstm.com:8954/stream", img: "https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+Live", tipo: "radio" },
                 { nome: "Louvores Variados", louvor: "Músicas de Louvor", artista: "Diversos Artistas", link: "http://stm1.hoststreaming.com.br:7088/;stream.nsv", img: "https://placehold.co/400x400/181818/a855f7?text=Louvores", tipo: "radio" }
             ];
-
             let audiosAdmin = [];
-
-            try {
-                const resPhp = await fetch(URL_LISTAR_PHP + "?t=" + Date.now());
-                if (resPhp.ok) {
-                    audiosAdmin = await resPhp.json();
-                }
-            } catch (error) { console.log("Erro na sincronização"); }
-
+            try { const resPhp = await fetch(URL_LISTAR_PHP + "?t=" + Date.now()); if (resPhp.ok) { audiosAdmin = await resPhp.json(); } } catch (error) {}
             listaDeRadios = [...radiosFixas, ...audiosAdmin];
-            
-            if(listaDeRadios.length > 0) { 
-                if(indexRadioAtual >= listaDeRadios.length) indexRadioAtual = 0;
-                atualizarTelaPlayer(indexRadioAtual, false); 
-            } else {
-                document.getElementById('player-title').innerText = "Lista Vazia";
-                document.getElementById('player-louvor').innerText = "Adicione músicas no painel";
-                document.getElementById('player-artista').innerText = "Administrador";
-                document.getElementById('player-img').src = imgSeguranca;
-                document.getElementById('stations-list-dynamic').innerHTML = "<p style='text-align:center; color:#888;'>Nenhum áudio no banco de dados.</p>";
-            }
+            if(listaDeRadios.length > 0) { if(indexRadioAtual >= listaDeRadios.length) indexRadioAtual = 0; atualizarTelaPlayer(indexRadioAtual, false); } else { document.getElementById('player-title').innerText = "Lista Vazia"; document.getElementById('player-louvor').innerText = "Adicione músicas no painel"; document.getElementById('player-artista').innerText = "Administrador"; document.getElementById('player-img').src = "https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+CCB"; document.getElementById('stations-list-dynamic').innerHTML = "<p style='text-align:center; color:#888;'>Nenhum áudio no banco de dados.</p>"; }
         }
 
         function atualizarTelaPlayer(index, autoPlay = true) {
             if(listaDeRadios.length === 0) return; 
-            
-            indexRadioAtual = index;
-            const radio = listaDeRadios[index];
-            document.getElementById('player-title').innerText = radio.nome;
-            document.getElementById('player-louvor').innerText = radio.louvor;
-            document.getElementById('player-artista').innerText = `Por: ${radio.artista}`;
-            document.getElementById('player-img').src = radio.img;
-            
-            if(radio.tipo === 'louvor') {
-                tipoTag.innerText = "LOUVOR";
-                tipoTag.style.color = "#8dbbf5";
-            } else {
-                tipoTag.innerText = "AO VIVO";
-                tipoTag.style.color = "#b3b3b3";
-            }
-            
-            const tavaTocando = !audioPlayer.paused;
-            document.getElementById('main-audio-src').src = radio.link;
-            audioPlayer.load();
-
-            if (autoPlay || tavaTocando) { tocarAudio(); } 
-            else { playIcon.className = 'fas fa-play'; eqAnim.classList.remove('playing'); }
+            indexRadioAtual = index; const radio = listaDeRadios[index];
+            document.getElementById('player-title').innerText = radio.nome; document.getElementById('player-louvor').innerText = radio.louvor; document.getElementById('player-artista').innerText = `Por: ${radio.artista}`; document.getElementById('player-img').src = radio.img;
+            if(radio.tipo === 'louvor') { tipoTag.innerText = "LOUVOR"; tipoTag.style.color = "#8dbbf5"; } else { tipoTag.innerText = "AO VIVO"; tipoTag.style.color = "#b3b3b3"; }
+            const tavaTocando = !audioPlayer.paused; document.getElementById('main-audio-src').src = radio.link; audioPlayer.load();
+            if (autoPlay || tavaTocando) { tocarAudio(); } else { playIcon.className = 'fas fa-play'; eqAnim.classList.remove('playing'); }
         }
 
-        audioPlayer.addEventListener('error', function() {
-            playIcon.className = 'fas fa-play';
-            eqAnim.classList.remove('playing');
-            document.getElementById('player-louvor').innerText = "Indisponível no momento";
-            document.getElementById('player-louvor').style.color = "#dc3545"; 
-            document.getElementById('player-artista').innerText = "Falha ao conectar";
-            tipoTag.innerText = "ERRO";
-            tipoTag.style.color = "#dc3545";
-        });
+        audioPlayer.addEventListener('error', function() { playIcon.className = 'fas fa-play'; eqAnim.classList.remove('playing'); document.getElementById('player-louvor').innerText = "Indisponível no momento"; document.getElementById('player-louvor').style.color = "#dc3545"; document.getElementById('player-artista').innerText = "Falha ao conectar"; tipoTag.innerText = "ERRO"; tipoTag.style.color = "#dc3545"; });
 
         function tocarAudio() {
-            if(listaDeRadios.length === 0) {
-                alert("Adicione rádios no painel primeiro!");
-                return;
-            }
-            
-            playIcon.className = 'fas fa-spinner fa-spin';
-            
-            document.getElementById('player-louvor').style.color = "#b3b3b3";
-            document.getElementById('player-louvor').innerText = "Conectando..."; 
-            
+            if(listaDeRadios.length === 0) { alert("Adicione rádios no painel primeiro!"); return; }
+            playIcon.className = 'fas fa-spinner fa-spin'; document.getElementById('player-louvor').style.color = "#b3b3b3"; document.getElementById('player-louvor').innerText = "Conectando..."; 
             audioPlayer.play().then(() => { 
-                playIcon.className = 'fas fa-pause'; 
-                eqAnim.classList.add('playing'); 
-                
-                document.getElementById('player-louvor').innerText = listaDeRadios[indexRadioAtual].louvor;
-                const isLouvor = listaDeRadios[indexRadioAtual].tipo === 'louvor';
-                tipoTag.innerText = isLouvor ? "LOUVOR" : "AO VIVO";
-                tipoTag.style.color = isLouvor ? "#8dbbf5" : "#b3b3b3";
-
-            }).catch(e => { 
-                playIcon.className = 'fas fa-play'; 
-                eqAnim.classList.remove('playing');
-                document.getElementById('player-louvor').innerText = "Indisponível no momento";
-                document.getElementById('player-louvor').style.color = "#dc3545"; 
-                document.getElementById('player-artista').innerText = "Tente outra estação";
-                tipoTag.innerText = "ERRO";
-                tipoTag.style.color = "#dc3545";
-            });
+                playIcon.className = 'fas fa-pause'; eqAnim.classList.add('playing'); 
+                document.getElementById('player-louvor').innerText = listaDeRadios[indexRadioAtual].louvor; const isLouvor = listaDeRadios[indexRadioAtual].tipo === 'louvor'; tipoTag.innerText = isLouvor ? "LOUVOR" : "AO VIVO"; tipoTag.style.color = isLouvor ? "#8dbbf5" : "#b3b3b3";
+            }).catch(e => { playIcon.className = 'fas fa-play'; eqAnim.classList.remove('playing'); document.getElementById('player-louvor').innerText = "Indisponível no momento"; document.getElementById('player-louvor').style.color = "#dc3545"; document.getElementById('player-artista').innerText = "Tente outra estação"; tipoTag.innerText = "ERRO"; tipoTag.style.color = "#dc3545"; });
         }
 
         function toggleMainPlay() { if (audioPlayer.paused) { tocarAudio(); } else { audioPlayer.pause(); playIcon.className = 'fas fa-play'; eqAnim.classList.remove('playing'); } }
@@ -859,40 +752,22 @@
         function prevRadio() { if(listaDeRadios.length===0)return; let ant = indexRadioAtual - 1; if(ant < 0) ant = listaDeRadios.length - 1; atualizarTelaPlayer(ant, true); }
 
         function renderizarListaFiltro() {
-            const container = document.getElementById('stations-list-dynamic');
-            container.innerHTML = '';
-            
-            if(listaDeRadios.length === 0) {
-                 container.innerHTML = "<p style='text-align:center; color:#888;'>Nenhum áudio no banco de dados.</p>";
-                 return;
-            }
-            
+            const container = document.getElementById('stations-list-dynamic'); container.innerHTML = '';
+            if(listaDeRadios.length === 0) { container.innerHTML = "<p style='text-align:center; color:#888;'>Nenhum áudio no banco de dados.</p>"; return; }
             listaDeRadios.forEach((radio, index) => {
-                const isActive = index === indexRadioAtual;
-                const itemDiv = document.createElement('div');
-                itemDiv.className = `station-list-item ${isActive ? 'active-item' : ''}`;
-                itemDiv.onclick = () => { fecharListaRadios(); atualizarTelaPlayer(index, true); };
-                
-                const badgeClass = radio.tipo === 'louvor' ? 'badge-louvor' : 'badge-radio';
-                const badgeText = radio.tipo === 'louvor' ? 'Louvor' : 'Rádio';
-
-                itemDiv.innerHTML = `
-                    <img src="${radio.img}" alt="Capa" onerror="this.src='${imgSeguranca}'">
-                    <div class="station-list-info">
-                        <span class="badge ${badgeClass}">${badgeText}</span>
-                        <h4>${radio.nome}</h4>
-                        <p>${radio.louvor}</p>
-                    </div>
-                    ${isActive ? '<i class="fas fa-volume-up" style="color:#a855f7;"></i>' : ''}
-                `;
+                const isActive = index === indexRadioAtual; const itemDiv = document.createElement('div'); itemDiv.className = `station-list-item ${isActive ? 'active-item' : ''}`; itemDiv.onclick = () => { fecharListaRadios(); atualizarTelaPlayer(index, true); };
+                const badgeClass = radio.tipo === 'louvor' ? 'badge-louvor' : 'badge-radio'; const badgeText = radio.tipo === 'louvor' ? 'Louvor' : 'Rádio';
+                itemDiv.innerHTML = `<img src="${radio.img}" alt="Capa" onerror="this.src='https://placehold.co/400x400/181818/a855f7?text=CCB'"><div class="station-list-info"><span class="badge ${badgeClass}">${badgeText}</span><h4>${radio.nome}</h4><p>${radio.louvor}</p></div>${isActive ? '<i class="fas fa-volume-up" style="color:#a855f7;"></i>' : ''}`;
                 container.appendChild(itemDiv);
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            carregarTodasAsRadios();
-            carregarDados(); 
-        });
+        function formatarTempo(segundos) { if (isNaN(segundos) || !isFinite(segundos)) return "00:00"; let min = Math.floor(segundos / 60); let seg = Math.floor(segundos % 60); return (min < 10 ? "0" + min : min) + ":" + (seg < 10 ? "0" + seg : seg); }
+        audioPlayer.addEventListener('timeupdate', () => { const radioAtual = listaDeRadios[indexRadioAtual]; if (!radioAtual) return; if (radioAtual.tipo === 'louvor' && audioPlayer.duration) { const porcentagem = (audioPlayer.currentTime / audioPlayer.duration) * 100; progressFill.style.width = porcentagem + '%'; tempoAtualSpan.innerText = formatarTempo(audioPlayer.currentTime) + " / " + formatarTempo(audioPlayer.duration); } else { progressFill.style.width = '0%'; tempoAtualSpan.innerText = "AO VIVO"; } });
+        audioPlayer.addEventListener('loadedmetadata', () => { const radioAtual = listaDeRadios[indexRadioAtual]; if (radioAtual && radioAtual.tipo === 'louvor') { tempoAtualSpan.innerText = "00:00 / " + formatarTempo(audioPlayer.duration); } });
+        progressBar.addEventListener('click', function(e) { const radioAtual = listaDeRadios[indexRadioAtual]; if (!radioAtual || radioAtual.tipo !== 'louvor' || !audioPlayer.duration) return; const rect = this.getBoundingClientRect(); const cliqueX = e.clientX - rect.left; const porcentagem = cliqueX / rect.width; audioPlayer.currentTime = porcentagem * audioPlayer.duration; });
+
+        document.addEventListener('DOMContentLoaded', () => { carregarTodasAsRadios(); carregarDados(); });
     </script>
 </body>
 </html>
