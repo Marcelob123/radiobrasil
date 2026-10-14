@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0b0a1b">
+    <meta name="description" content="Rádio Brasil CCB: louvores, rádios ao vivo, comunidade e pedidos de oração.">
+    <title>Rádio Brasil CCB</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* BASE TIPO APP PREMIUM */
+        body { background-color: #121212; color: #ffffff; font-family: 'Montserrat', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 0 15px 100px 15px; box-sizing: border-box; overflow-x: hidden; }
+
+        #splash-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #121212; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease-out, visibility 0.8s; }
+        .splash-logo { font-size: 60px; color: #a855f7; margin-bottom: 20px; animation: pulse 1.5s infinite; }
+        .splash-title { font-size: 28px; font-weight: 700; color: #ffffff; letter-spacing: 1px; margin: 0; }
+        .splash-subtitle { font-size: 14px; color: #b3b3b3; margin-top: 10px; }
+        @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.8; } }
+
+        /* HEADER FIXO NO TOPO */
+        header { width: 100%; max-width: 600px; position: sticky; top: 0; background-color: rgba(18, 18, 18, 0.95); backdrop-filter: blur(10px); z-index: 100; padding: 15px 0; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .menu-btn-top { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 0 10px; display: flex; align-items: center; text-decoration: none; transition: color 0.3s;}
+        .menu-btn-top:active { color: #a855f7; }
+        header h1 { font-size: 18px; font-weight: 700; margin: 0; letter-spacing: 0.5px; text-align: center; flex-grow: 1; }
+
+        /* --- PLAYER ÚNICO CENTRAL --- */
+        section { width: 100%; max-width: 600px; display: flex; flex-direction: column; flex-grow: 1; justify-content: center; }
+        .main-player-card { width: 100%; box-sizing: border-box; background: transparent; padding: 10px 0; display: flex; flex-direction: column; align-items: center; }
+        .station-img { width: 100%; max-width: 340px; aspect-ratio: 1 / 1; border-radius: 16px; object-fit: cover; margin-bottom: 25px; background-color: #282828; box-shadow: 0 15px 35px rgba(0,0,0,0.6); transition: opacity 0.3s ease; }
+        .station-info { width: 100%; text-align: center; margin-bottom: 20px; padding: 0 15px; box-sizing: border-box; min-height: 80px; }
+        .station-info h3 { margin: 0 0 6px 0; font-size: 22px; color: #ffffff; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .louvor-em-destaque { font-size: 16px; color: #b3b3b3; margin: 0 0 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.3s; }
+        .artista-em-destaque { font-size: 14px; color: #888888; margin: 0; transition: color 0.3s;}
+
+        .progress-container { width: 100%; max-width: 340px; margin-bottom: 15px; }
+        .progress-bar { width: 100%; height: 4px; background-color: #333; border-radius: 2px; position: relative; margin-bottom: 10px; cursor: pointer; }
+        .progress-fill { width: 0%; height: 100%; background-color: #a855f7; border-radius: 2px; position: relative; pointer-events: none; }
+        .progress-fill::after { content: ''; position: absolute; right: -6px; top: -4px; width: 12px; height: 12px; background-color: #a855f7; border-radius: 50%; box-shadow: 0 0 8px rgba(168, 85, 247, 0.6); }
+        .time-info { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #b3b3b3; font-weight: 500; }
+
+        .equalizer { display: flex; gap: 3px; align-items: flex-end; height: 14px; }
+        .eq-bar { width: 4px; background-color: #b3b3b3; border-radius: 2px; transition: height 0.1s; height: 3px; }
+        .playing .eq-bar { background-color: #a855f7; animation: eq-play 0.8s infinite alternate ease-in-out; }
+        .playing .eq-bar:nth-child(1) { animation-delay: 0.1s; }
+        .playing .eq-bar:nth-child(2) { animation-delay: 0.4s; }
+        .playing .eq-bar:nth-child(3) { animation-delay: 0.2s; }
+        .playing .eq-bar:nth-child(4) { animation-delay: 0.5s; }
+        @keyframes eq-play { 0% { height: 3px; } 100% { height: 14px; } }
+
+        .volume-container { display: flex; align-items: center; width: 100%; max-width: 340px; gap: 15px; margin-bottom: 25px; color: #b3b3b3; font-size: 14px; }
+        .volume-container input { flex-grow: 1; accent-color: #a855f7; height: 4px; cursor: pointer; }
+
+        .player-controls { width: 100%; max-width: 300px; display: flex; align-items: center; justify-content: space-between; margin: 0 auto; }
+        .control-icon { background: none; border: none; color: #b3b3b3; font-size: 20px; cursor: pointer; transition: color 0.3s; }
+        .control-icon:active { color: #fff; }
+        .play-pause-btn { width: 70px; height: 70px; border-radius: 50%; background-color: #a855f7; color: #fff; border: none; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3); transition: transform 0.1s ease, background 0.3s; }
+        .play-pause-btn:active { transform: scale(0.92); background-color: #9333ea; }
+        .play-pause-btn i { margin-left: 4px; }
+        .play-pause-btn i.fa-pause, .play-pause-btn i.fa-spinner { margin-left: 0; }
+
+        /* --- MENU INFERIOR --- */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background-color: #181818; border-top: 1px solid #282828; display: flex; justify-content: space-around; align-items: center; padding: 10px 0 15px 0; z-index: 1000; }
+        .bottom-nav a, .bottom-nav button { display: flex; flex-direction: column; align-items: center; color: #b3b3b3; text-decoration: none; font-size: 10px; font-weight: 500; gap: 5px; transition: color 0.3s; width: 60px; background: none; border: none; cursor: pointer; font-family: inherit; }
+        .bottom-nav i { font-size: 22px; }
+        .bottom-nav .active, .bottom-nav a:hover, .bottom-nav button:hover { color: #ffffff; }
+        .bottom-nav .active i { color: #a855f7; }
+
+        /* --- MODAIS COMUNS --- */
+        .bottom-sheet { position: fixed; top: 100%; left: 0; width: 100vw; height: 100vh; background-color: #121212; z-index: 2000; transition: top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; align-items: center; padding: 0 20px; box-sizing: border-box; overflow-y: auto;}
+        .bottom-sheet.open { top: 0; } 
+        .screen-header { width: 100%; max-width: 600px; display: flex; align-items: center; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid #282828; margin-bottom: 20px; flex-shrink: 0;}
+        .screen-header h2 { margin: 0; font-size: 18px; color: #fff; text-align: center; flex-grow: 1;}
+        .close-btn { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; padding: 0 10px; }
+
+        /* Formulários Customizados */
+        .input-group { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 600px; margin-bottom: 15px; }
+        .input-group label { font-size: 13px; color: #b3b3b3; font-weight: 600; }
+        .custom-input { background-color: #2a2a2a; color: #fff; border: 1px solid #333; border-radius: 8px; padding: 15px; font-size: 15px; font-family: inherit; outline: none; transition: border 0.3s; width: 100%; box-sizing: border-box; resize: vertical;}
+        .custom-input:focus { border-color: #a855f7; }
+        .custom-input option { background-color: #181818; color: #fff; }
+        
+        .profile-form { width: 100%; max-width: 600px; display: flex; flex-direction: column; }
+        .btn-primary { background-color: #a855f7; color: #fff; border: none; border-radius: 50px; padding: 16px; font-size: 16px; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer; transition: transform 0.1s; font-family: inherit; width: 100%; max-width: 600px; box-sizing: border-box;}
+        .btn-primary:active { transform: scale(0.98); background-color: #9333ea; }
+        .btn-whatsapp { background-color: #25D366; }
+        .btn-whatsapp:active { background-color: #20b858; }
+        .btn-danger { background-color: #dc3545; }
+        
+        .btn-acao-lista { padding: 8px 12px; font-size: 12px; border-radius: 6px; border: none; color: #fff; cursor: pointer; transition: 0.2s;}
+        .btn-acao-lista:active { transform: scale(0.95); }
+        .bg-red { background-color: #dc3545; }
+        .bg-blue { background-color: #2b566e; }
+
+        /* Lista Rádios Form */
+        .stations-list-container { width: 100%; max-width: 600px; flex-grow: 1; padding-bottom: 20px; }
+        .station-list-item { display: flex; align-items: center; background: #181818; padding: 12px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: background 0.3s; border: 1px solid transparent; position: relative;}
+        .station-list-item:active { background: #282828; }
+        .station-list-item.active-item { border-color: #a855f7; background: #1f142e; }
+        .station-list-item img { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; margin-right: 15px; background-color: #282828; }
+        .station-list-info { flex-grow: 1; overflow: hidden; display: flex; flex-direction: column; gap: 3px;}
+        .station-list-info h4 { margin: 0; color: #fff; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .station-list-info p { margin: 0; color: #b3b3b3; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        /* Badges de Categoria */
+        .badge { font-size: 10px; padding: 3px 6px; border-radius: 4px; font-weight: 700; width: fit-content; text-transform: uppercase;}
+        .badge-radio { background-color: #2d1a42; color: #c48df5; border: 1px solid #4a2b6e; }
+        .badge-louvor { background-color: #1a3342; color: #8dbbf5; border: 1px solid #2b566e; }
+
+        /* Admin List */
+        .admin-item { display: flex; justify-content: space-between; align-items: center; background: #181818; padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #333; gap: 10px;}
+        .admin-item-info { flex-grow: 1; overflow: hidden; }
+        .admin-item-info h4 { margin: 0 0 5px 0; font-size: 14px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .admin-item-info p { margin: 0; font-size: 11px; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .admin-actions { display: flex; gap: 6px; flex-shrink: 0;}
+
+        /* Menu Temporizador */
+        .timer-options { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 600px; }
+        .timer-btn { background: #2a2a2a; color: #fff; border: none; padding: 16px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+        .timer-btn:active { background: #a855f7; }
+
+        /* Menu Lateral e Mapa */
+        #menu-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 2999; display: none; opacity: 0; transition: opacity 0.3s ease; }
+        #menu-overlay.open { display: block; opacity: 1; }
+        #side-menu { position: fixed; top: 0; left: -320px; width: 280px; max-width: 85vw; height: 100vh; background-color: #181818; z-index: 3000; transition: left 0.3s ease; box-shadow: 2px 0 15px rgba(0,0,0,0.8); display: flex; flex-direction: column; }
+        #side-menu.open { left: 0; }
+        .side-menu-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid #282828; background-color: #121212; }
+        .side-menu-header h2 { font-size: 18px; margin: 0; color: #fff; }
+        .side-menu-content { padding: 20px 15px; flex-grow: 1; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
+        .menu-item-btn { background: transparent; border: none; color: #fff; font-size: 16px; font-weight: 500; padding: 15px; display: flex; align-items: center; gap: 15px; border-radius: 8px; cursor: pointer; transition: background 0.3s; width: 100%; text-align: left; font-family: inherit; }
+        .menu-item-btn:hover, .menu-item-btn:active { background: #282828; }
+        .menu-item-btn i { font-size: 20px; color: #a855f7; width: 25px; text-align: center; }
+        
+        #map-screen { position: fixed; top: 0; left: 100%; width: 100vw; height: 100vh; background-color: #121212; z-index: 2500; transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
+        #map-screen.open { left: 0; } 
+        .map-container-full { width: 100%; flex-grow: 1; background: #282828; }
+        .map-container-full iframe { width: 100%; height: 100%; border: none; }
+        
+        .mural-card-box { background: linear-gradient(145deg, #1f142e, #181818); border: 1px solid #a855f7; border-radius: 12px; padding: 30px 20px; text-align: center; margin-top: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 100%; max-width: 600px; box-sizing: border-box;}
+
+        /* --- CHAT ESTILO WHATSAPP DARK MODE --- */
+        .chat-container { display: flex; flex-direction: column; width: 100%; max-width: 600px; height: calc(100vh - 120px); background-color: #0b141a; }
+        .chat-messages { flex-grow: 1; overflow-y: auto; padding: 15px 10px; display: flex; flex-direction: column; gap: 8px; background-image: url('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg'); background-size: cover; background-position: center; background-blend-mode: overlay; background-color: rgba(11, 20, 26, 0.85); }
+        .chat-msg { background: #202c33; padding: 6px 10px 20px 10px; border-radius: 8px; max-width: 80%; position: relative; border-top-left-radius: 0; align-self: flex-start; box-shadow: 0 1px 1px rgba(0,0,0,0.2);}
+        .chat-msg.minha-msg { background: #005c4b; padding-bottom: 20px; border: none; border-radius: 8px; border-top-right-radius: 0; align-self: flex-end; }
+        .chat-nome { font-size: 12px; color: #53bdeb; font-weight: bold; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; gap: 10px;}
+        .minha-msg .chat-nome { display: none; }
+        .chat-cidade { font-size: 10px; color: rgba(255,255,255,0.6); font-weight: normal; font-style: italic;}
+        .chat-texto { font-size: 15px; color: #e9edef; line-height: 1.3; word-wrap: break-word;}
+        .chat-hora { font-size: 10px; color: rgba(255,255,255,0.6); position: absolute; bottom: 4px; right: 10px; }
+        .chat-input-area { display: flex; gap: 8px; padding: 10px; background-color: #202c33; align-items: center; position: relative; flex-shrink: 0;}
+        .chat-input { flex-grow: 1; background: #2a3942; border: none; padding: 12px 20px; border-radius: 25px; color: #e9edef; font-family: inherit; font-size: 15px; outline: none;}
+        .chat-input::placeholder { color: #8696a0; }
+        .chat-send-btn { background: #00a884; color: #fff; border: none; width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; flex-shrink: 0;}
+        .chat-send-btn:active { transform: scale(0.9); background: #008f6f; }
+        .chat-emoji-btn { background: none; border: none; color: #8696a0; font-size: 26px; cursor: pointer; padding: 0 5px; flex-shrink: 0;}
+        .emoji-picker { display: none; position: absolute; bottom: 70px; left: 10px; background: #2a3942; border-radius: 12px; padding: 15px; gap: 10px; flex-wrap: wrap; width: 280px; box-shadow: 0 -5px 25px rgba(0,0,0,0.8); z-index: 100;}
+        .emoji-picker.open { display: flex; }
+        .emoji-item { font-size: 24px; cursor: pointer; transition: 0.2s; user-select: none;}
+        .emoji-item:active { transform: scale(1.3); }
+
+        /* --- ESTILOS DO PEDIDO DE ORAÇÃO --- */
+        .oracao-tabs { display: flex; width: 100%; max-width: 600px; margin-bottom: 15px; background: #181818; border-radius: 8px; padding: 5px; box-sizing: border-box;}
+        .oracao-tab-btn { flex: 1; padding: 12px; text-align: center; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; color: #888; transition: 0.3s; background: transparent; border: none;}
+        .oracao-tab-btn.active { background: #2a2a2a; color: #fff; }
+        .oracao-header-box { width: 100%; max-width: 600px; background-image: url('https://images.unsplash.com/photo-1544427920-c49ccf08c146?q=80&w=600&auto=format&fit=crop'); background-size: cover; background-position: center; border-radius: 12px; position: relative; overflow: hidden; margin-bottom: 20px; }
+        .oracao-header-overlay { background: linear-gradient(to right, rgba(18,18,18,0.95), rgba(18,18,18,0.6)); padding: 25px 20px; }
+        .oracao-quote-box { background: #1f142e; border-left: 4px solid #a855f7; padding: 15px; border-radius: 0 8px 8px 0; margin-bottom: 20px; width: 100%; max-width: 600px; box-sizing: border-box;}
+        
+        .ident-toggle-container { display: flex; gap: 10px; width: 100%; margin-bottom: 15px; }
+        .ident-card { flex: 1; border: 1px solid #333; background: #181818; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; transition: 0.2s; color: #b3b3b3; }
+        .ident-card.active { border-color: #a855f7; background: #1f142e; color: #a855f7; }
+        .ident-card i { font-size: 20px; margin-bottom: 8px; display: block; }
+        .ident-card h4 { font-size: 13px; margin: 0 0 5px 0; color: #fff;}
+        .ident-card p { font-size: 10px; margin: 0; opacity: 0.7; color: #b3b3b3;}
+        
+        .oracao-feed-box { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 12px; padding-bottom: 30px;}
+        .oracao-feed-item { background: #181818; border-radius: 10px; padding: 16px; border-left: 4px solid #a855f7; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
+        .oracao-feed-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 11px; color: #888; border-bottom: 1px solid #282828; padding-bottom: 8px;}
+        .oracao-feed-nome { font-weight: 700; color: #d4a5ff; font-size: 14px; display: flex; align-items: center; gap: 6px;}
+        .oracao-feed-badge { background: #2d1a42; color: #c48df5; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; text-transform: uppercase;}
+        .oracao-feed-texto { font-size: 15px; color: #e9edef; line-height: 1.5; margin: 0 0 10px 0; white-space: pre-wrap;}
+        .oracao-feed-detalhes { font-size: 13px; color: #b3b3b3; background: #121212; padding: 10px; border-radius: 6px; margin: 0; font-style: italic;}
+
+        /* === EDIÇÃO PREMIUM 2026 - apenas visual, sem endpoints alterados === */
+        :root { --accent: #a78bfa; --accent-bright: #bd91ff; --panel: #151427; --hairline: rgba(190,178,236,.16); --muted: #ada9c1; }
+        * { -webkit-tap-highlight-color: transparent; }
+        html { color-scheme: dark; scroll-behavior: smooth; }
+        body {
+            background: radial-gradient(ellipse 650px 420px at 50% -170px, rgba(139,92,246,.24), transparent 80%),
+                        radial-gradient(ellipse 600px 500px at 105% 80%, rgba(81,40,168,.11), transparent 82%),
+                        #090910;
+            color: #fbfaff; padding: 0 18px 110px; font-weight: 500;
+        }
+        body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: -1;
+            background-image: linear-gradient(rgba(255,255,255,.011) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.011) 1px, transparent 1px);
+            background-size: 34px 34px; }
+        button, input, select, textarea { font-family: inherit; }
+        button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible,
+        [role="button"]:focus-visible { outline: 2px solid #e9d5ff; outline-offset: 4px; }
+        header { max-width: 690px; margin-bottom: 0; padding: 18px 0 14px; top: 0;
+            background: rgba(9,9,16,.85); border-bottom: 1px solid rgba(185,155,255,.1);
+            backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); }
+        header h1 { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 16px; letter-spacing: .15px; }
+        .brand-subtitle { color: #ada6c0; font-size: 9px; font-weight: 600; letter-spacing: 2.1px; text-transform: uppercase; }
+        .menu-btn-top { width: 42px; height: 42px; padding: 0; justify-content: center; border: 1px solid var(--hairline); border-radius: 13px;
+            background: rgba(255,255,255,.035); font-size: 17px; transition: background .2s, color .2s; }
+        .menu-btn-top:hover { background: rgba(162,112,255,.16); color: #e4d5ff; }
+        section { max-width: 690px; width: 100%; margin: 18px 0 8px; justify-content: flex-start; }
+        .intro-line { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 10px;
+            margin: 0 auto 17px; font-size: 11px; letter-spacing: 1.7px; text-transform: uppercase; color: #a8a1bb; }
+        .intro-line .eyebrow { display: inline-flex; gap: 8px; align-items: center; font-weight: 700; }
+        .intro-line .eyebrow i { color: #d6b6ff; }
+        .live-pill { display: inline-flex; align-items: center; gap: 7px; color: #eadbff; font-size: 10px; letter-spacing: 1.2px;
+            background: rgba(138,77,220,.17); border: 1px solid rgba(172,123,238,.28); padding: 8px 11px; border-radius: 30px; }
+        .live-pill::before { content:''; background:#b991fa; width: 7px; height: 7px; border-radius: 50%; box-shadow: 0 0 0 3px rgba(161,104,255,.13); }
+        .main-player-card { width: 100%; max-width: 690px; padding: 30px 26px 29px;
+            border: 1px solid rgba(210,191,255,.18); border-radius: 27px;
+            background: linear-gradient(155deg, rgba(44,35,76,.92) 0%, rgba(22,20,39,.97) 46%, rgba(16,15,27,.98) 100%);
+            box-shadow: 0 28px 75px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.07);
+            position: relative; overflow: hidden; }
+        .main-player-card::before { content: ''; position: absolute; top: -140px; left: 50%; transform: translateX(-50%);
+            width: 420px; height: 300px; background: radial-gradient(ellipse, rgba(165,99,255,.18), transparent 65%); pointer-events: none; }
+        .art-frame { width: min(100%, 300px); position: relative; margin: 0 auto 25px; isolation: isolate; }
+        .art-frame::before { content: ''; position: absolute; inset: 12px -12px -15px; border-radius: 28px;
+            background: rgba(144,84,229,.30); filter: blur(27px); z-index: -1; }
+        .art-frame .station-img { display: block; max-width: initial; width: 100%; height: auto; margin: 0;
+            border: 1px solid rgba(255,255,255,.20); border-radius: 20px; background: #201936;
+            box-shadow: 0 17px 35px rgba(0,0,0,.40); }
+        .art-frame .art-stamp { position: absolute; left: 12px; top: 12px; border-radius: 8px; padding: 9px 12px;
+            background: rgba(11,9,23,.74); backdrop-filter: blur(12px); color: #f9f3ff; font-size: 10px;
+            letter-spacing: 1.4px; font-weight: 800; text-transform: uppercase; border: 1px solid rgba(255,255,255,.14); }
+        .station-info { min-height: 0; margin-bottom: 15px; padding: 0; }
+        .station-info h3 { font-size: clamp(19px, 4vw, 26px); letter-spacing: -.5px; margin-bottom: 9px; }
+        .louvor-em-destaque { font-size: 14px; color: #d9ccee; margin-bottom: 6px; }
+        .artista-em-destaque { font-size: 12px; color: #aba4bd; }
+        .connection-status { display: inline-flex; align-items: center; justify-content: center; gap: 7px; margin: 8px 0 20px;
+            color: #bfb7d2; font-size: 11px; min-height: 20px; }
+        .connection-status::before { content:''; width:6px; height:6px; border-radius:50%; background: #b5adc5; }
+        .connection-status[data-state="playing"] { color: #a7eac5; }
+        .connection-status[data-state="playing"]::before { background: #42da92; box-shadow: 0 0 9px #42da92; }
+        .connection-status[data-state="loading"]::before { background: #f2c567; animation: pulse 1.4s infinite; }
+        .connection-status[data-state="error"] { color: #ffb4ba; }
+        .connection-status[data-state="error"]::before { background: #fb7a83; }
+        .retry-stream { display:none; background: none; color: #d7b9ff; border: none; padding: 0 4px; font-size: 11px; font-weight: 700; text-decoration: underline; cursor:pointer; }
+        .retry-stream.show { display: inline; }
+        .progress-container { max-width: 100%; margin-bottom: 19px; }
+        .progress-bar { height: 6px; background: #373049; border-radius: 30px; }
+        .progress-fill { background: linear-gradient(90deg, #9f72ef, #d3adff); }
+        .progress-fill::after { background: #e0caff; }
+        .time-info { gap: 10px; font-size: 10px; letter-spacing: .55px; }
+        #player-tipo-tag { font-weight: 800; color: #d4b6ff!important; white-space: nowrap; }
+        #player-tempo { margin-left: auto; color: #b4abc4; white-space: nowrap; }
+        .equalizer { margin-left: auto; }
+        .playing .eq-bar { background: #c9a3ff; }
+        .volume-container { max-width: 100%; margin-bottom: 24px; padding: 11px 13px; box-sizing: border-box;
+            background: rgba(6,4,19,.26); border: 1px solid rgba(173,148,216,.12); border-radius: 12px; }
+        .volume-container input { accent-color: #b997ff; min-width: 0; }
+        .volume-container i { color: #c0b1d7; }
+        .player-controls { max-width: 320px; }
+        .control-icon { color: #bdb3cf; font-size: 21px; width: 42px; height: 42px; border-radius: 50%; }
+        .control-icon:hover { background: rgba(255,255,255,.07); color: #fff; }
+        .play-pause-btn { width: 72px; height: 72px; background: linear-gradient(145deg, #ba89ff, #8d50ef); color: #11091f;
+            box-shadow: 0 10px 30px rgba(145,78,240,.36), inset 0 2px 0 rgba(255,255,255,.32); }
+        .play-pause-btn:hover { filter: brightness(1.13); transform: translateY(-1px); }
+        .play-pause-btn:disabled { opacity: .5; cursor: not-allowed; }
+        .quick-actions { max-width: 690px; width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin: 16px 0 4px; }
+        .quick-actions button { min-width: 0; color: #d9d3e9; background: rgba(30,28,47,.75); border: 1px solid var(--hairline);
+            border-radius: 16px; padding: 17px 6px 15px; display: flex; flex-direction: column; gap: 10px;
+            align-items: center; justify-content: center; font-size: 11px; font-weight: 700; cursor: pointer; }
+        .quick-actions button:hover, .quick-actions button:active { background: #2e2347; border-color: rgba(171,128,236,.6); }
+        .quick-actions i { color: #cdafff; font-size: 19px; }
+        .quick-actions button.is-favorite i { color: #ff8bad; }
+        .help-caption { text-align: center; font-size: 10px; color: #807b91; margin: 12px 0 0; line-height: 1.5; }
+        .bottom-nav { padding: 10px 0 calc(11px + env(safe-area-inset-bottom)); background: rgba(18,16,31,.96);
+            box-shadow: 0 -10px 35px rgba(0,0,0,.23); border-top: 1px solid var(--hairline);
+            backdrop-filter: blur(18px); }
+        .bottom-nav a, .bottom-nav button { min-height: 48px; font-size: 10px; width: min(80px,24%); justify-content: center; }
+        .bottom-nav i { font-size: 19px; }
+        .bottom-nav .active i { color: #be91ff; }
+        .bottom-sheet { background: #100e1c; padding-bottom: env(safe-area-inset-bottom); }
+        .screen-header { background: rgba(16,14,28,.96); position: sticky; top: 0; z-index: 5; }
+        .custom-input { background: #1c192b; border-color: rgba(198,177,242,.18); border-radius: 12px; }
+        .btn-primary { background: linear-gradient(135deg, #b589f8, #9054e9); }
+        .btn-primary:hover { filter: brightness(1.08); }
+        .stations-list-container { padding-bottom: 22px; }
+        .station-list-item { border: 1px solid rgba(190,171,236,.13); border-radius: 15px; padding: 12px; background: #1b192b; }
+        .station-list-item.active-item { background: #2b2041; border-color: #a477ef; }
+        .station-list-item img { width: 56px; height: 56px; border-radius: 10px; }
+        .station-list-info h4 { font-size: 14px; }
+        .station-filter-bar { width: 100%; max-width: 600px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 10px; }
+        .station-filter-bar input { padding-left: 44px; }
+        .station-search-wrap { position: relative; }
+        .station-search-wrap > i { position: absolute; color: #aa9aba; left: 16px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+        .filter-chips { display: flex; gap: 8px; overflow-x: auto; padding: 2px 0; scrollbar-width: none; }
+        .filter-chip { border: 1px solid rgba(194,162,242,.19); border-radius: 30px; padding: 10px 14px;
+            font-size: 11px; font-weight: 700; color: #aaa0bb; background: #1b192b; white-space: nowrap; cursor: pointer; }
+        .filter-chip.active { color: #180c2a; background: #c5a1ff; border-color: #c5a1ff; }
+        .list-meta { color: #a9a0b9; font-size: 11px; margin: 4px 0 13px; }
+        .item-favorite { width: 42px; height: 42px; border-radius: 11px; flex-shrink: 0; border: none; background: rgba(255,255,255,.05); color: #8f869f; cursor: pointer; }
+        .item-favorite.on { color: #ff89af; }
+        .item-favorite:hover { background: rgba(255,255,255,.11); }
+        .admin-item { background: #1b192b; border-color: rgba(195,174,236,.18); border-radius: 13px; }
+        .menu-item-btn { border-radius: 13px; }
+        .side-menu-header { background: #131123; }
+        #side-menu { background: #171426; }
+        @media (max-width: 520px) {
+            body { padding: 0 13px 105px; }
+            section { margin-top: 14px; }
+            .main-player-card { padding: 25px 19px 23px; border-radius: 24px; }
+            .art-frame { width: min(68%, 210px); margin-bottom: 20px; }
+            .station-info h3 { font-size: 20px; }
+            .quick-actions { gap: 8px; margin-top: 12px; }
+            .quick-actions button { border-radius: 13px; padding: 14px 3px; }
+            .intro-line { font-size: 9px; letter-spacing: 1px; }
+        }
+        @media (max-height: 730px) and (max-width: 520px) { .art-frame { width: min(59%, 172px); } .main-player-card { padding-top: 19px; } }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms!important; transition-duration: .01ms!important; } }
+
+        .menu-btn-top svg, .control-icon svg, .bottom-nav svg, .quick-actions svg { display:block; flex-shrink:0; }
+        .bottom-nav svg { width:21px; height:21px; }
+        .quick-actions svg { width:22px; height:22px; }
+        .intro-line svg, .art-stamp svg { display:inline-block; vertical-align:middle; }
+        .volume-container svg { flex-shrink:0; }
+        .station-search-wrap > svg { position:absolute; color:#aa9aba; left:15px; top:50%; transform:translateY(-50%); pointer-events:none; }
+        .player-glyph { display:block; font-weight:800; font-size:27px; line-height:1; }
+        #main-play-icon.rotating { animation: spin-modern .9s linear infinite; }
+        #btn-sync-icon.fa-spin svg { animation: spin-modern .9s linear infinite; }
+        @keyframes spin-modern { to { transform:rotate(360deg); } }
+        #moon-icon { display:inline-flex; }
+        #favorite-main-icon.solid-heart svg { fill:currentColor; }
+        .quick-actions button.is-favorite { color:#ff9db9; }
+        .item-favorite { font-size:23px; }
+        .close-btn { display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
+        .close-glyph { font-size: 27px; font-weight: 400; line-height: 1; }
+    </style>
+</head>
+<body>
+
+    <div id="splash-screen">
+        <i class="fas fa-broadcast-tower splash-logo"></i>
+        <h1 class="splash-title">Rádio Brasil CCB</h1>
+        <p class="splash-subtitle">A paz de Deus</p>
+    </div>
+
+    <div id="menu-overlay" onclick="fecharMenuLateral()"></div>
+    
+    <div id="side-menu">
+        <div class="side-menu-header">
+            <h2>Navegação</h2><button class="close-btn" onclick="fecharMenuLateral()"><span aria-hidden="true" class="close-glyph">×</span></button>
+        </div>
+        <div class="side-menu-content">
+            <button class="menu-item-btn" onclick="abrirMural()"><i class="fas fa-book-open"></i> Mural da Palavra</button>
+            <button class="menu-item-btn" onclick="abrirAbaMapa()"><i class="fas fa-map-marked-alt"></i> Congregações CCB</button>
+            <button class="menu-item-btn" onclick="abrirInfoAssinatura()"><i class="fas fa-info-circle"></i> Sobre a Assinatura</button>
+            <button class="menu-item-btn" onclick="abrirAssinatura()"><i class="fas fa-hand-holding-heart"></i> Assinar Rádio</button>
+            <button class="menu-item-btn" onclick="compartilharApp()"><i class="fas fa-share-nodes"></i> Compartilhar App</button>
+            <button class="menu-item-btn" onclick="abrirLoginAdmin()"><i class="fas fa-user-shield"></i> Área Admin</button>
+            <button class="menu-item-btn" onclick="fecharMenuLateral()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 10 9-7 9 7v10H3V10Z"/><path d="M9 20v-7h6v7"/></svg> Início</button>
+        </div>
+    </div>
+
+    <header>
+        <button class="menu-btn-top" onclick="abrirMenuLateral()" title="Abrir menu" aria-label="Abrir menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <h1>Rádio Brasil CCB<span class="brand-subtitle">Louvando com você</span></h1>
+        <div style="display: flex; gap: 5px;">
+            <button class="menu-btn-top" onclick="forcarSincronizacao()" id="btn-sync" title="Sincronizar Dados"><span id="btn-sync-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 11a8 8 0 0 0-14-5L4 8M4 4v4h4M4 13a8 8 0 0 0 14 5l2-2m0 4v-4h-4"/></svg></span></button>
+        </div>
+    </header>
+
+    <section>
+        <div class="intro-line"><span class="eyebrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 14v-3a9 9 0 0 1 18 0v3"/><rect x="3" y="13" width="4" height="8" rx="2"/><rect x="17" y="13" width="4" height="8" rx="2"/></svg> SUA RÁDIO, SUA PAZ</span><span class="live-pill">MÚSICA & FÉ</span></div>
+        <div class="main-player-card">
+            <div class="art-frame">
+                <img id="player-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MjAiIGhlaWdodD0iNDIwIiB2aWV3Qm94PSIwIDAgNDIwIDQyMCI+CjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iYmciIGN4PSIzNSUiIGN5PSIyMCUiIHI9Ijk0JSI+PHN0b3Agc3RvcC1jb2xvcj0iIzQ0MzA2ZiIvPjxzdG9wIG9mZnNldD0iLjQ4IiBzdG9wLWNvbG9yPSIjMjUxYjNlIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTIwZjI0Ii8+PC9yYWRpYWxHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9Imdsb3ciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjYzlhOGZmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjODM1NmM3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+CjxyZWN0IHdpZHRoPSI0MjAiIGhlaWdodD0iNDIwIiByeD0iMzAiIGZpbGw9InVybCgjYmcpIi8+PGNpcmNsZSBjeD0iMjEwIiBjeT0iMTczIiByPSIxMjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhhNmNiZSIgc3Ryb2tlLW9wYWNpdHk9Ii4xNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMjEwIiBjeT0iMTczIiByPSIxMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhhNmNiZSIgc3Ryb2tlLW9wYWNpdHk9Ii4yMiIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNnbG93KSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2Utd2lkdGg9IjciPjxwYXRoIGQ9Ik0xOTAgMTU1djQyYTIwIDIwIDAgMCAwIDQwIDB2LTQyYTIwIDIwIDAgMCAwLTQwIDBaIi8+PHBhdGggZD0iTTE3NiAxODRhMzQgMzQgMCAwIDAgNjggME0yMTAgMjE4djI1bS0yNCAwaDQ4Ii8+PC9nPgo8ZyBmaWxsPSJub25lIiBzdHJva2U9IiNhZDgyZWMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBvcGFjaXR5PSIuOCI+PHBhdGggZD0iTTE1MCAxNDhjLTE1IDIyLTE1IDQ5IDAgNzFNMjcwIDE0OGMxNSAyMiAxNSA0OSAwIDcxTTEzMSAxMzFjLTI2IDM3LTI2IDg0IDAgMTIxTTI4OSAxMzFjMjYgMzcgMjYgODQgMCAxMjEiLz48L2c+CjxwYXRoIGQ9Ik0xMjUgMjg2aDE3MCIgc3Ryb2tlPSIjYTM4Y2M5IiBzdHJva2Utb3BhY2l0eT0iLjI4Ii8+PHRleHQgeD0iMjEwIiB5PSIzMTciIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCIgZm9udC1zaXplPSIyNiIgZmlsbD0iI2Y4ZjFmZiI+UsOBRElPIEJSQVNJTDwvdGV4dD48dGV4dCB4PSIyMTAiIHk9IjM0NyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LXNpemU9IjI2IiBsZXR0ZXItc3BhY2luZz0iNyIgZmlsbD0iI2M5YThmZiI+Q0NCPC90ZXh0Pjx0ZXh0IHg9IjIxMCIgeT0iMzc4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgbGV0dGVyLXNwYWNpbmc9IjMiIGZpbGw9IiNjNmI2ZGMiPkxPVVZPUkVTIOKAoiBBTyBWSVZPPC90ZXh0Pgo8L3N2Zz4=" alt="Capa da estação" class="station-img" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MjAiIGhlaWdodD0iNDIwIiB2aWV3Qm94PSIwIDAgNDIwIDQyMCI+CjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iYmciIGN4PSIzNSUiIGN5PSIyMCUiIHI9Ijk0JSI+PHN0b3Agc3RvcC1jb2xvcj0iIzQ0MzA2ZiIvPjxzdG9wIG9mZnNldD0iLjQ4IiBzdG9wLWNvbG9yPSIjMjUxYjNlIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTIwZjI0Ii8+PC9yYWRpYWxHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9Imdsb3ciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjYzlhOGZmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjODM1NmM3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+CjxyZWN0IHdpZHRoPSI0MjAiIGhlaWdodD0iNDIwIiByeD0iMzAiIGZpbGw9InVybCgjYmcpIi8+PGNpcmNsZSBjeD0iMjEwIiBjeT0iMTczIiByPSIxMjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhhNmNiZSIgc3Ryb2tlLW9wYWNpdHk9Ii4xNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMjEwIiBjeT0iMTczIiByPSIxMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhhNmNiZSIgc3Ryb2tlLW9wYWNpdHk9Ii4yMiIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNnbG93KSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2Utd2lkdGg9IjciPjxwYXRoIGQ9Ik0xOTAgMTU1djQyYTIwIDIwIDAgMCAwIDQwIDB2LTQyYTIwIDIwIDAgMCAwLTQwIDBaIi8+PHBhdGggZD0iTTE3NiAxODRhMzQgMzQgMCAwIDAgNjggME0yMTAgMjE4djI1bS0yNCAwaDQ4Ii8+PC9nPgo8ZyBmaWxsPSJub25lIiBzdHJva2U9IiNhZDgyZWMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBvcGFjaXR5PSIuOCI+PHBhdGggZD0iTTE1MCAxNDhjLTE1IDIyLTE1IDQ5IDAgNzFNMjcwIDE0OGMxNSAyMiAxNSA0OSAwIDcxTTEzMSAxMzFjLTI2IDM3LTI2IDg0IDAgMTIxTTI4OSAxMzFjMjYgMzcgMjYgODQgMCAxMjEiLz48L2c+CjxwYXRoIGQ9Ik0xMjUgMjg2aDE3MCIgc3Ryb2tlPSIjYTM4Y2M5IiBzdHJva2Utb3BhY2l0eT0iLjI4Ii8+PHRleHQgeD0iMjEwIiB5PSIzMTciIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCIgZm9udC1zaXplPSIyNiIgZmlsbD0iI2Y4ZjFmZiI+UsOBRElPIEJSQVNJTDwvdGV4dD48dGV4dCB4PSIyMTAiIHk9IjM0NyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LXNpemU9IjI2IiBsZXR0ZXItc3BhY2luZz0iNyIgZmlsbD0iI2M5YThmZiI+Q0NCPC90ZXh0Pjx0ZXh0IHg9IjIxMCIgeT0iMzc4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgbGV0dGVyLXNwYWNpbmc9IjMiIGZpbGw9IiNjNmI2ZGMiPkxPVVZPUkVTIOKAoiBBTyBWSVZPPC90ZXh0Pgo8L3N2Zz4='">
+                <span class="art-stamp"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4 21 8-18 8 18M8 13h8M6 17h12M4 7a10 10 0 0 1 0 10M20 7a10 10 0 0 1 0 10"/></svg> RÁDIO BRASIL CCB</span>
+            </div>
+            
+            <div class="station-info">
+                <h3 id="player-title">Carregando...</h3>
+                <p id="player-louvor" class="louvor-em-destaque">Conectando às rádios</p>
+                <p id="player-artista" class="artista-em-destaque">Aguarde</p>
+            </div>
+
+            <div style="display:flex; align-items:center; justify-content:center; gap:5px;">
+                <span class="connection-status" data-state="idle" id="status-conexao" role="status" aria-live="polite">Pronto para ouvir</span>
+                <button type="button" class="retry-stream" id="btn-retry" onclick="retentarEstacaoAtual()">Tentar novamente</button>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+                <div class="time-info">
+                    <span id="player-tipo-tag">AO VIVO</span>
+                    <div class="equalizer" id="equalizer-anim">
+                        <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                    </div>
+                    <span id="player-tempo">TRANSMISSÃO CONTÍNUA</span>
+                </div>
+            </div>
+
+            <div class="volume-container">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4V5zM15 9a5 5 0 0 1 0 6"/></svg>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" aria-label="Volume da rádio">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4V5zM15 9a5 5 0 0 1 0 6M18 6a9 9 0 0 1 0 12"/></svg>
+            </div>
+
+            <div class="player-controls">
+                <button class="control-icon" onclick="abrirListaRadios()" title="Escolher rádio" aria-label="Escolher rádio"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 6h12M9 12h12M9 18h12"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></button>
+                <button class="control-icon" onclick="prevRadio()" title="Estação anterior" aria-label="Estação anterior"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 5v14M19 6l-10 6 10 6V6z"/></svg></button>
+                <button class="play-pause-btn" id="btn-main-play" onclick="toggleMainPlay()" title="Reproduzir ou pausar" aria-label="Reproduzir rádio"><span id="main-play-icon" class="player-glyph" aria-hidden="true">▶</span></button>
+                <button class="control-icon" onclick="nextRadio()" title="Próxima estação" aria-label="Próxima estação"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 5v14M5 6l10 6-10 6V6z"/></svg></button>
+                <button class="control-icon" onclick="abrirTemporizador()" title="Temporizador" aria-label="Temporizador"><span id="moon-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 14A9 9 0 0 1 10 3.5a9 9 0 1 0 10.5 10.5z"/></svg></span></button>
+            </div>
+            
+            <audio id="main-audio" crossorigin="anonymous"><source id="main-audio-src" src="" type="audio/mpeg"></audio>
+        </div>
+        <div class="quick-actions">
+            <button type="button" onclick="abrirListaRadios()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="8" width="19" height="13" rx="3"/><path d="M5 8 18 3M8 15h7M8 18h7"/><circle cx="18" cy="15.5" r="1"/></svg> Explorar rádios</button>
+            <button type="button" id="btn-favorite-main" onclick="favoritarRadioAtual()"><span id="favorite-main-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg></span><span id="favorite-main-label">Favoritar</span></button>
+            <button type="button" onclick="compartilharApp()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="18" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="19" r="2"/><path d="m8 11 8-5M8 13l8 5"/></svg> Compartilhar</button>
+        </div>
+        <p class="help-caption">Sintonize sua estação. A transmissão depende da disponibilidade do servidor.</p>
+    </section>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="active"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 10 9-7 9 7v10H3V10Z"/><path d="M9 20v-7h6v7"/></svg><span>Início</span></a>
+        <button onclick="abrirChat()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 11a8 8 0 0 1-9 8 9 9 0 0 1-4-.9L3 20l1.9-5A9 9 0 1 1 21 11Z"/></svg><span>Chat</span></button>
+        <button onclick="abrirOracao()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22v-9M7 22v-7a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v7M8 8a4 4 0 1 1 8 0"/></svg><span>Pedidos</span></button>
+        <button onclick="abrirPerfil()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Perfil</span></button>
+    </nav>
+
+    <div id="chat-screen" class="bottom-sheet" style="padding: 0;">
+        <div class="screen-header" style="background-color: #202c33; margin-bottom: 0; padding: 15px 15px; border-bottom: none; width: 100%;">
+            <div style="display:flex; align-items:center; gap: 15px; width: 100%;">
+                <button class="close-btn" onclick="fecharChat()" style="padding: 0 5px;"><span aria-hidden="true" class="close-glyph">←</span></button>
+                <img src="https://placehold.co/100x100/181818/a855f7?text=CCB" style="width: 40px; height: 40px; border-radius: 50%;">
+                <h2 style="margin: 0; font-size: 16px; color: #e9edef; text-align: left; flex-grow: 1;">Comunidade CCB<br><span style="font-size: 11px; color: #8696a0; font-weight: normal;">online agora</span></h2>
+            </div>
+        </div>
+        
+        <div class="chat-container">
+            <div class="chat-messages" id="chat-messages-box">
+                <p style="text-align:center; color:#8696a0; font-size:13px; margin-top:20px; background: #202c33; padding: 10px; border-radius: 8px; align-self: center;">Carregando mensagens...</p>
+            </div>
+            
+            <div class="emoji-picker" id="emoji-picker-box">
+                <span class="emoji-item" onclick="addEmoji('🙏')">🙏</span><span class="emoji-item" onclick="addEmoji('🙌')">🙌</span><span class="emoji-item" onclick="addEmoji('❤️')">❤️</span><span class="emoji-item" onclick="addEmoji('🕊️')">🕊️</span><span class="emoji-item" onclick="addEmoji('📖')">📖</span><span class="emoji-item" onclick="addEmoji('⛪')">⛪</span><span class="emoji-item" onclick="addEmoji('😊')">😊</span><span class="emoji-item" onclick="addEmoji('👏')">👏</span><span class="emoji-item" onclick="addEmoji('🎶')">🎶</span><span class="emoji-item" onclick="addEmoji('🎵')">🎵</span>
+            </div>
+
+            <div class="chat-input-area">
+                <button class="chat-emoji-btn" onclick="toggleEmojiPicker()"><i class="far fa-smile"></i></button>
+                <input type="text" id="chat-input-texto" class="chat-input" placeholder="Mensagem" autocomplete="off">
+                <button class="chat-send-btn" onclick="enviarMensagemChat()"><i class="fas fa-paper-plane" style="margin-right: 2px;"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="oracao-screen" class="bottom-sheet">
+        <div class="screen-header"><div style="width: 44px;"></div><h2>Intercessão</h2><button class="close-btn" onclick="fecharOracao()"><span aria-hidden="true" class="close-glyph">⌄</span></button></div>
+        
+        <div class="oracao-tabs">
+            <button class="oracao-tab-btn active" id="tab-fazer" onclick="mudarAbaOracao('fazer')">Fazer Pedido</button>
+            <button class="oracao-tab-btn" id="tab-ver" onclick="mudarAbaOracao('ver')">Mural de Orações</button>
+        </div>
+
+        <div id="aba-fazer-pedido" style="width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: center; padding-bottom: 40px;">
+            <div class="oracao-header-box">
+                <div class="oracao-header-overlay">
+                    <h2 style="margin:0 0 5px 0; color:#fff; font-size:24px;">Estamos aqui<br>para orar por você.</h2>
+                    <p style="margin:0; color:#b3b3b3; font-size:12px;">Deixe seu pedido e nossa equipe de intercessão e a irmandade estarão orando.</p>
+                </div>
+            </div>
+            
+            <div class="oracao-quote-box">
+                <i class="fas fa-quote-left" style="color: rgba(168, 85, 247, 0.4); font-size: 20px; float: left; margin-right: 10px;"></i>
+                <p style="margin: 0; font-size: 13px; color: #e9edef; font-style: italic;">Não andeis ansiosos de coisa alguma; em tudo, porém, sejam conhecidas, diante de Deus, as vossas petições, pela oração e pela súplica, com ação de graças.</p>
+                <span style="display: block; text-align: right; color: #a855f7; font-size: 11px; font-weight: bold; margin-top: 8px;">Filipenses 4:6</span>
+            </div>
+
+            <div class="profile-form">
+                <div class="input-group">
+                    <label>Sobre o que você gostaria de pedir oração? <span style="color:#dc3545;">*</span></label>
+                    <textarea id="oracao-pedido" class="custom-input" rows="4" placeholder="Escreva aqui seu pedido principal..." maxlength="1000"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Como deseja identificar seu pedido?</label>
+                    <div class="ident-toggle-container">
+                        <div class="ident-card active" id="btn-ident-nome" onclick="escolherIdentificacao('nome')">
+                            <i class="far fa-user"></i>
+                            <h4>Com meu nome</h4>
+                            <p>Seu nome será mostrado</p>
+                        </div>
+                        <div class="ident-card" id="btn-ident-sigilo" onclick="escolherIdentificacao('sigilo')">
+                            <i class="fas fa-lock"></i>
+                            <h4>Em sigilo</h4>
+                            <p>Seu nome será ocultado</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Categoria (opcional)</label>
+                    <select id="oracao-categoria" class="custom-input">
+                        <option value="Saúde / Enfermidade">Saúde / Enfermidade</option>
+                        <option value="Família / Casamento">Família / Casamento</option>
+                        <option value="Vida Financeira">Vida Financeira</option>
+                        <option value="Vida Espiritual">Vida Espiritual</option>
+                        <option value="Causas na Justiça">Causas na Justiça</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Deseja adicionar mais detalhes? (opcional)</label>
+                    <textarea id="oracao-detalhes" class="custom-input" rows="3" placeholder="Fale mais detalhes se desejar..." maxlength="500"></textarea>
+                </div>
+
+                <button class="btn-primary" onclick="enviarOracao()"><i class="fas fa-paper-plane"></i> Enviar pedido de oração</button>
+                <p style="text-align: center; color: #888; font-size: 11px; margin-top: 15px;"><i class="fas fa-shield-alt"></i> Seus pedidos são tratados com amor e respeito.</p>
+            </div>
+        </div>
+
+        <div id="aba-ver-pedidos" class="oracao-feed-box" style="display: none;">
+            <p style="text-align:center; color:#888; font-size:12px; margin-top:20px;">Carregando pedidos...</p>
+        </div>
+    </div>
+
+    <div id="info-assinatura-screen" class="bottom-sheet">
+        <div class="screen-header"><div style="width: 44px;"></div><h2>Sua Assinatura</h2><button class="close-btn" onclick="fecharInfoAssinatura()"><span aria-hidden="true" class="close-glyph">⌄</span></button></div>
+        <div style="width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: center; padding-bottom: 40px;">
+            <div style="background: linear-gradient(145deg, #0b2239, #1f142e); padding: 30px 20px; border-radius: 12px; text-align: center; margin-bottom: 20px; width: 100%; box-sizing: border-box; border: 1px solid #d4af37; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                <i class="fas fa-microphone-alt" style="font-size: 45px; color: #d4af37; margin-bottom: 15px;"></i>
+                <h2 style="margin: 0 0 5px 0; color: #fff; font-family: serif; font-size: 26px;">Rádio CCB Brasil</h2>
+                <p style="margin: 0 0 20px 0; color: #d4af37; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Anunciando o Evangelho<br>e Semeando Esperança</p>
+                <p style="color: #e0e0e0; font-size: 14px; line-height: 1.6; margin-bottom: 0;">Sua assinatura ajuda a manter a rádio no ar 24 horas, levando a Palavra de Deus a milhares de irmãos, além de ajudar quem mais precisa com <b>ações sociais e cestas básicas</b>.</p>
+            </div>
+            
+            <h3 style="color: #b3b3b3; font-size: 14px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">Com sua assinatura, você:</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; margin-bottom: 25px;">
+                <div style="background: #181818; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #282828;">
+                    <i class="fas fa-broadcast-tower" style="color: #d4af37; font-size: 24px; margin-bottom: 10px;"></i>
+                    <h4 style="margin: 0 0 5px 0; font-size: 12px; color: #fff;">Mantém a Rádio</h4>
+                    <p style="margin: 0; font-size: 10px; color: #888;">No ar 24 horas por dia</p>
+                </div>
+                <div style="background: #181818; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #282828;">
+                    <i class="fas fa-hands-helping" style="color: #d4af37; font-size: 24px; margin-bottom: 10px;"></i>
+                    <h4 style="margin: 0 0 5px 0; font-size: 12px; color: #fff;">Ajuda o Próximo</h4>
+                    <p style="margin: 0; font-size: 10px; color: #888;">Com ações e cestas</p>
+                </div>
+                <div style="background: #181818; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #282828;">
+                    <i class="fas fa-users" style="color: #d4af37; font-size: 24px; margin-bottom: 10px;"></i>
+                    <h4 style="margin: 0 0 5px 0; font-size: 12px; color: #fff;">Alcança Vidas</h4>
+                    <p style="margin: 0; font-size: 10px; color: #888;">Mensagem do Evangelho</p>
+                </div>
+                <div style="background: #181818; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #282828;">
+                    <i class="fas fa-bible" style="color: #d4af37; font-size: 24px; margin-bottom: 10px;"></i>
+                    <h4 style="margin: 0 0 5px 0; font-size: 12px; color: #fff;">Investe no Reino</h4>
+                    <p style="margin: 0; font-size: 10px; color: #888;">Semeando hoje p/ eternidade</p>
+                </div>
+            </div>
+
+            <button class="btn-primary" style="background-color: #d4af37; color: #000; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);" onclick="abrirAssinatura()"><i class="fas fa-heart"></i> Quero ser um Assinante</button>
+            <p style="text-align: center; color: #888; font-size: 12px; margin-top: 20px; font-style: italic;">"Tudo quanto fizerdes, fazei-o de todo o coração, como para o Senhor..."<br><span style="color: #d4af37; font-weight: bold;">Colossenses 3:23</span></p>
+        </div>
+    </div>
+
+    <div id="admin-login-screen" class="bottom-sheet">
+        <div class="screen-header"><div style="width: 44px;"></div><h2>Acesso Restrito</h2><button class="close-btn" onclick="fecharLoginAdmin()"><span aria-hidden="true" class="close-glyph">⌄</span></button></div>
+        <div class="profile-form">
+            <div class="input-group"><label>Senha de Acesso</label><input type="password" id="inputAdminSenha" class="custom-input" placeholder="Digite a senha"></div>
+            <button class="btn-primary" onclick="verificarSenhaAdmin()">Entrar no Painel</button>
+        </div>
+    </div>
+
+    <div id="admin-panel-screen" class="bottom-sheet">
+        <div class="screen-header"><div style="width: 44px;"></div><h2>Painel Admin</h2><button class="close-btn" onclick="fecharAdminPanel()"><span aria-hidden="true" class="close-glyph">×</span></button></div>
+        <div class="profile-form" style="padding-bottom: 30px;">
+            <h3 id="titulo-form-admin" style="margin-top: 0; color: #a855f7;">Adicionar Novo Áudio</h3>
+            <div class="input-group"><label>Tipo</label><select id="adminTipo" class="custom-input"><option value="louvor">Louvor</option><option value="radio">Rádio</option></select></div>
+            <div class="input-group"><label>Nome / Título</label><input type="text" id="adminNome" class="custom-input" placeholder="Ex: Hino 01"></div>
+            <div class="input-group"><label>Descrição / Artista</label><input type="text" id="adminDesc" class="custom-input" placeholder="Ex: Cantor"></div>
+            <div class="input-group"><label>Link do Áudio</label><input type="url" id="adminLink" class="custom-input" placeholder="https://..."></div>
+            <button id="btn-salvar-admin" class="btn-primary" onclick="salvarOuEditarAudio()">Salvar no Banco</button>
+            <button id="btn-cancelar-edicao" class="btn-primary btn-danger" style="display: none;" onclick="cancelarEdicao()">Cancelar Edição</button>
+            <hr style="border: 0; height: 1px; background: #333; margin: 30px 0; width: 100%;">
+            <h3 style="margin-top: 0; color: #a855f7;">Gerenciar Áudios</h3>
+            <div id="admin-lista-dinamica" style="display: flex; flex-direction: column; gap: 10px;"></div>
+            <hr style="border: 0; height: 1px; background: #333; margin: 30px 0; width: 100%;">
+            <button class="btn-primary btn-danger" onclick="limparChatAdmin()" style="margin-top: 20px;">Esvaziar Todo o Chat</button>
+        </div>
+    </div>
+
+    <div id="map-screen">
+        <div class="screen-header" style="padding: 20px;"><button class="close-btn" onclick="fecharAbaMapa()"><span aria-hidden="true" class="close-glyph">‹</span></button><h2>CCB em Formiga</h2><div style="width: 44px;"></div></div>
+        <div class="map-container-full"><iframe src="https://maps.google.com/maps?q=Congrega%C3%A7%C3%A3o+Crist%C3%A3+no+Brasil+Formiga+MG&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy"></iframe></div>
+    </div>
+
+    <div id="mural-screen" class="bottom-sheet">
+        <div class="screen-header"><div style="width: 44px;"></div><h2>Mural da Palavra</h2><button class="close-btn" onclick="fecharMural()"><span aria-hidden="true" class="close-glyph">⌄</span></button></div>
+        <div class="input-group"><select id="mural-mes-select" class="custom-input" onchange="atualizarMural()"><option value="1">Janeiro</option><option value="2">Fevereiro</option><option value="3">Março</option><option value="4">Abril</option><option value="5">Maio</option><option value="6">Junho</option><option value="7">Julho</option><option value="8">Agosto</option><option value="9">Setembro</option><option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option></select></div>
+        <div class="mural-card-box"><i class="fas fa-quote-left" style="color: #a855f7; font-size: 28px; margin-bottom: 15px; opacity: 0.6;"></i><h3 id="mural-titulo" style="color: #fff; font-size: 20px;">Carregando...</h3><p id="mural-texto" style="color: #e0e0e0; font-size: 16px; font-style: italic;"></p><p id="mural-referencia" style="color: #a855f7; font-size: 14px; font-weight: bold;"></p></div>
+    </div>
+
+    <div id="profile-screen" class="bottom-sheet">
+        <div class="screen-header"><div style="width: 44px;"></div><h2>Meu Perfil</h2><button class="close-btn" onclick="fecharPerfil()"><span aria-hidden="true" class="close-glyph">⌄</span></button></div>
+        <div class="profile-form">
+            <p style="text-align: center; color: #a855f7; font-size: 12px; margin-top: 0;">Preencha para participar da Comunidade!</p>
+            <div class="input-group"><label>Seu Nome (Obrigatório)</label><input type="text" id="inputNome" class="custom-input" placeholder="Ex: João Silva" oninput="salvarDados()"></div>
+            <div class="input-group"><label>Sua Cidade (Obrigatório)</label><input type="text" id="inputCidade" class="custom-input" placeholder="Sua cidade e estado" oninput="salvarDados()"></div>
+            <div class="input-group"><label>Comum Congregação</label><input type="text" id="inputCCB" class="custom-input" placeholder="Ex: Central" oninput="salvarDados()"></div>
+            <button class="btn-primary btn-whatsapp" onclick="enviarParaWhatsApp()"><i class="fab fa-whatsapp"></i> Contato WhatsApp</button>
+            <p style="font-size: 11px; color: #888; text-align: center; margin-top: 10px;">Seus dados ficam salvos automaticamente no celular.</p>
+        </div>
+    </div>
+
+    <div id="stations-list-screen" class="bottom-sheet">
+        <div class="screen-header"><div style="width: 44px;"></div><h2>Escolher Estação</h2><button class="close-btn" onclick="fecharListaRadios()"><span aria-hidden="true" class="close-glyph">⌄</span></button></div>
+        <div class="station-filter-bar">
+            <div class="station-search-wrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><input id="station-search" type="search" class="custom-input" placeholder="Buscar estação ou louvor..." aria-label="Buscar rádios" oninput="renderizarListaFiltro()"></div>
+            <div class="filter-chips" aria-label="Filtrar estações">
+                <button type="button" class="filter-chip active" data-filter="todas" onclick="definirFiltroRadios('todas')">Todas</button>
+                <button type="button" class="filter-chip" data-filter="radio" onclick="definirFiltroRadios('radio')">Rádios</button>
+                <button type="button" class="filter-chip" data-filter="louvor" onclick="definirFiltroRadios('louvor')">Louvores</button>
+                <button type="button" class="filter-chip" data-filter="favoritas" onclick="definirFiltroRadios('favoritas')">♥ Favoritas</button>
+            </div>
+        </div>
+        <div class="stations-list-container"><p id="station-list-count" class="list-meta">Carregando estações...</p><div id="stations-list-dynamic"><p style="text-align:center; color:#b3b3b3; margin-top:20px;">Carregando estações...</p></div></div>
+    </div>
+
+    <div id="timer-screen" class="bottom-sheet">
+        <div class="screen-header"><div style="width: 44px;"></div><h2>Temporizador</h2><button class="close-btn" onclick="fecharTemporizador()"><span aria-hidden="true" class="close-glyph">⌄</span></button></div>
+        <div class="timer-options"><button class="timer-btn" onclick="iniciarTemporizador(15)">15 Minutos</button><button class="timer-btn" onclick="iniciarTemporizador(30)">30 Minutos</button><button class="timer-btn" onclick="iniciarTemporizador(60)">1 Hora</button><button class="timer-btn" style="color: #ff4d4d; background: #331a1a;" onclick="cancelarTemporizador()">Desativar Temporizador</button></div>
+        <p id="timer-status" style="color: #a855f7; font-size: 14px; margin-top: 25px; font-weight: 600; text-align: center;"></p>
+    </div>
+
+    <script>
+        // CARREGAMENTO DA TELA
+        window.addEventListener('load', () => { setTimeout(() => { document.getElementById('splash-screen').style.opacity = '0'; document.getElementById('splash-screen').style.visibility = 'hidden'; }, 2500); });
+
+        // NAVEGAÇÃO BÁSICA
+        function abrirMenuLateral() { document.getElementById('side-menu').classList.add('open'); document.getElementById('menu-overlay').classList.add('open'); }
+        function fecharMenuLateral() { document.getElementById('side-menu').classList.remove('open'); document.getElementById('menu-overlay').classList.remove('open'); }
+        function abrirAbaMapa() { fecharMenuLateral(); document.getElementById('map-screen').classList.add('open'); }
+        function fecharAbaMapa() { document.getElementById('map-screen').classList.remove('open'); }
+        function abrirPerfil() { document.getElementById('profile-screen').classList.add('open'); carregarDados(); }
+        function fecharPerfil() { document.getElementById('profile-screen').classList.remove('open'); }
+        function abrirListaRadios() { document.getElementById('stations-list-screen').classList.add('open'); renderizarListaFiltro(); }
+        function fecharListaRadios() { document.getElementById('stations-list-screen').classList.remove('open'); }
+        function compartilharApp() { fecharMenuLateral(); const linkOficial = "https://play.google.com/store/apps/details?id=io.kodular.marcelocaetanonascimento2016.HinosCCBRadio&hl=pt"; const texto = "Ouça os melhores louvores na Rádio Brasil CCB! Baixe agora:"; if (navigator.share) { navigator.share({ title: 'Rádio Brasil CCB', text: texto, url: linkOficial }).catch(err => console.log('Erro ao compartilhar', err)); } else { window.location.href = `https://wa.me/?text=${encodeURIComponent(texto + " " + linkOficial)}`; } }
+        function abrirAssinatura() { window.location.href = "https://pay.kirvano.com/e6905e19-2fa0-4b2d-bde7-100d58eaa721"; }
+        function abrirInfoAssinatura() { fecharMenuLateral(); document.getElementById('info-assinatura-screen').classList.add('open'); }
+        function fecharInfoAssinatura() { document.getElementById('info-assinatura-screen').classList.remove('open'); }
+
+        // DADOS DO PERFIL
+        function salvarDados() { localStorage.setItem('ccb_nome', document.getElementById('inputNome').value); localStorage.setItem('ccb_cidade', document.getElementById('inputCidade').value); localStorage.setItem('ccb_congregacao', document.getElementById('inputCCB').value); }
+        function carregarDados() { if(localStorage.getItem('ccb_nome')) document.getElementById('inputNome').value = localStorage.getItem('ccb_nome'); if(localStorage.getItem('ccb_cidade')) document.getElementById('inputCidade').value = localStorage.getItem('ccb_cidade'); if(localStorage.getItem('ccb_congregacao')) document.getElementById('inputCCB').value = localStorage.getItem('ccb_congregacao'); }
+        function enviarParaWhatsApp() { const nome = document.getElementById('inputNome').value.trim(); const cidade = document.getElementById('inputCidade').value.trim(); const ccb = document.getElementById('inputCCB').value.trim(); if (!nome || !cidade || !ccb) { alert("Preencha todos os campos."); return; } window.location.href = `https://wa.me/5537998648790?text=${encodeURIComponent(`A paz de Deus! Gostaria de participar da Rádio Brasil CCB.\n\n*Nome:* ${nome}\n*Cidade:* ${cidade}\n*Comum Congregação:* ${ccb}`)}`; }
+
+        // MURAL DA PALAVRA
+        const palavrasDoMural = { "1": { titulo: "Novo Começo", texto: "Esforça-te, e tem bom ânimo; não temas, nem te espantes; porque o Senhor teu Deus é contigo, por onde quer que andares.", ref: "Josué 1:9" }, "2": { titulo: "Fé Inabalável", texto: "Ora, a fé é o firme fundamento das coisas que se esperam, e a prova das coisas que se não veem.", ref: "Hebreus 11:1" }, "3": { titulo: "Amor Divino", texto: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.", ref: "João 3:16" }, "4": { titulo: "Paz Interior", texto: "Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá. Não se turbe o vosso coração, nem se atemorize.", ref: "João 14:27" }, "5": { titulo: "Força na Fraqueza", texto: "Tudo posso naquele que me fortalece.", ref: "Filipenses 4:13" }, "6": { titulo: "Luz no Caminho", texto: "Lâmpada para os meus pés é tua palavra, e luz para o meu caminho.", ref: "Salmos 119:105" }, "7": { titulo: "Espera no Senhor", texto: "Espera no Senhor, anima-te, e ele fortalecerá o teu coração; espera, pois, no Senhor.", ref: "Salmos 27:14" }, "8": { titulo: "Cuidado de Deus", texto: "Lançando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vós.", ref: "1 Pedro 5:7" }, "9": { titulo: "Gratidão", texto: "Em tudo dai graças, porque esta é a vontade de Deus em Cristo Jesus para convosco.", ref: "1 Tessalonicenses 5:18" }, "10": { titulo: "Renovação", texto: "E não sede conformados com este mundo, mas sede transformados pela renovação do vosso entendimento...", ref: "Romanos 12:2" }, "11": { titulo: "Proteção", texto: "O Senhor é o meu pastor, nada me faltará.", ref: "Salmos 23:1" }, "12": { titulo: "Alegria e Salvação", texto: "O Senhor é a minha força e o meu cântico; ele me foi por salvação.", ref: "Êxodo 15:2" } };
+        function abrirMural() { fecharMenuLateral(); document.getElementById('mural-screen').classList.add('open'); const mesAtual = new Date().getMonth() + 1; document.getElementById('mural-mes-select').value = mesAtual; atualizarMural(); }
+        function fecharMural() { document.getElementById('mural-screen').classList.remove('open'); }
+        function atualizarMural() { const mesSelecionado = document.getElementById('mural-mes-select').value; const dados = palavrasDoMural[mesSelecionado]; document.getElementById('mural-titulo').innerText = dados.titulo; document.getElementById('mural-texto').innerText = `"${dados.texto}"`; document.getElementById('mural-referencia').innerText = dados.ref; }
+
+        // TEMPORIZADOR
+        let sleepTimerId;
+        function abrirTemporizador() { document.getElementById('timer-screen').classList.add('open'); }
+        function fecharTemporizador() { document.getElementById('timer-screen').classList.remove('open'); }
+        function iniciarTemporizador(minutos) { clearTimeout(sleepTimerId); document.getElementById('timer-status').innerText = `Rádio desligará em ${minutos} minutos.`; document.getElementById('moon-icon').style.color = '#a855f7'; sleepTimerId = setTimeout(() => { const audioPlayer = document.getElementById('main-audio'); if (!audioPlayer.paused) { toggleMainPlay(); } cancelarTemporizador(); }, minutos * 60000); setTimeout(fecharTemporizador, 1000); }
+        function cancelarTemporizador() { clearTimeout(sleepTimerId); document.getElementById('timer-status').innerText = ""; document.getElementById('moon-icon').style.color = '#b3b3b3'; setTimeout(fecharTemporizador, 1000); }
+        document.getElementById('volume-slider').addEventListener('input', function() {
+            const volume = Number(this.value);
+            document.getElementById('main-audio').volume = volume;
+            try { localStorage.setItem('ccb_volume', String(volume)); } catch (_) {}
+        });
+
+        // =====================================================================
+        // --- CHAT COMUNIDADE (WHATSAPP STYLE) ---
+        // =====================================================================
+        const URL_SALVAR_CHAT = "https://financelypro.com.br/radiobrasil/salvar_chat.php";
+        const URL_LISTAR_CHAT = "https://financelypro.com.br/radiobrasil/listar_chat.php";
+        const URL_LIMPAR_CHAT = "https://financelypro.com.br/radiobrasil/limpar_chat.php";
+        let loopChat = null;
+
+        function abrirChat() {
+            const nome = localStorage.getItem('ccb_nome');
+            const cidade = localStorage.getItem('ccb_cidade');
+            if(!nome || !cidade || nome.trim() === "" || cidade.trim() === "") {
+                alert("Para usar o chat, você precisa preencher seu Nome e Cidade no Perfil primeiro!");
+                abrirPerfil();
+                return;
+            }
+            
+            document.getElementById('chat-screen').classList.add('open');
+            carregarChat();
+            clearInterval(loopChat);
+            loopChat = setInterval(carregarChat, 3000);
+        }
+
+        function fecharChat() {
+            document.getElementById('chat-screen').classList.remove('open');
+            clearInterval(loopChat);
+            document.getElementById('emoji-picker-box').classList.remove('open');
+        }
+
+        function toggleEmojiPicker() { document.getElementById('emoji-picker-box').classList.toggle('open'); }
+        function addEmoji(emoji) { const input = document.getElementById('chat-input-texto'); input.value += emoji; document.getElementById('emoji-picker-box').classList.remove('open'); input.focus(); }
+
+        let chatCarregando = false;
+        async function carregarChat() {
+            if (chatCarregando) return;
+            chatCarregando = true;
+            const box = document.getElementById('chat-messages-box');
+            try {
+                const resposta = await fetch(URL_LISTAR_CHAT + "?t=" + Date.now());
+                if(!resposta.ok) throw new Error("Erro PHP");
+                const mensagens = await resposta.json();
+                if (!Array.isArray(mensagens)) throw new Error('Resposta inválida do servidor');
+                renderizarChat(mensagens);
+            } catch (erro) {
+                if (!box.querySelector('.chat-msg')) box.innerHTML = '<p style="text-align:center; color:#e9edef; font-size:13px; margin-top:20px; background: #202c33; padding: 10px; border-radius: 8px; align-self: center;">Sem conexão com o chat. Vamos tentar novamente automaticamente.</p>';
+            } finally { chatCarregando = false; }
+        }
+
+        // Protege o aplicativo contra HTML vindo de mensagens públicas do servidor.
+        function escaparHTML(valor) {
+            return String(valor ?? '').replace(/[&<>"']/g, caractere => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[caractere]));
+        }
+        function renderizarChat(mensagens) {
+            const box = document.getElementById('chat-messages-box');
+            const estavaNoFim = box.scrollHeight - box.scrollTop <= box.clientHeight + 50;
+            
+            box.innerHTML = '';
+            if(!mensagens || mensagens.length === 0) {
+                box.innerHTML = '<p style="text-align:center; color:#8696a0; font-size:13px; margin-top:20px; background: #202c33; padding: 10px; border-radius: 8px; align-self: center;">Nenhuma mensagem ainda. Diga a Paz de Deus!</p>';
+                return;
+            }
+
+            const meuNome = localStorage.getItem('ccb_nome');
+
+            mensagens.forEach(msg => {
+                const isMinha = msg.nome === meuNome;
+                const div = document.createElement('div');
+                div.className = `chat-msg ${isMinha ? 'minha-msg' : ''}`;
+                
+                if(isMinha) {
+                    div.innerHTML = `<div class="chat-texto">${escaparHTML(msg.mensagem)}</div><span class="chat-hora">${escaparHTML(msg.hora)} <i class="fas fa-check-double" style="color: #53bdeb; margin-left:3px;"></i></span>`;
+                } else {
+                    div.innerHTML = `<div class="chat-nome">${escaparHTML(msg.nome)} <span class="chat-cidade">- ${escaparHTML(msg.cidade)}</span></div><div class="chat-texto">${escaparHTML(msg.mensagem)}</div><span class="chat-hora">${escaparHTML(msg.hora)}</span>`;
+                }
+                box.appendChild(div);
+            });
+            if(estavaNoFim) { box.scrollTop = box.scrollHeight; }
+        }
+
+        async function enviarMensagemChat() {
+            const input = document.getElementById('chat-input-texto');
+            const texto = input.value.trim();
+            if(!texto) return;
+
+            const nome = localStorage.getItem('ccb_nome');
+            const cidade = localStorage.getItem('ccb_cidade');
+            const enviar = document.querySelector('.chat-send-btn');
+            if (enviar.disabled) return;
+            enviar.disabled = true;
+            document.getElementById('emoji-picker-box').classList.remove('open');
+            try {
+                const resposta = await fetch(URL_SALVAR_CHAT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nome: nome, cidade: cidade, mensagem: texto }) });
+                if (!resposta.ok) throw new Error('Servidor indisponível');
+                input.value = "";
+                await carregarChat();
+                const box = document.getElementById('chat-messages-box'); box.scrollTop = box.scrollHeight;
+            } catch (erro) { alert("Não foi possível enviar. Sua mensagem foi mantida para tentar novamente."); }
+            finally { enviar.disabled = false; }
+        }
+
+        document.getElementById("chat-input-texto").addEventListener("keypress", function(event) { if (event.key === "Enter") { event.preventDefault(); enviarMensagemChat(); } });
+
+        // =====================================================================
+        // --- SISTEMA DE PEDIDOS DE ORAÇÃO ---
+        // =====================================================================
+        const URL_SALVAR_ORACAO = "https://financelypro.com.br/radiobrasil/salvar_oracao.php";
+        const URL_LISTAR_ORACAO = "https://financelypro.com.br/radiobrasil/listar_oracao.php";
+        let sigiloAtivado = false;
+
+        function abrirOracao() {
+            const nome = localStorage.getItem('ccb_nome');
+            if(!nome) { alert("Para acessar a Intercessão, preencha seu Nome e Cidade no Perfil."); abrirPerfil(); return; }
+            document.getElementById('oracao-screen').classList.add('open');
+            mudarAbaOracao('fazer');
+        }
+
+        function fecharOracao() { document.getElementById('oracao-screen').classList.remove('open'); }
+
+        function mudarAbaOracao(aba) {
+            if(aba === 'fazer') {
+                document.getElementById('tab-fazer').classList.add('active'); document.getElementById('tab-ver').classList.remove('active');
+                document.getElementById('aba-fazer-pedido').style.display = 'flex'; document.getElementById('aba-ver-pedidos').style.display = 'none';
+            } else {
+                document.getElementById('tab-fazer').classList.remove('active'); document.getElementById('tab-ver').classList.add('active');
+                document.getElementById('aba-fazer-pedido').style.display = 'none'; document.getElementById('aba-ver-pedidos').style.display = 'flex';
+                carregarPedidosOracao();
+            }
+        }
+
+        function escolherIdentificacao(tipo) {
+            if(tipo === 'nome') {
+                sigiloAtivado = false; document.getElementById('btn-ident-nome').classList.add('active'); document.getElementById('btn-ident-sigilo').classList.remove('active');
+            } else {
+                sigiloAtivado = true; document.getElementById('btn-ident-sigilo').classList.add('active'); document.getElementById('btn-ident-nome').classList.remove('active');
+            }
+        }
+
+        async function enviarOracao() {
+            const pedido = document.getElementById('oracao-pedido').value.trim(); const categoria = document.getElementById('oracao-categoria').value; const detalhes = document.getElementById('oracao-detalhes').value.trim();
+            const nome = localStorage.getItem('ccb_nome'); const cidade = localStorage.getItem('ccb_cidade');
+            if(!pedido) { alert("Por favor, escreva o seu pedido de oração."); return; }
+
+            const dados = { nome: nome, cidade: cidade, sigilo: sigiloAtivado, categoria: categoria, pedido: pedido, detalhes: detalhes };
+            try {
+                const res = await fetch(URL_SALVAR_ORACAO, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados) });
+                const resultado = await res.json();
+                if(resultado.sucesso) { alert("Seu pedido foi registrado com sucesso. Estaremos orando por você!"); document.getElementById('oracao-pedido').value = ''; document.getElementById('oracao-detalhes').value = ''; mudarAbaOracao('ver'); } 
+                else { alert("Erro ao salvar pedido."); }
+            } catch(e) { alert("Erro de conexão ao enviar pedido."); }
+        }
+
+        async function carregarPedidosOracao() {
+            const box = document.getElementById('aba-ver-pedidos');
+            box.innerHTML = '<p style="text-align:center; color:#888; font-size:12px; margin-top:20px;"><i class="fas fa-spinner fa-spin"></i> Buscando caderno de oração...</p>';
+            try {
+                const res = await fetch(URL_LISTAR_ORACAO + "?t=" + Date.now());
+                if (!res.ok) throw new Error('Servidor indisponível');
+                const pedidos = await res.json();
+                if (!Array.isArray(pedidos)) throw new Error('Resposta inválida');
+                if(pedidos.length === 0) { box.innerHTML = '<p style="text-align:center; color:#888; font-size:13px; margin-top:30px;">Nenhum pedido registrado no momento.</p>'; return; }
+                
+                box.innerHTML = '';
+                pedidos.forEach(p => {
+                    const nomeVisual = p.sigilo == 1 ? "Irmão(ã) em sigilo" : p.nome;
+                    const cidadeVisual = p.sigilo == 1 ? "" : ` - ${p.cidade}`;
+                    const detalhesVisual = p.detalhes ? `<p class="oracao-feed-detalhes">"${escaparHTML(p.detalhes)}"</p>` : '';
+                    
+                    const div = document.createElement('div'); div.className = 'oracao-feed-item';
+                    div.innerHTML = `
+                        <div class="oracao-feed-header"><span class="oracao-feed-badge"><i class="fas fa-hands-helping"></i> ${escaparHTML(p.categoria)}</span><span>${escaparHTML(p.data_formatada)}</span></div>
+                        <div class="oracao-feed-nome"><i class="fas fa-user-circle"></i> ${escaparHTML(nomeVisual)} <span style="font-weight:normal; font-size:11px; color:#888;">${escaparHTML(cidadeVisual)}</span></div>
+                        <p class="oracao-feed-texto">${escaparHTML(p.pedido)}</p>${detalhesVisual}
+                    `;
+                    box.appendChild(div);
+                });
+            } catch(e) { box.innerHTML = '<p style="text-align:center; color:#dc3545; font-size:12px; margin-top:20px;">Falha de conexão. Crie os arquivos PHP no cPanel.</p>'; }
+        }
+
+        // =====================================================================
+        // --- ADMINISTRAÇÃO E CONEXÃO COM O SERVIDOR PHP ---
+        // =====================================================================
+        const URL_SALVAR_PHP = "https://financelypro.com.br/radiobrasil/salvar_audio.php";
+        const URL_LISTAR_PHP = "https://financelypro.com.br/radiobrasil/listar_audios.php";
+        const URL_EXCLUIR_PHP = "https://financelypro.com.br/radiobrasil/excluir_audio.php";
+        const URL_EDITAR_PHP = "https://financelypro.com.br/radiobrasil/editar_audio.php";
+        
+        const SENHA_ADMIN = "Marcelinho123."; let audiosLocaisAdmin = []; let idEditandoAtual = null;
+
+        function abrirLoginAdmin() { fecharMenuLateral(); document.getElementById('admin-login-screen').classList.add('open'); document.getElementById('inputAdminSenha').value = ""; }
+        function fecharLoginAdmin() { document.getElementById('admin-login-screen').classList.remove('open'); }
+        function fecharAdminPanel() { document.getElementById('admin-panel-screen').classList.remove('open'); cancelarEdicao(); carregarTodasAsRadios(); }
+        function verificarSenhaAdmin() { const senhaDigitada = document.getElementById('inputAdminSenha').value; if (senhaDigitada === SENHA_ADMIN) { fecharLoginAdmin(); document.getElementById('admin-panel-screen').classList.add('open'); carregarAudiosAdmin(); } else { alert("Senha incorreta!"); } }
+
+        async function limparChatAdmin() {
+            if(!confirm("CUIDADO: Isso vai apagar TODAS as mensagens do chat de todos os usuários. Continuar?")) return;
+            const senhaAtual = document.getElementById('inputAdminSenha').value; 
+            try {
+                const resposta = await fetch(URL_LIMPAR_CHAT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ senha: senhaAtual }) });
+                const resultado = await resposta.json();
+                if(resultado.sucesso) { alert("O Chat foi limpo com sucesso!"); } else { alert("Erro ao limpar chat. Verifique se o PHP foi criado."); }
+            } catch (erro) { alert("Erro de conexão ao tentar limpar o chat."); }
+        }
+
+        async function salvarOuEditarAudio() {
+            const tipo = document.getElementById('adminTipo').value; const nome = document.getElementById('adminNome').value.trim(); const desc = document.getElementById('adminDesc').value.trim(); const link = document.getElementById('adminLink').value.trim();
+            if (!nome || !link) { alert("Nome e Link são obrigatórios!"); return; }
+            const btn = document.getElementById('btn-salvar-admin'); const textoOriginal = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+            const dadosParaEnviar = { tipo: tipo, nome: nome, descricao: desc || (tipo === 'radio' ? 'Transmissão ao vivo' : 'Faixa de Louvor'), link: link };
+            let urlDestino = URL_SALVAR_PHP; if (idEditandoAtual !== null) { dadosParaEnviar.id = idEditandoAtual; urlDestino = URL_EDITAR_PHP; }
+
+            try {
+                const resposta = await fetch(urlDestino, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dadosParaEnviar) });
+                const resultado = await resposta.json();
+                if(resultado.sucesso) { alert(resultado.mensagem); cancelarEdicao(); carregarAudiosAdmin(); carregarTodasAsRadios(); } else { alert("Erro no banco: " + resultado.erro); }
+            } catch (erro) { alert("Erro ao conectar com a hospedagem."); }
+            btn.innerHTML = textoOriginal; 
+        }
+
+        function prepararEdicao(id, tipo, nome, louvor, link) { idEditandoAtual = id; document.getElementById('adminTipo').value = tipo; document.getElementById('adminNome').value = nome; document.getElementById('adminDesc').value = louvor; document.getElementById('adminLink').value = link; document.getElementById('titulo-form-admin').innerText = "Editar Áudio"; document.getElementById('btn-salvar-admin').innerHTML = '<i class="fas fa-save"></i> Salvar Alterações'; document.getElementById('btn-salvar-admin').style.backgroundColor = '#4a2b6e'; document.getElementById('btn-cancelar-edicao').style.display = 'flex'; document.getElementById('admin-panel-screen').scrollTo({ top: 0, behavior: 'smooth' }); }
+        function cancelarEdicao() { idEditandoAtual = null; document.getElementById('adminTipo').value = "louvor"; document.getElementById('adminNome').value = ""; document.getElementById('adminDesc').value = ""; document.getElementById('adminLink').value = ""; document.getElementById('titulo-form-admin').innerText = "Adicionar Novo Áudio"; document.getElementById('btn-salvar-admin').innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Salvar no Banco de Dados'; document.getElementById('btn-salvar-admin').style.backgroundColor = '#a855f7'; document.getElementById('btn-cancelar-edicao').style.display = 'none'; }
+        
+        async function deletarAudioAdmin(id) {
+            if(!confirm("Tem certeza que deseja apagar essa música do aplicativo de todo mundo?")) { return; }
+            try { const resposta = await fetch(URL_EXCLUIR_PHP, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: id }) }); const resultado = await resposta.json(); if(resultado.sucesso) { carregarAudiosAdmin(); carregarTodasAsRadios(); } else { alert("Erro ao excluir: " + resultado.erro); } } catch (erro) { alert("Erro ao conectar com a hospedagem para excluir."); }
+        }
+
+        async function carregarAudiosAdmin() {
+            try { const resposta = await fetch(URL_LISTAR_PHP + "?t=" + Date.now()); audiosLocaisAdmin = await resposta.json(); renderizarListaAdmin(); } catch (erro) { document.getElementById('admin-lista-dinamica').innerHTML = "<p style='color:#888; font-size:12px; text-align:center;'>Erro ao conectar com a Integrator.</p>"; }
+        }
+
+        function renderizarListaAdmin() {
+            const container = document.getElementById('admin-lista-dinamica'); container.replaceChildren();
+            if (!Array.isArray(audiosLocaisAdmin) || audiosLocaisAdmin.length === 0) {
+                container.textContent = 'Nenhum áudio encontrado no banco de dados.'; return;
+            }
+            audiosLocaisAdmin.forEach(audio => {
+                const item = document.createElement('div'); item.className = 'admin-item';
+                const info = document.createElement('div'); info.className = 'admin-item-info';
+                const title = document.createElement('h4'); title.textContent = `${audio.nome || 'Sem nome'} (${audio.tipo || 'Áudio'})`;
+                const desc = document.createElement('p'); desc.textContent = audio.louvor || '';
+                info.append(title, desc);
+                const actions = document.createElement('div'); actions.className = 'admin-actions';
+                const editar = document.createElement('button'); editar.type='button'; editar.className = 'btn-acao-lista bg-blue'; editar.title='Editar'; editar.setAttribute('aria-label', 'Editar ' + (audio.nome || 'áudio'));
+                editar.innerHTML = '<i class="fas fa-edit"></i>';
+                editar.addEventListener('click', () => prepararEdicao(audio.id, audio.tipo, audio.nome, audio.louvor, audio.link));
+                const excluir = document.createElement('button'); excluir.type='button'; excluir.className='btn-acao-lista bg-red'; excluir.title='Excluir'; excluir.setAttribute('aria-label', 'Excluir ' + (audio.nome || 'áudio'));
+                excluir.innerHTML = '<i class="fas fa-trash"></i>';
+                excluir.addEventListener('click', () => deletarAudioAdmin(audio.id));
+                actions.append(editar, excluir); item.append(info, actions); container.appendChild(item);
+            });
+        }
+
+        // =====================================================================
+        // --- PLAYER PRESERVADO: PHP, STREAMS E FORMATO DE DADOS ORIGINAIS ---
+        // =====================================================================
+        let listaDeRadios = [];
+        let indexRadioAtual = 0;
+        let filtroRadios = 'todas';
+        let playTentativa = 0;
+        const audioPlayer = document.getElementById('main-audio');
+        const playIcon = document.getElementById('main-play-icon');
+        const eqAnim = document.getElementById('equalizer-anim');
+        const tipoTag = document.getElementById('player-tipo-tag');
+        const tempoAtualSpan = document.getElementById('player-tempo');
+        const progressBar = document.getElementById('progress-bar');
+        const progressFill = document.getElementById('progress-fill');
+        const btnPlay = document.getElementById('btn-main-play');
+        const fallbackCapa = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MjAiIGhlaWdodD0iNDIwIiB2aWV3Qm94PSIwIDAgNDIwIDQyMCI+CjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iYmciIGN4PSIzNSUiIGN5PSIyMCUiIHI9Ijk0JSI+PHN0b3Agc3RvcC1jb2xvcj0iIzQ0MzA2ZiIvPjxzdG9wIG9mZnNldD0iLjQ4IiBzdG9wLWNvbG9yPSIjMjUxYjNlIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTIwZjI0Ii8+PC9yYWRpYWxHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9Imdsb3ciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjYzlhOGZmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjODM1NmM3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+CjxyZWN0IHdpZHRoPSI0MjAiIGhlaWdodD0iNDIwIiByeD0iMzAiIGZpbGw9InVybCgjYmcpIi8+PGNpcmNsZSBjeD0iMjEwIiBjeT0iMTczIiByPSIxMjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhhNmNiZSIgc3Ryb2tlLW9wYWNpdHk9Ii4xNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMjEwIiBjeT0iMTczIiByPSIxMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhhNmNiZSIgc3Ryb2tlLW9wYWNpdHk9Ii4yMiIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNnbG93KSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2Utd2lkdGg9IjciPjxwYXRoIGQ9Ik0xOTAgMTU1djQyYTIwIDIwIDAgMCAwIDQwIDB2LTQyYTIwIDIwIDAgMCAwLTQwIDBaIi8+PHBhdGggZD0iTTE3NiAxODRhMzQgMzQgMCAwIDAgNjggME0yMTAgMjE4djI1bS0yNCAwaDQ4Ii8+PC9nPgo8ZyBmaWxsPSJub25lIiBzdHJva2U9IiNhZDgyZWMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBvcGFjaXR5PSIuOCI+PHBhdGggZD0iTTE1MCAxNDhjLTE1IDIyLTE1IDQ5IDAgNzFNMjcwIDE0OGMxNSAyMiAxNSA0OSAwIDcxTTEzMSAxMzFjLTI2IDM3LTI2IDg0IDAgMTIxTTI4OSAxMzFjMjYgMzcgMjYgODQgMCAxMjEiLz48L2c+CjxwYXRoIGQ9Ik0xMjUgMjg2aDE3MCIgc3Ryb2tlPSIjYTM4Y2M5IiBzdHJva2Utb3BhY2l0eT0iLjI4Ii8+PHRleHQgeD0iMjEwIiB5PSIzMTciIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCIgZm9udC1zaXplPSIyNiIgZmlsbD0iI2Y4ZjFmZiI+UsOBRElPIEJSQVNJTDwvdGV4dD48dGV4dCB4PSIyMTAiIHk9IjM0NyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LXNpemU9IjI2IiBsZXR0ZXItc3BhY2luZz0iNyIgZmlsbD0iI2M5YThmZiI+Q0NCPC90ZXh0Pjx0ZXh0IHg9IjIxMCIgeT0iMzc4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgbGV0dGVyLXNwYWNpbmc9IjMiIGZpbGw9IiNjNmI2ZGMiPkxPVVZPUkVTIOKAoiBBTyBWSVZPPC90ZXh0Pgo8L3N2Zz4=';
+
+        function obterFavoritas() {
+            try { const dados = JSON.parse(localStorage.getItem('ccb_radios_favoritas') || '[]'); return Array.isArray(dados) ? dados : []; }
+            catch (_) { return []; }
+        }
+        function favoritarRadioAtual() {
+            const atual = listaDeRadios[indexRadioAtual];
+            if (!atual || !atual.link) return;
+            alternarFavorita(atual.link);
+        }
+        function alternarFavorita(link) {
+            if (!link) return;
+            const lista = obterFavoritas();
+            const filtrada = lista.includes(link) ? lista.filter(item => item !== link) : [...lista, link];
+            try { localStorage.setItem('ccb_radios_favoritas', JSON.stringify(filtrada)); } catch (_) {}
+            atualizarBotaoFavorito();
+            if (document.getElementById('stations-list-screen').classList.contains('open')) renderizarListaFiltro();
+        }
+        function atualizarBotaoFavorito() {
+            const atual = listaDeRadios[indexRadioAtual];
+            const favorito = !!atual && obterFavoritas().includes(atual.link);
+            const btn = document.getElementById('btn-favorite-main');
+            btn.classList.toggle('is-favorite', favorito);
+            document.getElementById('favorite-main-icon').classList.toggle('solid-heart', favorito);
+            document.getElementById('favorite-main-label').textContent = favorito ? 'Favoritada' : 'Favoritar';
+            btn.setAttribute('aria-pressed', String(favorito));
+        }
+        function definirFiltroRadios(filtro) {
+            if (!['todas','radio','louvor','favoritas'].includes(filtro)) return;
+            filtroRadios = filtro;
+            document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.toggle('active', chip.dataset.filter === filtro));
+            renderizarListaFiltro();
+        }
+        function statusConexao(texto, estado = 'idle') {
+            const el = document.getElementById('status-conexao');
+            el.textContent = texto; el.dataset.state = estado;
+            document.getElementById('btn-retry').classList.toggle('show', estado === 'error');
+        }
+        function atualizarIconeReproducao(tocando) {
+            playIcon.textContent = tocando ? 'Ⅱ' : '▶'; playIcon.classList.remove('rotating');
+            eqAnim.classList.toggle('playing', tocando);
+            btnPlay.setAttribute('aria-label', tocando ? 'Pausar rádio' : 'Reproduzir rádio');
+        }
+        function atualizarMidiaSistema(radio) {
+            if (!('mediaSession' in navigator) || !('MediaMetadata' in window)) return;
+            try {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: radio.nome || 'Rádio Brasil CCB',
+                    artist: radio.louvor || 'Louvores e transmissão ao vivo',
+                    album: 'Rádio Brasil CCB',
+                    artwork: [{ src: radio.img || fallbackCapa, sizes: '400x400', type: 'image/png' }]
+                });
+            } catch (_) {}
+        }
+        async function forcarSincronizacao() {
+            const btnIcon = document.getElementById('btn-sync-icon');
+            btnIcon.classList.add('fa-spin');
+            try { await carregarTodasAsRadios(); }
+            finally {
+                btnIcon.classList.remove('fa-spin');
+                if(document.getElementById('stations-list-screen').classList.contains('open')) renderizarListaFiltro();
+            }
+        }
+        async function carregarTodasAsRadios() {
+            // Links originais: não alterar sem instrução do proprietário.
+            const radiosFixas = [
+                { nome: "Rádio Live", louvor: "Sua Música ao Vivo", artista: "DJ Central", link: "https://stm43.srvstm.com:8954/stream", img: "https://placehold.co/400x400/181818/a855f7?text=R%C3%A1dio+Live", tipo: "radio" },
+                { nome: "Louvores Variados", louvor: "Músicas de Louvor", artista: "Diversos Artistas", link: "http://stm1.hoststreaming.com.br:7088/;stream.nsv", img: "https://placehold.co/400x400/181818/a855f7?text=Louvores", tipo: "radio" }
+            ];
+            let audiosAdmin = [];
+            try {
+                const resPhp = await fetch(URL_LISTAR_PHP + '?t=' + Date.now());
+                if (resPhp.ok) {
+                    const resposta = await resPhp.json();
+                    if (Array.isArray(resposta)) audiosAdmin = resposta;
+                }
+            } catch (error) { console.warn('Rádios do servidor indisponíveis; rádios fixas preservadas.'); }
+            const antigo = listaDeRadios[indexRadioAtual];
+            const ultimoSalvo = (() => { try { return localStorage.getItem('ccb_ultima_radio'); } catch (_) { return null; } })();
+            listaDeRadios = [...radiosFixas, ...audiosAdmin];
+            const linkSelecionado = antigo?.link || ultimoSalvo;
+            const correspondente = linkSelecionado ? listaDeRadios.findIndex(item => item.link === linkSelecionado) : -1;
+            indexRadioAtual = correspondente >= 0 ? correspondente : Math.min(indexRadioAtual, listaDeRadios.length - 1);
+            if (listaDeRadios.length > 0) {
+                // Não recarrega a mídia se a URL já estiver igual: evita cortar a rádio em sincronizações.
+                atualizarTelaPlayer(indexRadioAtual, false);
+            } else {
+                document.getElementById('player-title').textContent = 'Lista Vazia';
+                document.getElementById('player-louvor').textContent = 'Adicione músicas no painel';
+                document.getElementById('player-artista').textContent = 'Administrador';
+                document.getElementById('player-img').src = fallbackCapa;
+                statusConexao('Sem estações disponíveis', 'error');
+            }
+        }
+        function atualizarTelaPlayer(index, autoPlay = true) {
+            if (index < 0 || index >= listaDeRadios.length) return;
+            indexRadioAtual = index;
+            const radio = listaDeRadios[index];
+            document.getElementById('player-title').textContent = radio.nome || 'Sem título';
+            document.getElementById('player-louvor').textContent = radio.louvor || (radio.tipo === 'radio' ? 'Transmissão ao vivo' : 'Louvor');
+            document.getElementById('player-louvor').style.color = '#d9ccee';
+            document.getElementById('player-artista').textContent = radio.artista ? 'Por: ' + radio.artista : (radio.tipo === 'radio' ? 'Rádio Brasil CCB' : (radio.louvor || 'Louvores'));
+            const capa = radio.img && /^https?:\/\//i.test(radio.img) ? radio.img : fallbackCapa;
+            document.getElementById('player-img').src = capa;
+            tipoTag.textContent = radio.tipo === 'louvor' ? 'LOUVOR' : 'AO VIVO';
+            tipoTag.style.color = radio.tipo === 'louvor' ? '#8dbbf5' : '#d4b6ff';
+            tempoAtualSpan.textContent = radio.tipo === 'louvor' ? '00:00 / --:--' : 'TRANSMISSÃO CONTÍNUA';
+            progressFill.style.width = '0%';
+            atualizarBotaoFavorito(); atualizarMidiaSistema(radio);
+            try { localStorage.setItem('ccb_ultima_radio', radio.link); } catch (_) {}
+            const source = document.getElementById('main-audio-src');
+            const mudouUrl = source.getAttribute('src') !== radio.link;
+            const tavaTocando = !audioPlayer.paused && !audioPlayer.ended;
+            if (mudouUrl) {
+                ++playTentativa; // invalida respostas antigas de play() ao trocar estação
+                source.src = radio.link;
+                audioPlayer.load();
+            }
+            if (autoPlay || (mudouUrl && tavaTocando)) tocarAudio();
+            else if (mudouUrl || audioPlayer.paused) {
+                atualizarIconeReproducao(false);
+                statusConexao('Pronto para ouvir');
+            }
+            if (document.getElementById('stations-list-screen').classList.contains('open')) renderizarListaFiltro();
+        }
+        function retantarConexaoInterna() { // Reuso da URL ativa para reiniciar a mesma estação.
+            const radio = listaDeRadios[indexRadioAtual];
+            if (!radio) return;
+            const source = document.getElementById('main-audio-src');
+            ++playTentativa;
+            source.src = radio.link;
+            audioPlayer.load();
+            tocarAudio();
+        }
+        function retentarEstacaoAtual() { retantarConexaoInterna(); }
+        function tocarAudio() {
+            if (!listaDeRadios.length) { alert('Nenhuma estação disponível.'); return; }
+            const tentativa = ++playTentativa;
+            playIcon.textContent = '⟳'; playIcon.classList.add('rotating');
+            statusConexao('Conectando à transmissão...', 'loading');
+            const playResult = audioPlayer.play();
+            if (playResult && typeof playResult.catch === 'function') {
+                playResult.then(() => {
+                    if (tentativa !== playTentativa) return;
+                    atualizarIconeReproducao(true);
+                    statusConexao('Reproduzindo agora', 'playing');
+                }).catch(() => {
+                    if (tentativa !== playTentativa) return;
+                    atualizarIconeReproducao(false);
+                    statusConexao('Não foi possível reproduzir', 'error');
+                });
+            }
+        }
+        function toggleMainPlay() {
+            if (audioPlayer.paused) tocarAudio();
+            else { ++playTentativa; audioPlayer.pause(); atualizarIconeReproducao(false); statusConexao('Reprodução pausada'); }
+        }
+        function nextRadio() {
+            if (!listaDeRadios.length) return;
+            atualizarTelaPlayer((indexRadioAtual + 1) % listaDeRadios.length, true);
+        }
+        function prevRadio() {
+            if (!listaDeRadios.length) return;
+            atualizarTelaPlayer((indexRadioAtual - 1 + listaDeRadios.length) % listaDeRadios.length, true);
+        }
+        function renderizarListaFiltro() {
+            const container = document.getElementById('stations-list-dynamic');
+            container.replaceChildren();
+            const termo = (document.getElementById('station-search').value || '').toLocaleLowerCase('pt-BR').trim();
+            const favoritas = obterFavoritas();
+            const radios = listaDeRadios.map((radio, index) => ({radio, index})).filter(({radio}) => {
+                if (filtroRadios === 'favoritas' && !favoritas.includes(radio.link)) return false;
+                if (filtroRadios === 'radio' && radio.tipo !== 'radio') return false;
+                if (filtroRadios === 'louvor' && radio.tipo !== 'louvor') return false;
+                return !termo || [radio.nome, radio.louvor, radio.artista].some(campo => String(campo || '').toLocaleLowerCase('pt-BR').includes(termo));
+            });
+            document.getElementById('station-list-count').textContent = `${radios.length} de ${listaDeRadios.length} estações`;
+            if (!radios.length) {
+                const vazio = document.createElement('p'); vazio.className='list-meta'; vazio.textContent='Nenhuma estação encontrada. Tente outro filtro.';
+                container.appendChild(vazio); return;
+            }
+            radios.forEach(({radio, index}) => {
+                const item = document.createElement('div');
+                item.className = 'station-list-item' + (index === indexRadioAtual ? ' active-item' : '');
+                item.setAttribute('role', 'button'); item.tabIndex=0;
+                item.setAttribute('aria-label', 'Ouvir ' + (radio.nome || 'estação'));
+                const img=document.createElement('img'); img.alt = 'Capa'; img.loading='lazy';
+                img.src = radio.img && /^https?:\/\//i.test(radio.img) ? radio.img : fallbackCapa;
+                img.onerror = () => { img.onerror = null; img.src = fallbackCapa; };
+                const info = document.createElement('div'); info.className='station-list-info';
+                const badge = document.createElement('span'); badge.className='badge '+(radio.tipo === 'louvor' ? 'badge-louvor' : 'badge-radio');
+                badge.textContent = radio.tipo === 'louvor' ? 'Louvor' : 'Rádio';
+                const nome=document.createElement('h4'); nome.textContent=radio.nome || 'Estação sem nome';
+                const desc=document.createElement('p'); desc.textContent=radio.louvor || '';
+                info.append(badge,nome,desc);
+                const fav=document.createElement('button'); fav.type='button'; fav.className='item-favorite' + (favoritas.includes(radio.link) ? ' on' : '');
+                fav.setAttribute('aria-label', favoritas.includes(radio.link) ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+                fav.textContent='♥';
+                fav.addEventListener('click', event => { event.stopPropagation(); alternarFavorita(radio.link); });
+                item.addEventListener('click', () => { fecharListaRadios(); atualizarTelaPlayer(index, true); });
+                item.addEventListener('keydown', event => { if(event.target===item && (event.key==='Enter'||event.key===' ')) {event.preventDefault(); fecharListaRadios(); atualizarTelaPlayer(index, true);} });
+                item.append(img,info,fav); container.appendChild(item);
+            });
+        }
+        function formatarTempo(segundos) {
+            if (!Number.isFinite(segundos)) return '--:--';
+            const min=Math.floor(segundos/60), seg=Math.floor(segundos%60);
+            return String(min).padStart(2,'0')+':'+String(seg).padStart(2,'0');
+        }
+        audioPlayer.addEventListener('timeupdate', () => {
+            const radio = listaDeRadios[indexRadioAtual];
+            if (!radio) return;
+            if (radio.tipo === 'louvor' && Number.isFinite(audioPlayer.duration) && audioPlayer.duration > 0) {
+                progressFill.style.width = Math.min(100, audioPlayer.currentTime / audioPlayer.duration * 100) + '%';
+                tempoAtualSpan.textContent = formatarTempo(audioPlayer.currentTime) + ' / ' + formatarTempo(audioPlayer.duration);
+            } else { progressFill.style.width = '0%'; tempoAtualSpan.textContent = 'TRANSMISSÃO CONTÍNUA'; }
+        });
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            const radio=listaDeRadios[indexRadioAtual];
+            if (radio?.tipo === 'louvor') tempoAtualSpan.textContent = '00:00 / ' + formatarTempo(audioPlayer.duration);
+        });
+        progressBar.addEventListener('click', function(event) {
+            const radio=listaDeRadios[indexRadioAtual];
+            if (!radio || radio.tipo !== 'louvor' || !Number.isFinite(audioPlayer.duration) || audioPlayer.duration <= 0) return;
+            const rect=this.getBoundingClientRect();
+            audioPlayer.currentTime = Math.max(0, Math.min(1, (event.clientX - rect.left)/rect.width)) * audioPlayer.duration;
+        });
+        audioPlayer.addEventListener('waiting', () => {
+            if (!audioPlayer.paused) statusConexao('Carregando áudio...', 'loading');
+        });
+        audioPlayer.addEventListener('playing', () => { atualizarIconeReproducao(true); statusConexao('Reproduzindo agora', 'playing'); });
+        audioPlayer.addEventListener('pause', () => {
+            if (!audioPlayer.ended) { atualizarIconeReproducao(false); statusConexao('Reprodução pausada'); }
+        });
+        audioPlayer.addEventListener('error', () => {
+            atualizarIconeReproducao(false); statusConexao('Transmissão indisponível', 'error');
+        });
+        audioPlayer.addEventListener('ended', () => {
+            const radio=listaDeRadios[indexRadioAtual];
+            if (radio?.tipo === 'louvor' && listaDeRadios.length > 1) nextRadio();
+            else { atualizarIconeReproducao(false); statusConexao('Transmissão encerrada', 'error'); }
+        });
+        window.addEventListener('offline', () => { if (audioPlayer.paused) statusConexao('Dispositivo sem internet', 'error'); });
+        window.addEventListener('online', () => { if (audioPlayer.paused) statusConexao('Internet restabelecida'); });
+        if ('mediaSession' in navigator) {
+            try {
+                navigator.mediaSession.setActionHandler('play', () => { if(audioPlayer.paused) tocarAudio(); });
+                navigator.mediaSession.setActionHandler('pause', () => { if(!audioPlayer.paused) toggleMainPlay(); });
+                navigator.mediaSession.setActionHandler('nexttrack', nextRadio);
+                navigator.mediaSession.setActionHandler('previoustrack', prevRadio);
+            } catch (_) {}
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const valor=Number(localStorage.getItem('ccb_volume'));
+                if (localStorage.getItem('ccb_volume') !== null && Number.isFinite(valor)) {
+                    audioPlayer.volume=Math.min(1, Math.max(0, valor));
+                    document.getElementById('volume-slider').value=audioPlayer.volume;
+                }
+            } catch (_) {}
+            carregarTodasAsRadios(); carregarDados();
+        });
+    </script>
+</body>
+</html>

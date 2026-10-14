@@ -1,0 +1,376 @@
+/* Definição da Cor de Destaque */
+:root {
+    --cor-destaque: #ff9900; /* Laranja/Dourado */
+    --fundo-card: #1e1e1e; /* Fundo para os cards */
+    --sombra-card: rgba(255, 153, 0, 0.2); /* Sombra suave para cards */
+    --cor-louvor-destaque: #ffc266; /* Cor mais clara para o Louvor (Simulando Azul/Destaque) */
+}
+
+/* Estilos Gerais para o Corpo */
+body {
+    background-color: #121212; 
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+}
+
+/* Estilos do Cabeçalho */
+header {
+    padding: 20px;
+    margin-bottom: 40px; 
+}
+
+header h1 {
+    color: var(--cor-destaque);
+    font-size: 3.5em; 
+    margin-bottom: 10px;
+}
+header p {
+    font-size: 1.2em;
+    color: #ccc;
+}
+
+
+/* TÍTULOS DAS SEÇÕES */
+.destaques-adicionais h2, .estacoes-adicionais h2 {
+    color: var(--cor-destaque);
+    margin-bottom: 30px; 
+    font-size: 2em; 
+    border-bottom: 2px solid #333;
+    padding-bottom: 15px;
+}
+
+/* ------------------------------------------- */
+/* ESTILOS PARA ESTAÇÕES ADICIONAIS (MÚLTIPLOS PLAYERS) */
+/* ------------------------------------------- */
+
+.estacoes-adicionais {
+    width: 90%;
+    max-width: 600px; 
+    margin: 60px auto; 
+    padding: 30px;
+    background-color: var(--fundo-card);
+    border-radius: 12px;
+    box-shadow: 0 0 15px var(--sombra-card);
+    text-align: center;
+}
+
+#estacoes-container {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    gap: 15px; 
+    padding: 10px 0;
+}
+
+.additional-player-card {
+    background-color: #2a2a2a; 
+    padding: 15px 20px; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); 
+    width: 100%; 
+    max-width: 500px; 
+    margin: 0 auto;
+    text-align: left; 
+    transition: transform 0.2s, background-color 0.2s;
+    display: flex; 
+    flex-direction: column;
+}
+
+.additional-player-card:hover {
+    transform: translateY(-2px);
+    background-color: #383838; 
+}
+
+.additional-player-card h3 {
+    color: #ffffff; 
+    font-size: 1.2em;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.secondary-player {
+    width: 100%;
+    filter: invert(100%); 
+}
+
+/* Estilo para a informação da música abaixo do player secundário */
+.musica-tocando-secundaria {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #444;
+    text-align: center;
+}
+
+.musica-tocando-secundaria p {
+    margin: 5px 0; 
+    font-size: 0.95em;
+    color: #ccc;
+    line-height: 1.2;
+}
+
+.musica-tocando-secundaria .tocando-label {
+    color: var(--cor-destaque); 
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.musica-tocando-secundaria .louvor-em-destaque {
+    color: var(--cor-louvor-destaque); 
+    font-weight: bold;
+    font-size: 1.2em; 
+}
+
+.musica-tocando-secundaria .artista-em-destaque {
+    color: #ffffff; 
+    font-size: 1em;
+}
+
+
+/* ------------------------------------------- */
+/* ESTILOS PARA DESTAQUES ADICIONAIS (Cards) */
+/* ------------------------------------------- */
+
+.destaques-adicionais {
+    width: 90%;
+    max-width: 900px;
+    margin: 60px auto; 
+    padding: 30px 0;
+    text-align: center;
+}
+
+.destaques-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px; 
+}
+
+.highlight-card {
+    background-color: var(--fundo-card);
+    padding: 25px;
+    border-radius: 12px; 
+    box-shadow: 0 0 15px var(--sombra-card); 
+    width: 280px; 
+    min-height: 130px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.highlight-card:hover {
+    transform: translateY(-8px) scale(1.02); 
+    box-shadow: 0 10px 25px var(--sombra-card);
+}
+
+.highlight-card h3 {
+    color: var(--cor-destaque);
+    font-size: 1.4em; 
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+.highlight-card p {
+    color: #ccc;
+    font-size: 1.1em;
+}
+
+
+/* Estilos das Redes Sociais e Rodapé (Mantidos) */
+footer {
+    margin-top: 60px; 
+    padding: 30px;
+    font-size: 0.9em;
+    color: #777;
+    width: 100%; 
+    background-color: #0d0d0d; 
+}
+
+.redes-sociais {
+    margin-bottom: 15px;
+}
+
+.social-icon {
+    color: var(--cor-destaque);
+    text-decoration: none;
+    margin: 0 12px;
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: color 0.2s;
+}
+
+.social-icon:hover {
+    color: #fff;
+}
+
+.admin-link {
+    display: block;
+    color: #555; 
+    text-decoration: none;
+    font-size: 0.85em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    transition: color 0.2s;
+}
+
+.admin-link:hover {
+    color: var(--cor-destaque);
+    text-decoration: underline;
+}
+
+/* ------------------------------------------- */
+/* ESTILOS DA ÁREA ADMINISTRATIVA E PAINEL (Mantidos) */
+/* ------------------------------------------- */
+
+.admin-body {
+    justify-content: center; 
+    padding: 20px; 
+}
+
+.login-container {
+    background-color: var(--fundo-card);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px var(--sombra-card);
+    width: 100%;
+    max-width: 500px; 
+    box-sizing: border-box;
+    text-align: left; 
+}
+
+.login-container h1 {
+    font-size: 2em;
+    color: var(--cor-destaque);
+    margin-bottom: 25px;
+}
+
+.login-container h2 {
+    font-size: 1.3em;
+    color: white;
+    margin-top: 35px; 
+    margin-bottom: 15px;
+    border-bottom: 1px dashed #333; 
+    padding-bottom: 8px;
+}
+
+.login-container input[type="text"], 
+.login-container input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 12px 0;
+    border: 1px solid #444; 
+    background-color: #2a2a2a;
+    color: #fff;
+    box-sizing: border-box;
+    border-radius: 6px;
+    font-size: 1em;
+}
+
+.login-container button {
+    background-color: var(--cor-destaque);
+    color: #121212;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: background-color 0.2s, transform 0.1s;
+    margin-right: 10px; 
+    font-size: 1em;
+}
+
+.login-container button:hover {
+    background-color: #ffc266;
+    transform: translateY(-2px);
+}
+
+.delete-button {
+    background-color: #cc3333 !important;
+    color: white !important;
+}
+
+.delete-button:hover {
+    background-color: #ff4d4d !important;
+}
+
+.admin-form-row {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.admin-form-row input {
+    flex-grow: 1;
+    margin: 0;
+}
+
+#linksList, #highlightList {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+}
+#linksList li, #highlightList li {
+    background-color: #2a2a2a;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    word-break: break-all;
+    font-size: 1em;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+hr {
+    border-color: #444;
+    margin: 40px 0;
+}
+
+/* MEDIA QUERIES PARA RESPONSIVIDADE (CELULAR) */
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 2.5em; 
+    }
+    header p {
+        font-size: 1em;
+    }
+    .destaques-adicionais h2, .estacoes-adicionais h2 {
+        font-size: 1.6em; 
+    }
+    .destaques-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .highlight-card {
+        width: 90%; 
+        padding: 20px;
+    }
+    .additional-player-card {
+        width: 100%; 
+    }
+    .admin-link {
+        font-size: 0.75em;
+    }
+    .login-container {
+        padding: 20px;
+    }
+    .admin-form-row {
+        flex-direction: column; 
+        gap: 10px;
+    }
+    .admin-form-row input, .admin-form-row button {
+        width: 100%;
+        margin: 0; 
+    }
+    .login-container button {
+        margin-right: 0;
+        margin-bottom: 10px; 
+    }
+}
